@@ -4,7 +4,6 @@ import WayofTime.bloodmagic.api.impl.BloodMagicAPI;
 import WayofTime.bloodmagic.core.RegistrarBloodMagicItems;
 import WayofTime.bloodmagic.item.sigil.ItemSigilToggleableBase;
 import WayofTime.bloodmagic.util.helper.PlayerHelper;
-import com.charles445.simpledifficulty.api.SDItems;
 import com.invadermonky.survivaltools.SurvivalTools;
 import com.invadermonky.survivaltools.api.IAddition;
 import com.invadermonky.survivaltools.compat.bloodmagic.BloodMagicST;

@@ -3,7 +3,6 @@ package com.invadermonky.survivaltools.util.helpers;
 import com.charles445.simpledifficulty.api.SDCapabilities;
 import com.charles445.simpledifficulty.api.SDFluids;
 import com.charles445.simpledifficulty.api.SDPotions;
-import com.charles445.simpledifficulty.api.config.QuickConfig;
 import com.charles445.simpledifficulty.api.temperature.ITemperatureCapability;
 import com.charles445.simpledifficulty.api.thirst.IThirstCapability;
 import com.invadermonky.survivaltools.config.ConfigHandlerST;
@@ -16,8 +15,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import toughasnails.api.TANBlocks;
 import toughasnails.api.TANPotions;
-import toughasnails.api.config.GameplayOption;
-import toughasnails.api.config.SyncedConfig;
 import toughasnails.api.stat.capability.ITemperature;
 import toughasnails.api.stat.capability.IThirst;
 import toughasnails.api.temperature.Temperature;
@@ -29,26 +26,30 @@ import javax.annotation.Nullable;
 public class SurvivalHelper {
     public static boolean stabilizePlayerTemperature(EntityPlayer player) {
         boolean did = false;
-        if(ModIds.simpledifficulty.isLoaded && QuickConfig.isTemperatureEnabled()) {
-            ITemperatureCapability tempData = SDCapabilities.getTemperatureData(player);
-            if(tempData.getTemperatureLevel() < 12) {
-                tempData.addTemperatureLevel(2);
-                did = true;
-            } else if(tempData.getTemperatureLevel() > 13) {
-                tempData.addTemperatureLevel(-2);
-                did = true;
+        if(ModIds.simpledifficulty.isLoaded) {
+            if(SDHelper.isSDTemperatureEnabled()) {
+                ITemperatureCapability tempData = SDCapabilities.getTemperatureData(player);
+                if (tempData.getTemperatureLevel() < 12) {
+                    tempData.addTemperatureLevel(2);
+                    did = true;
+                } else if (tempData.getTemperatureLevel() > 13) {
+                    tempData.addTemperatureLevel(-2);
+                    did = true;
+                }
             }
         }
 
-        if(ModIds.tough_as_nails.isLoaded && SyncedConfig.getBooleanValue(GameplayOption.ENABLE_TEMPERATURE)) {
-            ITemperature temperature = TemperatureHelper.getTemperatureData(player);
-            int curTemp = temperature.getTemperature().getRawValue();
-            if (curTemp < 12) {
-                temperature.setTemperature(new Temperature(curTemp + 1));
-                did = true;
-            } else if (curTemp > 13) {
-                temperature.setTemperature(new Temperature(curTemp - 1));
-                did = true;
+        if(ModIds.tough_as_nails.isLoaded) {
+            if (TANHelper.isTanTemperatureEnabled()) {
+                ITemperature temperature = TemperatureHelper.getTemperatureData(player);
+                int curTemp = temperature.getTemperature().getRawValue();
+                if (curTemp < 12) {
+                    temperature.setTemperature(new Temperature(curTemp + 1));
+                    did = true;
+                } else if (curTemp > 13) {
+                    temperature.setTemperature(new Temperature(curTemp - 1));
+                    did = true;
+                }
             }
         }
         return did;
@@ -75,16 +76,20 @@ public class SurvivalHelper {
 
     public static boolean hydratePlayer(EntityPlayer player, int amount, float saturation) {
         boolean did = false;
-        if(ModIds.simpledifficulty.isLoaded && QuickConfig.isThirstEnabled()) {
-            IThirstCapability thirstData = SDCapabilities.getThirstData(player);
-            thirstData.addThirstLevel(amount);
-            thirstData.addThirstSaturation(saturation);
-            did = true;
+        if(ModIds.simpledifficulty.isLoaded) {
+            if(SDHelper.isSDThirstEnabled()) {
+                IThirstCapability thirstData = SDCapabilities.getThirstData(player);
+                thirstData.addThirstLevel(amount);
+                thirstData.addThirstSaturation(saturation);
+                did = true;
+            }
         }
-        if(ModIds.tough_as_nails.isLoaded && SyncedConfig.getBooleanValue(GameplayOption.ENABLE_THIRST)) {
-            IThirst thirst = ThirstHelper.getThirstData(player);
-            thirst.addStats(amount, saturation);
-            did = true;
+        if(ModIds.tough_as_nails.isLoaded) {
+            if(TANHelper.isTanThirstEnabled()) {
+                IThirst thirst = ThirstHelper.getThirstData(player);
+                thirst.addStats(amount, saturation);
+                did = true;
+            }
         }
         if(did && player.world.rand.nextInt(200) == 0) {
             player.world.playSound(null, player.posX, player.posY, player.posZ, ModSoundsST.easter_egg, SoundCategory.PLAYERS, 1.0f, 1.0f);
@@ -143,27 +148,27 @@ public class SurvivalHelper {
         return isPurifiedWater;
     }
 
-    public static boolean isThirstFeatureEnabled() {
-        boolean isEnabled = false;
-        if(ModIds.simpledifficulty.isLoaded) {
-            isEnabled = QuickConfig.isThirstEnabled();
-        }
-        if(ModIds.tough_as_nails.isLoaded && !isEnabled) {
-            isEnabled = SyncedConfig.getBooleanValue(GameplayOption.ENABLE_THIRST);
-        }
-
-        return isEnabled || ConfigHandlerST.forceLoadThirstFeatures;
-    }
-
     public static boolean isTemperatureFeatureEnabled() {
         boolean isEnabled = false;
         if(ModIds.simpledifficulty.isLoaded) {
-            isEnabled = QuickConfig.isTemperatureEnabled();
+            isEnabled = SDHelper.isSDTemperatureEnabled();
         }
         if(ModIds.tough_as_nails.isLoaded && !isEnabled) {
-            isEnabled = SyncedConfig.getBooleanValue(GameplayOption.ENABLE_TEMPERATURE);
+            isEnabled = TANHelper.isTanTemperatureEnabled();
         }
 
         return isEnabled || ConfigHandlerST.forceLoadTemperatureFeatures;
+    }
+
+    public static boolean isThirstFeatureEnabled() {
+        boolean isEnabled = false;
+        if(ModIds.simpledifficulty.isLoaded) {
+            isEnabled = SDHelper.isSDThirstEnabled();
+        }
+        if(ModIds.tough_as_nails.isLoaded && !isEnabled) {
+            isEnabled = TANHelper.isTanThirstEnabled();
+        }
+
+        return isEnabled || ConfigHandlerST.forceLoadThirstFeatures;
     }
 }

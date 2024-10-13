@@ -5,6 +5,7 @@ import com.invadermonky.survivaltools.blocks.tile.TileCentralAirUnit;
 import com.invadermonky.survivaltools.config.ConfigHandlerST;
 import com.invadermonky.survivaltools.util.ChatUtils;
 import com.invadermonky.survivaltools.util.helpers.StringHelper;
+import com.invadermonky.survivaltools.util.helpers.SurvivalHelper;
 import com.invadermonky.survivaltools.util.helpers.SurvivalItemHelper;
 import com.invadermonky.survivaltools.util.libs.LibTags;
 import net.minecraft.block.Block;
@@ -191,6 +192,6 @@ public class BlockCentralAirUnit extends BlockContainer implements IAddition {
 
     @Override
     public boolean isEnabled() {
-        return ConfigHandlerST.flux_tools.central_air_unit.enable;
+        return ConfigHandlerST.flux_tools.central_air_unit.enable && SurvivalHelper.isTemperatureFeatureEnabled();
     }
 }
