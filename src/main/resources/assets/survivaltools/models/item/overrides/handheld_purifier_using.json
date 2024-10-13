@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "survivaltools:items/handheld_purifier_using"
+  }
+}

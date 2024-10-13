@@ -1,0 +1,12 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "survivaltools:central_air_unit"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}],
+    "active=true": { "model": "survivaltools:central_air_unit_active" },
+    "active=false": { "model": "survivaltools:central_air_unit" }
+  }
+}

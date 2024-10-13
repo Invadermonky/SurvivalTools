@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "survivaltools:hydration_pack_reinforced"
+  },
+  "pattern": [
+    "DHD",
+    "GHG",
+    "GGG"
+  ],
+  "key": {
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "ingotGold"
+    },
+    "H": {
+      "item": "survivaltools:hydration_pack"
+    }
+  }
+}

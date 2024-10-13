@@ -1,0 +1,70 @@
+apply from: 'gradle/scripts/helpers.gradle'
+
+repositories {
+    // Other repositories described by default:
+    // CleanroomMC: https://maven.cleanroommc.com
+    exclusiveContent {
+        forRepository {
+            maven {
+                name 'CurseMaven'
+                url 'https://cursemaven.com'
+            }
+        }
+        filter {
+            includeGroup 'curse.maven'
+        }
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name 'Modrinth'
+                url 'https://api.modrinth.com/maven'
+            }
+        }
+        filter {
+            includeGroup 'maven.modrinth'
+        }
+    }
+    mavenLocal() // Must be last for caching to work
+}
+
+dependencies {
+    implementation rfg.deobf('curse.maven:had-enough-items-557549:4543375')
+    implementation rfg.deobf('curse.maven:baubles-227083:2518667')
+
+    // Mod Integrations
+    def modMap = [:]
+    def loadMap = [:]
+
+    modMap.put(["blood-magic-224791:2822288", "guide-api-228832:2645992"], project.bloodmagic)
+    modMap.put(["botania-225643:3330934"], project.botania)
+    modMap.put(["embers-rekindled-300777:3695248"], project.embers)
+    modMap.put(["immersive-engineering-231951:2974106"], project.immersiveengineering)
+    modMap.put(["natures-aura-306626:2882138", "patchouli-306770:3162874"], project.naturesaura)
+    modMap.put(["simpledifficulty-360779:3613814"], project.simpledifficulty)
+    modMap.put(["thaumcraft-223628:2629023"], project.thaumcraft)
+    modMap.put(["tough-as-nails-246391:2639903"], project.toughasnails)
+
+
+    modMap.each{mods, load -> {
+        boolean loadFlag = load.toBoolean()
+        mods.each{mod ->
+            def modMaven = "curse.maven:" + mod
+            if(!loadMap.containsKey(modMaven)) {
+                loadMap.put(modMaven,loadFlag)
+            } else {
+                if(loadFlag && !loadMap[modMaven]) {
+                    loadMap[modMaven] = loadFlag
+                }
+            }
+        }
+    }}
+
+    loadMap.each{maven,load -> {
+        if(load) {
+            implementation(rfg.deobf(maven))
+        } else {
+            compileOnly(rfg.deobf(maven))
+        }
+    }}
+}

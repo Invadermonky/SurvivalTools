@@ -1,0 +1,14 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "survivaltools:items/handheld_purifier"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "survivaltools:using": 1
+      },
+      "model": "survivaltools:item/overrides/handheld_purifier_using"
+    }
+  ]
+}

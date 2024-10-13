@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "bottom": "survivaltools:blocks/rain_collector_bottom",
+    "top": "survivaltools:blocks/rain_collector_top",
+    "side": "survivaltools:blocks/rain_collector_side"
+  }
+}

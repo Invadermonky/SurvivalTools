@@ -1,0 +1,8 @@
+{
+  "easter_egg": {
+    "sounds": [
+      "survivaltools:easter_egg"
+    ],
+    "subtitle": "subtitle.survivaltools:easter_egg"
+  }
+}

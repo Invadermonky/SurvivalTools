@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "survivaltools:canteen_reinforced"
+  },
+  "pattern": [
+    " E ",
+    "ICI",
+    "III"
+  ],
+  "key": {
+    "E": {
+      "item": "minecraft:ender_pearl"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "C": {
+      "item": "survivaltools:canteen"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "bottom": "survivaltools:blocks/central_air_unit_bottom",
+    "top": "survivaltools:blocks/central_air_unit_top",
+    "side": "survivaltools:blocks/central_air_unit_side"
+  }
+}

@@ -1,0 +1,103 @@
+# Chat
+chat.survivaltools:drink.easter_egg0=§aYou take a sip from§0
+chat.survivaltools:drink.easter_egg1=§ayour trusty Vault 13§0
+chat.survivaltools:drink.easter_egg2=§acanteen...§0
+chat.survivaltools:hydration_pack.empty=Your hydration pack is empty.
+chat.survivaltools:redstone.required=Redstone Mode: REQUIRED
+chat.survivaltools:redstone.inverted=Redstone Mode: INVERTED
+chat.survivaltools:redstone.ignored=Redstone Mode: IGNORED
+chat.survivaltools:rf_info=RF: %d (%d RF/t used while active)
+
+# Blocks
+tile.botania:flower.gryllzalia.name=Gryllzalia
+tile.botania:flower.gryllzalia.reference=Man vs. Wild
+tile.botania:flower.pure_pitcher.name=Pure Pitcher
+tile.botania:flower.pure_pitcher.reference=Natural Filtration!
+tile.survivaltools:central_air_unit.name=Central Air Unit
+
+# Gui
+itemGroup.survivaltools=Survival Tools
+
+# Items
+item.survivaltools:canteen.name=Canteen
+item.survivaltools:canteen_reinforced.name=Reinforced Canteen
+item.survivaltools:environmental_amulet.name=Environmental Amulet
+item.survivaltools:handheld_purifier.name=Handheld Water Purifier
+item.survivaltools:hydration_pack.name=Hydration Pack
+item.survivaltools:hydration_pack_reinforced.name=Reinforced Hydration Pack
+item.survivaltools:mantle_cloak.name=Mantle Cloak
+item.survivaltools:portable_purifier.name=Portable Purifier
+item.survivaltools:portable_regulator.name=Portable Regulator
+item.survivaltools:reagent_hydration.name=Hydration Reagent
+item.survivaltools:reagent_temperature.name=Temperate Reagent
+item.survivaltools:seasons_ring.name=Ring of Seasons
+item.survivaltools:sigil_hydration.name=Sigil of Hydration
+item.survivaltools:sigil_temperature.name=Sigil of Temperate Lands
+item.survivaltools:thaumic_regulator.name=Thaumic Regulator
+
+# Rituals
+ritual.survivaltools:soothing_hearth=Ritual of the Soothing Hearth
+ritual.survivaltools:soothing_hearth.info=Regulates the body temperature of all players in an area around the ritual.
+ritual.survivaltools:soothing_hearth.tempControlRange.info=(Temperature) The area the ritual will affect players.
+
+# Research
+
+# -- HYDRATION SIGIL
+guide.bloodmagic.entry.architect.sigil_hydration=Sigil of Hydration
+guide.bloodmagic.entry.architect.sigil_hydration.info=If the Water Sigil is capable of using moisture in the air to create sources of water, it should be easy enough to adapt the device to instead create small amounts of purified water safe for drinking.
+
+# -- SIGIL OF TEMPERATE LANDS
+guide.bloodmagic.entry.architect.sigil_temperature=Sigil of Temperate Lands
+guide.bloodmagic.entry.architect.sigil_temperature.info=Taking inspiration from the Sigil of Elemental Affinity, I have fashioned a low-powered version of the device. While not able to directly protect against environmental hazards, its use lies more in the creation of a small climate-controlled bubble surrounding the user.\n\tWith a bit of gold as a heat sync, the device uses the consistent temperature of the LP within one's Soul Network to regulate the temperature of the bubble, ensuring a comfortable temperature in all but the most extreme environments.\n\tUnfortunately, the comparatively weaker effect of this device compared to the Sigil of Elemental Affinity does not reduce the demand on a Soul Network. Anyone wishing to use this device for extended periods should ensure that they have either a sizable buffer or a consistent supply of LP.
+
+# -- RITUAL OF THE SOOTHING HEARTH
+guide.bloodmagic.entry.ritual.soothing_hearth=Ritual of the Soothing Hearth
+guide.bloodmagic.entry.ritual.soothing_hearth.info=The Ritual of the Soothing Hearth is a necessity for anyone who struggles against the constant cold or heat of their living environment. When activated, the ritual regulates the body temperature of all players with its area of effect at a greatly reduced cost compared to other such devices.\n\tNo longer will the aspiring homesteader have to seek shelter at the sight of a mere drizzle for fear of frostbite!
+
+# -- GRYLLZALIA
+botania.entry.gryllzalia=Gryllzalia
+botania.tagline.gryllzalia=Regulates player temperature
+botania.page.gryllzalia0=The &1Gryllzalia&0 uses &4Mana&0 to regulate the body temperature of all nearby players.
+botania.page.gryllzalia1=&oNow without bleeding pipes&r!
+
+# -- PURE PITCHER
+botania.entry.purePitcher=Pure Pitcher
+botania.tagline.purePitcher=Purifies water
+botania.page.purePitcher0=The &1Pure Pitcher&0 uses &4Mana&0 to convert &1Still Water&0 into &1Purified Water&0.<br>If provided with &4Mana&0, the &1Pure Pitcher&0 will suck up any water in a 3x3 area around it, up to 1 block above or below the flower. The flower will slowly convert consumed water into &1Purified Water&0. The &1Purified Water&0 is then stored within the flower, which can be seen by right-clicking the
+botania.page.purePitcher1=flower with a &1Wand of the Forest&0.<br>The fluid stored within the flower cannot be extracted through conventional means and can only be drained manually by interacting with the flower while holding an &1Empty Bottle&0, a &1Bucket&0, or a similar handheld fluid container.<br>The flower will continue to drain mana in an attempt to
+botania.page.purePitcher2=purify water even if it is full. This extra purified water drips onto the dirt below the flower and is lost.<br>However, if a floating variant of the flower is placed above a fluid tank, the excess generated liquid will slowly fill the tank.
+botania.page.purePitcher3=&oThy cup runneth over&r
+
+# -- SEASONS RING
+botania.entry.seasonsRing=Ring of Seasons
+botania.tagline.seasonsRing=Keeping cool and staying warm
+botania.page.seasonsRing0=The &Ring of Seasons&0 attempts to regulate the body temperature of the wearer. While it is worn, the ring will heat or cool the wearer depending on the environment. &4Mana&0 will be slowly drained for as long as the ring is equipped.
+botania.page.seasonsRing1=Creating the ring
+
+# -- MANTLE CLOAK
+embers.research.page.mantle_cloak=Mantle Cloak
+embers.research.page.mantle_cloak.title=Into the Fire
+embers.research.page.mantle_cloak.tags=Tough As Nails;SimpleDifficulty;Tan;Temperature;Bauble;Armor;
+embers.research.page.mantle_cloak.desc=Working close to the planet's mantle is a grueling business. This cloak will help regulate your body temperature, protecting you from all but the most extreme environments. However, it will require an accessible source of Ember in your inventory.
+
+# -- THAUMIC REGULATOR
+research.THAUMICREGULATOR.title=Thaumic Regulator
+research.THAUMICREGULATOR.stage.1=As I travel throughout the world seeking knowledge, I have encountered an issue that, while mundane, has proven to be rather problematic. I often find myself traveling through Seasons one day and scaling mountains the next. The constant variation of ambient temperature has resulted in no small amount of discomfort.<BR>Perhaps journeying to the most extreme regions of the world will grant me some insight as how to remedy this problem.
+research.THAUMICREGULATOR.stage.2=I have created a design for an device, that, when placed on my person, will generate a temperate bubble around myself. While I am still exposed to the environment and any dangers therein, I estimate it should be more than sufficient to protect me from all but the most extreme temperatures.<BR>However, the bubble formed by the device will prevent it from drawing from the aura directly, necessitating an internal store of vis that must be refilled at a charging pedestal or similar item. Luckily, I estimate that once fully charged, the device should protect me for several days.
+
+# Subtitle
+subtitle.survivaltools:easter_egg=The House Always Wins.
+
+# Tooltips
+tooltip.survivaltools:disabled=Disabled
+tooltip.survivaltools:enabled=Enabled
+tooltip.survivaltools:handheld_purifier.desc0=Converts water into purified water
+tooltip.survivaltools:handheld_purifier.desc1=Hold fluid container in offhand to fill=
+tooltip.survivaltools:hydration_pack.attached=§bHydro-Pack: %d/%d
+tooltip.survivaltools:hydration_pack.desc0=Hydrates the player when worn
+tooltip.survivaltools:hydration_pack.desc1=Can be attached to chestplates
+tooltip.survivaltools:environmental_amulet.desc=Uses Aura to regulate player temperature
+tooltip.survivaltools:portable_purifier.desc=Uses RF and water to restore thirst
+tooltip.survivaltools:portable_regulator.desc=Uses RF to regulate player temperature
+tooltip.survivaltools:redstone.desc=Right-click with a Redstone Torch to change redstone mode
+tooltip.survivaltools:rf_info.desc=Right-click with an empty hand to display RF info

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "survivaltools:canteen"
+  },
+  "pattern": [
+    " L ",
+    "LBL",
+    "LLL"
+  ],
+  "key": {
+    "L": {
+      "type": "forge:ore_dict",
+      "ore": "leather"
+    },
+    "B": {
+      "item": "minecraft:bucket"
+    }
+  }
+}

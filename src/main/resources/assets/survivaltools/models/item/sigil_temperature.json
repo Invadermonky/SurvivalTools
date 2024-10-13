@@ -1,0 +1,14 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "survivaltools:items/sigil_temperature_disabled"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "survivaltools:enabled": 1
+      },
+      "model": "survivaltools:item/overrides/sigil_temperature_enabled"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "entries": [
+    {
+      "key": "THAUMICREGULATOR",
+      "name": "research.THAUMICREGULATOR.title",
+      "icons": ["survivaltools:thaumic_regulator"],
+      "category": "INFUSION",
+      "parents": ["CLOUDRING"],
+      "location": [3,5],
+      "meta": ["REVERSE"],
+      "stages": [
+        {
+          "text": "research.THAUMICREGULATOR.stage.1",
+          "required_research": ["m_finddesert", "m_uphigh"]
+        },
+        {
+          "text": "research.THAUMICREGULATOR.stage.2",
+          "recipes": ["survivaltools:ThaumicRegulator"]
+        }
+      ]
+    }
+  ]
+}

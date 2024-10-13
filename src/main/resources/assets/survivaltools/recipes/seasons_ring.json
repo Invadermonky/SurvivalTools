@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "survivaltools:seasons_ring"
+  },
+  "pattern": [
+    "GIW",
+    "I I",
+    "SI "
+  ],
+  "key": {
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "ingotGold"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "runeSummerB"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "runeWinterB"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotManasteel"
+    }
+  },
+  "conditions": [
+    {
+      "type": "survivaltools_item_exists",
+      "item": "survivaltools:seasons_ring"
+    }
+  ]
+}

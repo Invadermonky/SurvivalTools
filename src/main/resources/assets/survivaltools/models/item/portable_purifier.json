@@ -1,0 +1,56 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "survivaltools:items/portable_chassis"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "survivaltools:fluid_level" : 1
+      },
+      "model": "survivaltools:item/overrides/portable_purifier_1"
+    },
+    {
+      "predicate": {
+        "survivaltools:fluid_level" : 2
+      },
+      "model": "survivaltools:item/overrides/portable_purifier_2"
+    },
+    {
+      "predicate": {
+        "survivaltools:fluid_level" : 3
+      },
+      "model": "survivaltools:item/overrides/portable_purifier_3"
+    },
+    {
+      "predicate": {
+        "survivaltools:fluid_level" : 4
+      },
+      "model": "survivaltools:item/overrides/portable_purifier_4"
+    },
+    {
+      "predicate": {
+        "survivaltools:fluid_level" : 5
+      },
+      "model": "survivaltools:item/overrides/portable_purifier_5"
+    },
+    {
+      "predicate": {
+        "survivaltools:fluid_level" : 6
+      },
+      "model": "survivaltools:item/overrides/portable_purifier_6"
+    },
+    {
+      "predicate": {
+        "survivaltools:fluid_level" : 7
+      },
+      "model": "survivaltools:item/overrides/portable_purifier_7"
+    },
+    {
+      "predicate": {
+        "survivaltools:fluid_level" : 8
+      },
+      "model": "survivaltools:item/overrides/portable_purifier_8"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "survivaltools:hydration_pack"
+  },
+  "pattern": [
+    "WCW",
+    "WCW",
+    "ILI"
+  ],
+  "key": {
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "wool"
+    },
+    "C": {
+      "item": "survivaltools:canteen_reinforced"
+    },
+    "L": {
+      "type": "forge:ore_dict",
+      "ore": "leather"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    }
+  }
+}
