@@ -52,7 +52,7 @@ public class ItemHandheldPurifier extends Item implements IAddition {
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         ItemStack mhStack = player.getHeldItemMainhand();
         ItemStack ohStack = player.getHeldItemOffhand();
-        if(mhStack.getItem() instanceof ItemHandheldPurifier && this.canFillOffhand(ohStack)) {
+        if(mhStack.getItem() instanceof ItemHandheldPurifier && (ohStack.getItem() == Items.GLASS_BOTTLE || FluidUtil.getFluidHandler(ohStack) != null)) {
             player.setActiveHand(EnumHand.MAIN_HAND);
             return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
         }
@@ -130,11 +130,6 @@ public class ItemHandheldPurifier extends Item implements IAddition {
             }
         }
         return drainedStack != null ? new FluidStack(SurvivalHelper.getPurifiedWater(), drainedStack.amount) : null;
-    }
-
-    public boolean canFillOffhand(ItemStack offhandStack) {
-        IFluidHandlerItem handler = FluidUtil.getFluidHandler(offhandStack);
-        return offhandStack.getItem() == Items.GLASS_BOTTLE || (handler != null && handler.fill(new FluidStack(SurvivalHelper.getPurifiedWater(), 1000), false) > 0);
     }
 
     public void handleFilledOffhand(EntityPlayer player, ItemStack mhStack, ItemStack filledStack) {

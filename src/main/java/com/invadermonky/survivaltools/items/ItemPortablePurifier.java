@@ -65,7 +65,7 @@ public class ItemPortablePurifier extends AbstractRFItem implements IFluidContai
         this.setEnergyMaxExtract(0);
         this.setMaxStackSize(1);
         this.addPropertyOverride(new ResourceLocation(SurvivalTools.MOD_ID, "fluid_level"), (stack, worldIn, entityIn) -> {
-            int stored = this.getFluidStored(stack);
+            int stored = this.getFluidAmount(stack);
             return stored <= 0 ? 0 : (float) Math.ceil((double) stored / this.getMaxFluidCapacity() * 8.0);
         });
     }
@@ -100,7 +100,7 @@ public class ItemPortablePurifier extends AbstractRFItem implements IFluidContai
         this.getTag(stack).setInteger(LibTags.TAG_FLUID, Math.min(amount, this.getMaxFluidCapacity()));
     }
 
-    public int getFluidStored(ItemStack stack) {
+    public int getFluidAmount(ItemStack stack) {
         if((stack.getTagCompound() == null) || (!stack.getTagCompound().hasKey(LibTags.TAG_FLUID))) {
             return 0;
         }
@@ -135,7 +135,7 @@ public class ItemPortablePurifier extends AbstractRFItem implements IFluidContai
     }
 
     public void doUpdateTick(ItemStack stack, EntityPlayer player) {
-        int fluidStored = this.getFluidStored(stack);
+        int fluidStored = this.getFluidAmount(stack);
         int energyStored = this.getEnergyStored(stack);
 
         if(fluidStored > this.getMaxFluidCapacity()) {
@@ -207,27 +207,15 @@ public class ItemPortablePurifier extends AbstractRFItem implements IFluidContai
             setActivated(stack, !getActivated(stack));
             return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         } else {
-            boolean flag =  this.getFluidStored(stack) < this.getMaxFluidCapacity();
-            RayTraceResult rtr = this.rayTrace(world, player, flag);
-            if(rtr == null || rtr.typeOfHit != RayTraceResult.Type.BLOCK) {
-                return new ActionResult<>(EnumActionResult.PASS, stack);
-            } else {
-                BlockPos tracePos = rtr.getBlockPos();
-                if(!world.isBlockModifiable(player, tracePos)) {
-                    return new ActionResult<>(EnumActionResult.FAIL, stack);
-                } else if(flag) {
-                    if(!player.canPlayerEdit(tracePos.offset(rtr.sideHit), rtr.sideHit, stack)) {
-                        return new ActionResult<>(EnumActionResult.FAIL, stack);
-                    } else {
-                        IBlockState state = world.getBlockState(tracePos);
-                        Block block = state.getBlock();
-                        if(block == Blocks.WATER) {
-                            world.setBlockToAir(tracePos);
-                            player.playSound(SoundEvents.ITEM_BUCKET_FILL, 1.0f, 1.0f);
-                            this.fill(stack, new FluidStack(FluidRegistry.WATER, 1000), true);
-                            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-                        } else if(FluidUtil.interactWithFluidHandler(player, hand, world, tracePos, rtr.sideHit)) {
-                            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+            int fluidAmount = this.getFluidAmount(stack);
+            int fluidMissing = this.getMaxFluidCapacity() - fluidAmount;
+            if (fluidMissing > 0) {
+                RayTraceResult rtr = this.rayTrace(world, player, true);
+                if (rtr != null && rtr.typeOfHit == RayTraceResult.Type.BLOCK) {
+                    BlockPos tracePos = rtr.getBlockPos();
+                    if (world.isBlockModifiable(player, tracePos) && player.canPlayerEdit(tracePos.offset(rtr.sideHit), rtr.sideHit, stack)) {
+                        if (FluidUtil.interactWithFluidHandler(player, hand, world, tracePos, rtr.sideHit)) {
+                            return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
                         }
                     }
                 }
@@ -244,7 +232,7 @@ public class ItemPortablePurifier extends AbstractRFItem implements IFluidContai
         } else {
             tooltip.add(ChatFormatting.ITALIC + String.format("%,d/%,d RF", getEnergyStored(stack), getMaxEnergyStored(stack)));
         }
-        tooltip.add(String.format("%d/%dmb %s", getFluidStored(stack), this.fluidCapacity, new FluidStack(FluidRegistry.WATER, 1).getLocalizedName()));
+        tooltip.add(String.format("%d/%dmb %s", getFluidAmount(stack), this.fluidCapacity, new FluidStack(FluidRegistry.WATER, 1).getLocalizedName()));
         tooltip.add(I18n.format(StringHelper.getTranslationKey(getTag(stack).getBoolean(LibTags.TAG_ENABLED) ? "enabled" : "disabled", "tooltip")));
         tooltip.add(I18n.format(StringHelper.getTranslationKey(PORTABLE_PURIFIER, "tooltip", "desc")));
     }

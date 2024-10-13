@@ -138,13 +138,13 @@ public class ItemCanteen extends Item implements IPurifiedFluidContainerItem, IA
         ItemStack stack = player.getHeldItem(hand);
         int fluidAmount = this.getFluidAmountStored(stack);
         int fluidMissing = this.getMaxFluidCapacity(stack) - fluidAmount;
-        if(fluidAmount > 0) {
-            RayTraceResult rtr = this.rayTrace(world, player, fluidMissing > 0);
+        if(fluidMissing > 0) {
+            RayTraceResult rtr = this.rayTrace(world, player, true);
             if(rtr != null && rtr.typeOfHit == RayTraceResult.Type.BLOCK) {
                 BlockPos tracePos = rtr.getBlockPos();
                 if(world.isBlockModifiable(player, tracePos) && player.canPlayerEdit(tracePos, rtr.sideHit, stack)) {
                     if(FluidUtil.interactWithFluidHandler(player, hand, world, tracePos, rtr.sideHit)) {
-                        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+                        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
                     } else {
                         return new ActionResult<>(EnumActionResult.PASS, stack);
                     }
