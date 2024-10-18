@@ -1,9 +1,8 @@
 package com.invadermonky.survivaltools.crafting.recipes;
 
 import com.invadermonky.survivaltools.SurvivalTools;
+import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
 import com.invadermonky.survivaltools.api.fluid.IPurifiedFluidContainerItem;
-import com.invadermonky.survivaltools.util.helpers.SurvivalHelper;
-import com.invadermonky.survivaltools.util.helpers.SurvivalItemHelper;
 import com.invadermonky.survivaltools.util.libs.LibNames;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
@@ -31,6 +30,9 @@ public class RecipeFillPurifiedContainer extends IForgeRegistryEntry.Impl<IRecip
 
     @Override
     public boolean matches(InventoryCrafting inv, World worldIn) {
+        //The shrink and grow for left click increase stack size occurs at Container#slotClick() at line 340.
+        // It is not firing the detectAndSendChanges() method.
+
         boolean foundPurifiedFluidContainer = false;
         boolean foundFillItem = false;
 
@@ -41,15 +43,15 @@ public class RecipeFillPurifiedContainer extends IForgeRegistryEntry.Impl<IRecip
                     foundPurifiedFluidContainer = true;
                 } else {
                     IFluidHandlerItem handler = FluidUtil.getFluidHandler(stack);
-                    if(handler != null) {
+                    if(handler != null && stack.getCount() == 1) {
                         for(IFluidTankProperties props : handler.getTankProperties()) {
                             FluidStack fluidStack = props.getContents();
-                            if(fluidStack != null && fluidStack.getFluid() == SurvivalHelper.getPurifiedWater()) {
+                            if(fluidStack != null && fluidStack.getFluid() == SurvivalToolsAPI.getPurifiedWater()) {
                                 foundFillItem = true;
                                 break;
                             }
                         }
-                    } else if(SurvivalItemHelper.isPurifiedWaterBottle(stack)) {
+                    } else if(SurvivalToolsAPI.isPurifiedWaterBottle(stack) && stack.getCount() == 1) {
                         foundFillItem = true;
                     } else  {
                         return false;
@@ -73,7 +75,7 @@ public class RecipeFillPurifiedContainer extends IForgeRegistryEntry.Impl<IRecip
             if(checkStack.getItem() instanceof IPurifiedFluidContainerItem && !foundPurifiedFluidContainer) {
                 purifiedFluidContainer = checkStack.copy();
                 foundPurifiedFluidContainer = true;
-            } else if(SurvivalItemHelper.isPurifiedWaterBottle(checkStack)) {
+            } else if(SurvivalToolsAPI.isPurifiedWaterBottle(checkStack)) {
                 fillItems.put(i, new Tuple<>(checkStack.copy(), true));
             } else if(FluidUtil.getFluidHandler(checkStack) != null) {
                 fillItems.put(i, new Tuple<>(checkStack.copy(), false));
@@ -91,7 +93,7 @@ public class RecipeFillPurifiedContainer extends IForgeRegistryEntry.Impl<IRecip
                     this.returnItems.put(entry.getKey(), new ItemStack(Items.GLASS_BOTTLE));
                 } else {
                     IFluidHandlerItem handler = FluidUtil.getFluidHandler(containerStack);
-                    FluidStack fluidStack = handler.drain(new FluidStack(SurvivalHelper.getPurifiedWater(), packMissing - fillAmount), true);
+                    FluidStack fluidStack = handler.drain(new FluidStack(SurvivalToolsAPI.getPurifiedWater(), packMissing - fillAmount), true);
                     if(fluidStack != null) {
                         this.returnItems.put(entry.getKey(), handler.getContainer());
                         fillAmount += fluidStack.amount;
@@ -100,7 +102,7 @@ public class RecipeFillPurifiedContainer extends IForgeRegistryEntry.Impl<IRecip
                     }
                 }
             }
-            fluidContainer.fill(purifiedFluidContainer, new FluidStack(SurvivalHelper.getPurifiedWater(), fillAmount), true);
+            fluidContainer.fill(purifiedFluidContainer, new FluidStack(SurvivalToolsAPI.getPurifiedWater(), fillAmount), true);
         }
         return purifiedFluidContainer;
     }
