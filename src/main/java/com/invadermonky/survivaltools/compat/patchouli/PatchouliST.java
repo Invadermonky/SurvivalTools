@@ -3,12 +3,8 @@ package com.invadermonky.survivaltools.compat.patchouli;
 import com.invadermonky.survivaltools.SurvivalTools;
 import com.invadermonky.survivaltools.api.IAddition;
 import com.invadermonky.survivaltools.api.IProxy;
-import com.invadermonky.survivaltools.compat.bloodmagic.BloodMagicST;
+import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
 import com.invadermonky.survivaltools.compat.bloodmagic.RitualSoothingHearth;
-import com.invadermonky.survivaltools.compat.botania.BotaniaST;
-import com.invadermonky.survivaltools.compat.embers.EmbersST;
-import com.invadermonky.survivaltools.compat.naturesaura.NaturesAuraST;
-import com.invadermonky.survivaltools.compat.thaumcraft.ThaumcraftST;
 import com.invadermonky.survivaltools.config.ConfigHandlerST;
 import com.invadermonky.survivaltools.registry.ModBlocksST;
 import com.invadermonky.survivaltools.registry.ModItemsST;
@@ -40,23 +36,23 @@ public class PatchouliST implements IProxy {
 
         //Mod Integrations
         if(ModIds.bloodmagic.isLoaded) {
-            addIAdditionConfigFlag(BloodMagicST.sigil_hydration);
-            addIAdditionConfigFlag(BloodMagicST.sigil_temperature);
+            addModConfigFlag(LibNames.SIGIL_HYDRATION, ConfigHandlerST.blood_magic.sigil_of_hydration.enable && SurvivalToolsAPI.isThirstFeatureEnabled());
+            addModConfigFlag(LibNames.SIGIL_TEMPERATURE, ConfigHandlerST.blood_magic.sigil_of_temperate_lands.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled());
             addModConfigFlag(LibNames.RITUAL_SOOTHING_HEARTH, RitualSoothingHearth.isEnabled());
         }
         if(ModIds.botania.isLoaded) {
-            addModConfigFlag(LibNames.GRYLLZALIA, BotaniaST.gryllzalia.isEnabled());
-            addModConfigFlag(LibNames.PURE_PITCHER, BotaniaST.pure_pitcher.isEnabled());
-            addIAdditionConfigFlag(BotaniaST.seasons_ring);
+            addModConfigFlag(LibNames.GRYLLZALIA, ConfigHandlerST.botania.gryllzalia.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled());
+            addModConfigFlag(LibNames.PURE_PITCHER, ConfigHandlerST.botania.pure_pitcher.enable && SurvivalToolsAPI.isThirstFeatureEnabled());
+            addModConfigFlag(LibNames.SEASONS_RING, ConfigHandlerST.botania.ring_of_seasons.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled());
         }
         if(ModIds.embers.isLoaded) {
-            addIAdditionConfigFlag(EmbersST.mantle_cloak);
+            addModConfigFlag(LibNames.MANTLE_CLOAK, ConfigHandlerST.embers.mantle_cloak.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled());
         }
         if(ModIds.natures_aura.isLoaded) {
-            addIAdditionConfigFlag(NaturesAuraST.environmental_amulet);
+            addModConfigFlag(LibNames.ENVIRONMENTAL_AMULET, ConfigHandlerST.natures_aura.environmental_amulet.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled());
         }
         if(ModIds.thaumcraft.isLoaded) {
-            addIAdditionConfigFlag(ThaumcraftST.thaumic_regulator);
+            addModConfigFlag(LibNames.THAUMIC_REGULATOR, ConfigHandlerST.thaumcraft.thaumic_regulator.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled());
         }
 
     }

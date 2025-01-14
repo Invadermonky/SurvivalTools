@@ -2,17 +2,17 @@
   "name": "Embers",
   "icon": "embers:crystal_ember",
   "category": "survivaltools:modded_tools",
-  "flags": "mod:embers",
+  "flag": "mod:embers",
   "pages": [
     {
       "type": "spotlight",
-      "flags": "survivaltools:mantle_cloak",
+      "flag": "survivaltools:mantle_cloak",
       "item": "survivaltools:mantle_cloak",
       "text": "The $(item)Mantle Cloak$() is a Body bauble that, when worn and supplied with $(thing)Ember$(), will regulate the body temperature of the player.$(br2)The Ember cost of this bauble can be reduced by wearing other baubles such as the $(item)Ember Ring$(), $(item)Ember Belt$(), or $(item)Ember Amulet$()."
     },
     {
       "type": "crafting",
-      "flags": "survivaltools:mantle_cloak",
+      "flag": "survivaltools:mantle_cloak",
       "recipe": "survivaltools:mantle_cloak"
     }
   ]

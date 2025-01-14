@@ -2,7 +2,7 @@
   "name": "Central Air Unit",
   "icon": "survivaltools:central_air_unit",
   "category": "survivaltools:flux_tools",
-  "flags": "survivaltools:central_air_unit",
+  "flag": "survivaltools:central_air_unit",
   "pages": [
     {
       "type": "text",

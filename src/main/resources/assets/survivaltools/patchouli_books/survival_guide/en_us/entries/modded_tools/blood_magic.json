@@ -2,30 +2,30 @@
   "name": "Blood Magic",
   "icon": "bloodmagic:blood_orb{orb:'bloodmagic:weak'}",
   "category": "survivaltools:modded_tools",
-  "flags": "mod:bloodmagic",
+  "flag": "mod:bloodmagic",
   "pages": [
     {
       "type": "spotlight",
-      "flags": "survivaltools:sigil_hydration",
+      "flag": "survivaltools:sigil_hydration",
       "item": "survivaltools:sigil_hydration",
       "text": "The $(item)Sigil of Hydration$(), when enabled, will use $(thing)LP$() from a player's $(thing)Soul Network$() to hydrate the player.$(br2)This sigil will apply its effect for as long as it is active, ensuring the player is always fully hydrated."
     },
     {
       "type": "spotlight",
-      "flags": "survivaltools:sigil_temperature",
+      "flag": "survivaltools:sigil_temperature",
       "item": "survivaltools:sigil_temperature",
       "title": "Sigil of Temp. Lands",
       "text": "The $(item)Sigil of Temperate Lands$(), when enabled, will use $(thing)LP$() from a player's $(thing)Soul Network$() to regulate the body temperature of the player."
     },
     {
       "type": "text",
-      "flags": "survivaltools:soothing_hearth",
+      "flag": "survivaltools:soothing_hearth",
       "title": "Ritual of the S. Hearth",
       "text": "The $(item)Ritual of the Soothing Hearth$() is a $(thing)LP$() powered ritual that regulates the body temperature of all players in a large area."
     },
     {
       "type": "multiblock",
-      "flags": "survivaltools:soothing_hearth",
+      "flag": "survivaltools:soothing_hearth",
       "multiblock": {
         "pattern": [
           ["F A F", "     ", "A   A", "     ", "F A F"],

@@ -9,13 +9,13 @@
     },
     {
       "type": "crafting",
-      "flags": "survivaltools:barrel_heater",
+      "flag": "survivaltools:barrel_heater",
       "recipe": "survivaltools:barrel_lid",
       "text": "Used in the construction of the Water Boiler $(item)Open Barrel$() multiblock."
     },
     {
       "type": "crafting",
-      "flags": "survivaltools:barrel_lid_solar",
+      "flag": "survivaltools:barrel_lid_solar",
       "recipe": "survivaltools:barrel_lid_solar",
       "text": "Used in the construction of the Solar Purifier or Water Boiler $(item)Open Barrel$() multiblock."
     }

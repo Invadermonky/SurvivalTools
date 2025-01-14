@@ -2,7 +2,7 @@
   "name": "Rain Collector",
   "icon": "minecraft:iron_bars",
   "category": "survivaltools:open_barrel",
-  "flags": "survivaltools:rain_collector",
+  "flag": "survivaltools:rain_collector",
   "pages": [
     {
       "type": "text",

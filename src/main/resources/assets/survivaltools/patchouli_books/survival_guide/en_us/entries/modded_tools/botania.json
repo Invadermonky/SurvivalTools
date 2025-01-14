@@ -2,28 +2,28 @@
   "name": "Botania",
   "icon": "botania:twigwand{color1:0, color2:0}",
   "category": "survivaltools:modded_tools",
-  "flags": "mod:botania",
+  "flag": "mod:botania",
   "pages": [
     {
       "type": "spotlight",
-      "flags": "survivaltools:seasons_ring",
+      "flag": "survivaltools:seasons_ring",
       "item": "survivaltools:seasons_ring",
       "text": "The $(item)Ring of Seasons$(), when equipped and supplied with $(thing)Mana$(), will regulate the body temperature of the player."
     },
     {
       "type": "crafting",
-      "flags": "survivaltools:seasons_ring",
+      "flag": "survivaltools:seasons_ring",
       "recipe": "survivaltools:seasons_ring"
     },
     {
       "type": "spotlight",
-      "flags": "survivaltools:gryllzalia",
+      "flag": "survivaltools:gryllzalia",
       "item": "botania:specialflower{type:'gryllzalia'}",
       "text": "The $(item)Gryllzalia$() is a functional flower that uses mana from mana pools to regulate the body temperature of all nearby players."
     },
     {
       "type": "spotlight",
-      "flags": "survivaltools:pure_pitcher",
+      "flag": "survivaltools:pure_pitcher",
       "item": "botania:specialflower{type:'pure_pitcher'}",
       "text": "The $(item)Pure Pitcher$() is a functional flower that uses mana to convert $(water)Water$() source blocks into $(water)Purified Water$(). The $(water)Purified Water$() is stored in the flower and can be extracted by $(k:use)ing the flower while holding an empty fluid container.$(br2)Check out the $(item)Lexica Botania$() entry for more information."
     }

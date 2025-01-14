@@ -2,7 +2,7 @@
   "name": "Portable Purifier",
   "icon": "survivaltools:portable_purifier",
   "category": "survivaltools:flux_tools",
-  "flags": "survivaltools:portable_purifier",
+  "flag": "survivaltools:portable_purifier",
   "pages": [
     {
       "type": "text",

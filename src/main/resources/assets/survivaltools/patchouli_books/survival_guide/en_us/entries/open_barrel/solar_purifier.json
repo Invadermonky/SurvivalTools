@@ -2,7 +2,7 @@
   "name": "Solar Purifier",
   "icon": "minecraft:daylight_detector",
   "category": "survivaltools:open_barrel",
-  "flags": "survivaltools:barrel_lid_solar",
+  "flag": "survivaltools:barrel_lid_solar",
   "pages": [
     {
       "type": "text",

@@ -2,7 +2,7 @@
   "name": "Portable Regulator",
   "icon": "survivaltools:portable_regulator",
   "category": "survivaltools:flux_tools",
-  "flags": "survivaltools:portable_regulator",
+  "flag": "survivaltools:portable_regulator",
   "pages": [
     {
       "type": "text",

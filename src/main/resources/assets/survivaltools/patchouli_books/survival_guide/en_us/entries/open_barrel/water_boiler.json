@@ -2,7 +2,7 @@
   "name": "Water Boiler",
   "icon": "survivaltools:barrel_heater",
   "category": "survivaltools:open_barrel",
-  "flags": "survivaltools:barrel_heater",
+  "flag": "survivaltools:barrel_heater",
   "pages": [
     {
       "type": "text",
@@ -34,13 +34,13 @@
     },
     {
       "type": "crafting",
-      "flags": "survivaltools:barrel_heater_powered",
+      "flag": "survivaltools:barrel_heater_powered",
       "recipe": "survivaltools:barrel_heater_powered",
       "text": "The $(item)Powered Barrel Heater$() uses $(thing)Redstone Flux$() to power its heating elements.$(br2)[$(k:use)] while holding a $(item)Redstone Torch$() will change the redstone mode."
     },
     {
       "type": "multiblock",
-      "flags": "survivaltools:barrel_heater_powered",
+      "flag": "survivaltools:barrel_heater_powered",
       "multiblock": {
         "pattern": [
           ["LL"],
