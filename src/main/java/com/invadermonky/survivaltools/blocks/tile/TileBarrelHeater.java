@@ -292,6 +292,7 @@ public class TileBarrelHeater extends TileEntity implements ITickable, IInventor
     @Optional.Method(modid = ModIds.ConstIds.magicluture_integrations)
     @Override
     public void updateTileHeatable() {
+        BlockBarrelHeater.setState(this.isBurning(), this.world, this.pos);
         this.markDirty();
     }
 }
