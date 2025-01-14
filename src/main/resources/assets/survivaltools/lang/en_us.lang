@@ -13,9 +13,15 @@ tile.botania:flower.gryllzalia.name=Gryllzalia
 tile.botania:flower.gryllzalia.reference=Man vs. Wild
 tile.botania:flower.pure_pitcher.name=Pure Pitcher
 tile.botania:flower.pure_pitcher.reference=Natural Filtration!
+tile.survivaltools:barrel_heater.name=Barrel Heater
+tile.survivaltools:barrel_heater_powered.name=Powered Barrel Heater
+tile.survivaltools:barrel_lid.name=Barrel Lid
+tile.survivaltools:barrel_lid_solar.name=Solar Collector Barrel Lid
 tile.survivaltools:central_air_unit.name=Central Air Unit
+tile.survivaltools:open_barrel.name=Open Barrel
 
 # Gui
+container.survivaltools:barrel_heater=Barrel Heater
 itemGroup.survivaltools=Survival Tools
 
 # Items
@@ -97,6 +103,8 @@ tooltip.survivaltools:hydration_pack.attached=§bHydro-Pack: %d/%d
 tooltip.survivaltools:hydration_pack.desc0=Hydrates the player when worn
 tooltip.survivaltools:hydration_pack.desc1=Can be attached to chestplates
 tooltip.survivaltools:environmental_amulet.desc=Uses Aura to regulate player temperature
+tooltip.survivaltools:max_cooling.desc=Max Cooling: %d
+tooltip.survivaltools:max_heating.desc=Max Heating: %d
 tooltip.survivaltools:portable_purifier.desc=Uses RF and water to restore thirst
 tooltip.survivaltools:portable_regulator.desc=Uses RF to regulate player temperature
 tooltip.survivaltools:redstone.desc=Right-click with a Redstone Torch to change redstone mode

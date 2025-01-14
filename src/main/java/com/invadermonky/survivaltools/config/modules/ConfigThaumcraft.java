@@ -15,5 +15,9 @@ public class ConfigThaumcraft {
         @Config.RangeInt(min = 1, max = 60)
         @Config.Comment("How much energy consumed per operation. A value of 10 with a delay of 100 will consume 1 Vis every 30 seconds.")
         public int cost = 10;
+        @Config.Comment("The maximum cooling limit for this tool. If the environmental temperature is 30, the target temperature will be (30 - maxCooling). Setting this value to -1 will remove the limit.")
+        public int maxCooling = -1;
+        @Config.Comment("The maximum heating limit for this tool. If the environmental temperature is 0, the target temperature will be (0 + maxHeating). Setting this value to -1 will remove the limit.")
+        public int maxHeating = -1;
     }
 }

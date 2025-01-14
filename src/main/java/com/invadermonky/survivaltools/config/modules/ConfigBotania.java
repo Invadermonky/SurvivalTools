@@ -13,8 +13,10 @@ public class ConfigBotania {
     public PurePitcherConfig pure_pitcher = new PurePitcherConfig();
 
     public static class PurePitcherConfig {
+        @Config.RequiresMcRestart
         @Config.Comment("Enables Botania mana-powered water purification flower.")
         public boolean enable = true;
+
         @Config.Comment("The amount of purified water, in mB, generated per second while the flower is active.")
         public int fluidGeneration = 5;
     }

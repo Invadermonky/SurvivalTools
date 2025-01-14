@@ -3,11 +3,10 @@ package com.invadermonky.survivaltools.items;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import com.invadermonky.survivaltools.api.IAddition;
+import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
 import com.invadermonky.survivaltools.api.items.AbstractRFItem;
 import com.invadermonky.survivaltools.config.ConfigHandlerST;
 import com.invadermonky.survivaltools.util.helpers.StringHelper;
-import com.invadermonky.survivaltools.util.helpers.SurvivalHelper;
-import com.invadermonky.survivaltools.util.helpers.SurvivalItemHelper;
 import com.invadermonky.survivaltools.util.libs.LibTags;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -68,7 +67,7 @@ public class ItemPortableRegulator extends AbstractRFItem implements IBauble, IA
                 setActivated(stack, false);
             } else {
                 if(player.ticksExisted % 100 == 0) {
-                    SurvivalHelper.stabilizePlayerTemperature(player);
+                    SurvivalToolsAPI.stabilizePlayerTemperature(player, ConfigHandlerST.flux_tools.portable_regulator.maxCooling, ConfigHandlerST.flux_tools.portable_regulator.maxHeating);
                 }
                 setEnergyStored(stack, getEnergyStored(stack) - this.energyCost);
             }
@@ -141,12 +140,12 @@ public class ItemPortableRegulator extends AbstractRFItem implements IBauble, IA
     public void registerRecipe(IForgeRegistry<IRecipe> registry) {
         CraftingHelper.ShapedPrimer primer = CraftingHelper.parseShaped(
                 "HEC", "HGC", "RTR",
-                'C', SurvivalItemHelper.getCoolerStack(),
+                'C', SurvivalToolsAPI.getCoolerStack(),
                 'E', Items.ENDER_PEARL,
-                'H', SurvivalItemHelper.getHeaterStack(),
+                'H', SurvivalToolsAPI.getHeaterStack(),
                 'G', "blockGold",
                 'R', "blockRedstone",
-                'T', SurvivalItemHelper.getThermometerStack()
+                'T', SurvivalToolsAPI.getThermometerStack()
         );
         IRecipe recipe = new ShapedRecipes(this.getRegistryName().toString(), primer.width, primer.height, primer.input, new ItemStack(this));
         recipe.setRegistryName(this.getRegistryName());
@@ -161,6 +160,6 @@ public class ItemPortableRegulator extends AbstractRFItem implements IBauble, IA
 
     @Override
     public boolean isEnabled() {
-        return ConfigHandlerST.flux_tools.portable_regulator.enable && SurvivalHelper.isTemperatureFeatureEnabled();
+        return ConfigHandlerST.flux_tools.portable_regulator.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled();
     }
 }

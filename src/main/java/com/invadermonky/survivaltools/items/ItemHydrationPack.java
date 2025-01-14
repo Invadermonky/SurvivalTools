@@ -2,6 +2,7 @@ package com.invadermonky.survivaltools.items;
 
 import baubles.api.BaubleType;
 import com.invadermonky.survivaltools.api.IAddition;
+import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
 import com.invadermonky.survivaltools.api.fluid.FluidContainerItemWrapper;
 import com.invadermonky.survivaltools.api.fluid.IPurifiedFluidContainerItem;
 import com.invadermonky.survivaltools.api.items.AbstractEquipableBauble;
@@ -10,7 +11,6 @@ import com.invadermonky.survivaltools.crafting.recipes.RecipeHydrationPackAttach
 import com.invadermonky.survivaltools.crafting.recipes.RecipeHydrationPackRemove;
 import com.invadermonky.survivaltools.util.ChatUtils;
 import com.invadermonky.survivaltools.util.helpers.StringHelper;
-import com.invadermonky.survivaltools.util.helpers.SurvivalHelper;
 import com.invadermonky.survivaltools.util.libs.LibNames;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
@@ -96,9 +96,9 @@ public class ItemHydrationPack extends AbstractEquipableBauble implements IPurif
 
         if(player.ticksExisted % 60 == 0 && !player.isCreative()) {
             int currentFluid = this.getFluidAmountStored(stack);
-            if(this.restoredThirst <= SurvivalHelper.getMissingThirst(player) && currentFluid > 0) {
+            if(this.restoredThirst <= SurvivalToolsAPI.getMissingThirst(player) && currentFluid > 0) {
                 int thirstRestored = this.getFluidCost() <= currentFluid ? this.restoredThirst : (int) (((double) currentFluid / this.getFluidCost()) * this.restoredThirst);
-                SurvivalHelper.hydratePlayer(player, thirstRestored, this.restoredHydration);
+                SurvivalToolsAPI.hydratePlayer(player, thirstRestored, this.restoredHydration);
                 player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.PLAYERS, 0.6f, 1.0f);
                 this.drain(stack, this.getFluidCost(), true);
                 did = true;
@@ -230,7 +230,7 @@ public class ItemHydrationPack extends AbstractEquipableBauble implements IPurif
     @SideOnly(Side.CLIENT)
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(String.format("%d/%dmb %s", getFluidAmountStored(stack), this.capacity, new FluidStack(SurvivalHelper.getPurifiedWater(), 1).getLocalizedName()));
+        tooltip.add(String.format("%d/%dmb %s", getFluidAmountStored(stack), this.capacity, new FluidStack(SurvivalToolsAPI.getPurifiedWater(), 1).getLocalizedName()));
         tooltip.add(I18n.format(StringHelper.getTranslationKey(LibNames.HYDRATION_PACK, "tooltip", "desc0")));
         if(ConfigHandlerST.simple_tools.hydration_pack.attachmentRecipe) {
             tooltip.add(I18n.format(StringHelper.getTranslationKey(TAG_HYDRATION_PACK, "tooltip", "desc1")));

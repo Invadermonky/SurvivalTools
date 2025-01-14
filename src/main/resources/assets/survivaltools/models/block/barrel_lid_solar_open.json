@@ -1,0 +1,6 @@
+{
+  "parent": "block/trapdoor_open",
+  "textures": {
+    "texture": "survivaltools:blocks/barrel_lid_solar"
+  }
+}

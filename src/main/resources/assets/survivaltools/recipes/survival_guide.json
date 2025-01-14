@@ -1,0 +1,19 @@
+{
+  "type": "forge:ore_shapeless",
+  "result": {
+    "item": "patchouli:guide_book",
+    "nbt": {
+      "patchouli:book": "survivaltools:survival_guide"
+    }
+  },
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "book"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "charcoal"
+    }
+  ]
+}

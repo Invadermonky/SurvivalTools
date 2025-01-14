@@ -1,0 +1,21 @@
+{
+  "name": "Hydration Packs",
+  "icon": "survivaltools:hydration_pack",
+  "category": "survivaltools:simple_tools",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(item)Hydration Packs$() are $(water)Purified Water$() containers that can be equipped as a Body bauble.$(br2)While $(item)Hydration Packs$() boast a larger fluid capacity and better thirst efficiency than $(item)Canteens$(), they cannot be drank from directly and instead must be equipped to receive the hydration effect.$(br2)While worn, $(item)Hydration Packs$()"
+    },
+    {
+      "type": "text",
+      "text": "will automatically hydrate the player whenever they reach a configured thirst threshold.$(br2)Hydration packs also have the ability to be attached directly to chest armor, providing the same effect as though they were equipped as a bauble."
+    },
+    {
+      "type": "crafting",
+      "recipe": "survivaltools:hydration_pack",
+      "recipe2": "survivaltools:hydration_pack_reinforced"
+    }
+  ]
+}

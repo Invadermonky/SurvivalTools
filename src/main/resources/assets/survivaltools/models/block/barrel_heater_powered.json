@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "survivaltools:blocks/machine_bottom",
+    "down": "survivaltools:blocks/machine_bottom",
+    "up": "survivaltools:blocks/barrel_heater_top_off",
+    "north": "survivaltools:blocks/barrel_heater_powered_front_off",
+    "south": "survivaltools:blocks/barrel_heater_side_off",
+    "west": "survivaltools:blocks/barrel_heater_side_off",
+    "east": "survivaltools:blocks/barrel_heater_side_off"
+  }
+}

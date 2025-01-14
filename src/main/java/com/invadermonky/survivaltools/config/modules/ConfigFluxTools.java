@@ -19,6 +19,10 @@ public class ConfigFluxTools {
         public int energyCost = 100;
         @Config.Comment("The effect radius of the central air unit.")
         public int radius = 32;
+        @Config.Comment("The maximum cooling limit for this tool. If the environmental temperature is 30, the target temperature will be (30 - maxCooling). Setting this value to -1 will remove the limit.")
+        public int maxCooling = -1;
+        @Config.Comment("The maximum heating limit for this tool. If the environmental temperature is 0, the target temperature will be (0 + maxHeating). Setting this value to -1 will remove the limit.")
+        public int maxHeating = -1;
     }
 
     public static class PortablePurifierConfig {
@@ -51,5 +55,9 @@ public class ConfigFluxTools {
         public int energyCost = 5;
         @Config.Comment("Should the tooltip energy values be shortened? (400,000 -> 400k)")
         public boolean shortenEnergyTooltip = true;
+        @Config.Comment("The maximum cooling limit for this tool. If the environmental temperature is 30, the target temperature will be (30 - maxCooling). Setting this value to -1 will remove the limit.")
+        public int maxCooling = -1;
+        @Config.Comment("The maximum heating limit for this tool. If the environmental temperature is 0, the target temperature will be (0 + maxHeating). Setting this value to -1 will remove the limit.")
+        public int maxHeating = -1;
     }
 }

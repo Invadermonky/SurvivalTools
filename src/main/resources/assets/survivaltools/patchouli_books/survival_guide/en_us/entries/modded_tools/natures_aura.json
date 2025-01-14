@@ -1,0 +1,19 @@
+{
+  "name": "Nature's Aura",
+  "icon": "naturesaura:gold_leaf",
+  "category": "survivaltools:modded_tools",
+  "flags": "mod:naturesaura",
+  "pages": [
+    {
+      "type": "spotlight",
+      "flags": "survivaltools:environmental_amulet",
+      "item": "survivaltools:environmental_amulet",
+      "text": "The $(item)Environmental Amulet$() is a Necklace bauble that, when worn and supplied with $(thing)Aura$(), will regulate the body temperature of the player."
+    },
+    {
+      "type": "crafting",
+      "flags": "survivaltools:environmental_amulet",
+      "recipe": "survivaltools:environmental_amulet"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "Canteens",
+  "icon": "survivaltools:canteen",
+  "category": "survivaltools:simple_tools",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(item)Canteens$() are simple $(water)Purified Water$() containers. Players can drink directly from $(item)Canteens$() to restore thirst.$(br2)Drinking from a $(item)Canteen$() is more efficient than drinking from $(item)Purified Water Bottles$()."
+    },
+    {
+      "type": "crafting",
+      "recipe": "survivaltools:canteen",
+      "recipe2": "survivaltools:canteen_reinforced",
+      "text": ""
+    }
+  ]
+}

@@ -2,9 +2,8 @@ package com.invadermonky.survivaltools.items;
 
 import com.invadermonky.survivaltools.SurvivalTools;
 import com.invadermonky.survivaltools.api.IAddition;
+import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
 import com.invadermonky.survivaltools.util.helpers.StringHelper;
-import com.invadermonky.survivaltools.util.helpers.SurvivalHelper;
-import com.invadermonky.survivaltools.util.helpers.SurvivalItemHelper;
 import com.invadermonky.survivaltools.util.libs.LibNames;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
@@ -91,7 +90,7 @@ public class ItemHandheldPurifier extends Item implements IAddition {
                 if(drainedStack != null) {
                     if(ohStack.getItem() == Items.GLASS_BOTTLE && drainedStack.amount == 1000) {
                         this.drainFromBlock(world, player, rtr, 1000, true);
-                        this.handleFilledOffhand(player, mhStack, SurvivalItemHelper.getPurifiedWaterBottleStack());
+                        this.handleFilledOffhand(player, mhStack, SurvivalToolsAPI.getPurifiedWaterBottleStack());
                         return mhStack;
                     } else {
                         ItemStack ohCopy = ohStack.copy();
@@ -129,7 +128,7 @@ public class ItemHandheldPurifier extends Item implements IAddition {
                 }
             }
         }
-        return drainedStack != null ? new FluidStack(SurvivalHelper.getPurifiedWater(), drainedStack.amount) : null;
+        return drainedStack != null ? new FluidStack(SurvivalToolsAPI.getPurifiedWater(), drainedStack.amount) : null;
     }
 
     public void handleFilledOffhand(EntityPlayer player, ItemStack mhStack, ItemStack filledStack) {
@@ -172,7 +171,7 @@ public class ItemHandheldPurifier extends Item implements IAddition {
         CraftingHelper.ShapedPrimer primer = CraftingHelper.parseShaped(
                 "LFI", "IFI", "RWR",
                 'L', Blocks.LEVER,
-                'F', SurvivalItemHelper.getCharcoalFilterStack(),
+                'F', SurvivalToolsAPI.getWaterFilterStack(),
                 'I', "ingotIron",
                 'R', "dustRedstone",
                 'W', "wool"

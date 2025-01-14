@@ -2,9 +2,8 @@ package com.invadermonky.survivaltools.blocks.subtile;
 
 import com.invadermonky.survivaltools.SurvivalTools;
 import com.invadermonky.survivaltools.api.IAddition;
+import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
 import com.invadermonky.survivaltools.config.ConfigHandlerST;
-import com.invadermonky.survivaltools.util.helpers.SurvivalHelper;
-import com.invadermonky.survivaltools.util.helpers.SurvivalItemHelper;
 import com.invadermonky.survivaltools.util.libs.LibNames;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.MapColor;
@@ -100,7 +99,7 @@ public class SubTilePurePitcher extends SubTileFunctional implements IFluidHandl
                     } else if (this.supertile instanceof TileFloatingSpecialFlower) {
                         IFluidHandler handler = FluidUtil.getFluidHandler(this.supertile.getWorld(), this.getPos().down(), EnumFacing.UP);
                         if(handler != null) {
-                            handler.fill(new FluidStack(SurvivalHelper.getPurifiedWater(), this.getFluidGeneration()), true);
+                            handler.fill(new FluidStack(SurvivalToolsAPI.getPurifiedWater(), this.getFluidGeneration()), true);
                         }
                     }
                 }
@@ -157,7 +156,7 @@ public class SubTilePurePitcher extends SubTileFunctional implements IFluidHandl
             if (this.fluidAmount >= 333) {
                 this.fluidAmount -= 333;
                 heldStack.shrink(1);
-                ItemStack bottleStack = SurvivalItemHelper.getPurifiedWaterBottleStack();
+                ItemStack bottleStack = SurvivalToolsAPI.getPurifiedWaterBottleStack();
                 if (heldStack.isEmpty()) {
                     player.setHeldItem(hand, bottleStack);
                 } else if (!player.addItemStackToInventory(bottleStack)) {
@@ -189,7 +188,7 @@ public class SubTilePurePitcher extends SubTileFunctional implements IFluidHandl
     public void renderHUD(Minecraft mc, ScaledResolution res) {
         super.renderHUD(mc, res);
         int color = MapColor.LIGHT_BLUE.colorValue;
-        this.drawComplexLiquidHUD(color, res, SurvivalItemHelper.getPurifiedWaterBottleStack());
+        this.drawComplexLiquidHUD(color, res, SurvivalToolsAPI.getPurifiedWaterBottleStack());
     }
 
     public void renderLiquidBar(int x, int y, int color, float alpha) {
@@ -274,7 +273,7 @@ public class SubTilePurePitcher extends SubTileFunctional implements IFluidHandl
             @Nullable
             @Override
             public FluidStack getContents() {
-                return fluidAmount > 0 ? new FluidStack(SurvivalHelper.getPurifiedWater(), fluidAmount) : null;
+                return fluidAmount > 0 ? new FluidStack(SurvivalToolsAPI.getPurifiedWater(), fluidAmount) : null;
             }
 
             @Override
@@ -299,7 +298,7 @@ public class SubTilePurePitcher extends SubTileFunctional implements IFluidHandl
 
             @Override
             public boolean canDrainFluidType(FluidStack fluidStack) {
-                return fluidStack != null && fluidStack.getFluid() == SurvivalHelper.getPurifiedWater() && fluidAmount > 0;
+                return fluidStack != null && fluidStack.getFluid() == SurvivalToolsAPI.getPurifiedWater() && fluidAmount > 0;
             }
         }};
     }
@@ -312,7 +311,7 @@ public class SubTilePurePitcher extends SubTileFunctional implements IFluidHandl
     @Nullable
     @Override
     public FluidStack drain(FluidStack resource, boolean doDrain) {
-        if(resource != null && resource.getFluid() == SurvivalHelper.getPurifiedWater()) {
+        if(resource != null && resource.getFluid() == SurvivalToolsAPI.getPurifiedWater()) {
             return this.drain(resource.amount, doDrain);
         }
         return null;
@@ -326,7 +325,7 @@ public class SubTilePurePitcher extends SubTileFunctional implements IFluidHandl
             this.fluidAmount -= fluidDrained;
             this.sync();
         }
-        return fluidDrained > 0 ? new FluidStack(SurvivalHelper.getPurifiedWater(), fluidDrained) : null;
+        return fluidDrained > 0 ? new FluidStack(SurvivalToolsAPI.getPurifiedWater(), fluidDrained) : null;
     }
 
     /*
@@ -341,7 +340,8 @@ public class SubTilePurePitcher extends SubTileFunctional implements IFluidHandl
 
     @Override
     public void postInit() {
-        PURE_PITCHER_RECIPE = new RecipePetals(ItemBlockSpecialFlower.ofType(LibNames.PURE_PITCHER), ModPetalRecipes.blue, ModPetalRecipes.lightBlue, ModPetalRecipes.cyan, SurvivalItemHelper.getCharcoalFilterStack(), SurvivalItemHelper.getCharcoalFilterStack(), new ItemStack(Items.BUCKET), "runeWaterB", "redstoneRoot");
+        ItemStack waterFilterStack = SurvivalToolsAPI.getWaterFilterStack();
+        PURE_PITCHER_RECIPE = new RecipePetals(ItemBlockSpecialFlower.ofType(LibNames.PURE_PITCHER), ModPetalRecipes.blue, ModPetalRecipes.lightBlue, ModPetalRecipes.cyan, waterFilterStack, waterFilterStack, new ItemStack(Items.BUCKET), "runeWaterB", "redstoneRoot");
         BotaniaAPI.registerPetalRecipe(PURE_PITCHER_RECIPE.getOutput(), PURE_PITCHER_RECIPE.getInputs().toArray());
         PURE_PITCHER_ENTRY = new BasicLexiconEntry("purePitcher", BotaniaAPI.categoryFunctionalFlowers);
         PURE_PITCHER_ENTRY.setLexiconPages(
@@ -360,6 +360,6 @@ public class SubTilePurePitcher extends SubTileFunctional implements IFluidHandl
 
     @Override
     public boolean isEnabled() {
-        return ConfigHandlerST.botania.pure_pitcher.enable && SurvivalHelper.isThirstFeatureEnabled();
+        return ConfigHandlerST.botania.pure_pitcher.enable && SurvivalToolsAPI.isThirstFeatureEnabled();
     }
 }

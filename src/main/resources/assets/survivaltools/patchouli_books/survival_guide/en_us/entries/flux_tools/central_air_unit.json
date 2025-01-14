@@ -1,0 +1,16 @@
+{
+  "name": "Central Air Unit",
+  "icon": "survivaltools:central_air_unit",
+  "category": "survivaltools:flux_tools",
+  "flags": "survivaltools:central_air_unit",
+  "pages": [
+    {
+      "type": "text",
+      "text": "The $(item)Central Air Unit$() is a $(thing)Redstone Flux$() powered machine that regulates the body temperature of all players in a large area."
+    },
+    {
+      "type": "crafting",
+      "recipe": "survivaltools:central_air_unit"
+    }
+  ]
+}

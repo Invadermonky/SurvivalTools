@@ -1,0 +1,10 @@
+{
+  "name": "Surviving the Wilds",
+  "landing_text": "A blockhead's guide to surviving in the wild. Learn to manage thirst and exposure.$(br2)Due to the highly configurable nature of this mod, some information in this book may be incorrect. It is intended to be used as a \"Getting Started\" guide for the mod features.",
+  "creative_tab": "itemGroup:survivaltools",
+  "model": "survivaltools:survival_guide",
+  "show_progress": false,
+  "macros": {
+    "$(water)": "$(#5555FF)"
+  }
+}

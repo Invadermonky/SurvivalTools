@@ -19,7 +19,7 @@ public class ConfigSimpleTools {
         @Config.RangeInt(min = 1, max = 20)
         @Config.Comment("The amount of thirst restored each time the Canteen is used.")
         public int restoredThirst = 6;
-        @Config.RangeDouble(min = 0)
+        @Config.RangeDouble(min = 0, max = 10.0)
         @Config.Comment("The amount of hydration restored each time the Canteen is used.")
         public double restoredHydration = 0.7f;
     }
@@ -39,7 +39,7 @@ public class ConfigSimpleTools {
         @Config.RangeInt(min = 1, max = 20)
         @Config.Comment("The amount of thirst restored each time the Hydration Pack is used.")
         public int restoredThirst = 4;
-        @Config.RangeDouble(min = 0)
+        @Config.RangeDouble(min = 0, max = 10.0)
         @Config.Comment("The amount of hydration restored each time the Hydration Pack is used.")
         public double restoredHydration = 0.7f;
     }

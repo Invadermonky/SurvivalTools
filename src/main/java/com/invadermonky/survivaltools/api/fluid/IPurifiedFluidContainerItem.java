@@ -1,6 +1,6 @@
 package com.invadermonky.survivaltools.api.fluid;
 
-import com.invadermonky.survivaltools.util.helpers.SurvivalHelper;
+import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
@@ -50,7 +50,7 @@ public interface IPurifiedFluidContainerItem extends IFluidContainerItem {
 
     @Override
     default int fill(ItemStack stack, FluidStack resource, boolean doFill) {
-        if(resource != null && SurvivalHelper.isPurifiedWater(resource.getFluid())) {
+        if(resource != null && SurvivalToolsAPI.isPurifiedWater(resource.getFluid())) {
             int fluid = this.getFluidAmountStored(stack);
             int fluidReceived = Math.min(this.getMaxFluidCapacity(stack) - fluid, resource.amount);
             if(doFill) {
@@ -65,7 +65,7 @@ public interface IPurifiedFluidContainerItem extends IFluidContainerItem {
     @Nullable
     @Override
     default FluidStack drain(ItemStack stack, FluidStack resource, boolean doDrain) {
-        if(resource != null && resource.getFluid() == SurvivalHelper.getPurifiedWater()) {
+        if(resource != null && resource.getFluid() == SurvivalToolsAPI.getPurifiedWater()) {
             return this.drain(stack, resource.amount, doDrain);
         }
         return null;
@@ -80,6 +80,6 @@ public interface IPurifiedFluidContainerItem extends IFluidContainerItem {
             fluid -= fluidDrained;
             this.setFluidAmountStored(stack, fluid);
         }
-        return fluidDrained > 0 ? new FluidStack(SurvivalHelper.getPurifiedWater(), fluidDrained) : null;
+        return fluidDrained > 0 ? new FluidStack(SurvivalToolsAPI.getPurifiedWater(), fluidDrained) : null;
     }
 }

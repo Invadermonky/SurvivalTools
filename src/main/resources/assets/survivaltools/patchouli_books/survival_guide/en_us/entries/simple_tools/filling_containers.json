@@ -1,0 +1,16 @@
+{
+  "name": "Filling Containers",
+  "icon": "minecraft:water_bucket",
+  "category": "survivaltools:simple_tools",
+  "priority": true,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Constantly refilling $(item)Canteens$() can be a frustrating experience as most survival mods use abstract methods to define canteen fill amounts and fluid types.$(br2)To remedy this situation, the Survival Tools mod implements its $(l:simple_tools/canteen)Canteens$() and $(l:simple_tools/hydration_pack)Hydration Packs$() as actual fluid containers. This means they can interact directly with"
+    },
+    {
+      "type": "text",
+      "text": "modded fluid tanks, bottle filling machines, and in-world fluid blocks.$(br2)Additionally, $(item)Canteens$() and $(item)Hydration Packs$() can be filled at a crafting table by combining them with any combination of bottles, buckets, or modded fluid tanks.$(br2)This does come with one limitation, these containers can $(bold)only$() be filled with $(water)Purified Water$()."
+    }
+  ]
+}

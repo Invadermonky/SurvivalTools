@@ -1,0 +1,14 @@
+{
+  "name": "Thaumcraft",
+  "icon": "thaumcraft:goggles",
+  "category": "survivaltools:modded_tools",
+  "flags": "mod:thaumcraft",
+  "pages": [
+    {
+      "type": "spotlight",
+      "flags": "survivaltools:thaumic_regulator",
+      "item": "survivaltools:thaumic_regulator",
+      "text": "The $(item)Thaumic Regulator$() is a Charm bauble that, when worn and filled with $(thing)Vis$(), will regulate the body temperature of the player.$(br2)The $(item)Thaumic Regulator$() cannot draw $(thing)Vis$() directly from the environment and must be charged at a $(item)Recharge Pedestal$()."
+    }
+  ]
+}

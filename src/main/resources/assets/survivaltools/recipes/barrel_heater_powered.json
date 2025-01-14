@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "survivaltools:barrel_heater_powered"
+  },
+  "pattern": [
+    "IHI",
+    "IGI",
+    "IRI"
+  ],
+  "key": {
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "H": {
+      "item": "survivaltools:barrel_heater"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "blockGold"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "blockRedstone"
+    }
+  },
+  "conditions": [
+    {
+      "type": "survivaltools_item_exists",
+      "item": "survivaltools:barrel_heater_powered"
+    }
+  ]
+}

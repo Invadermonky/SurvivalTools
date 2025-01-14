@@ -4,18 +4,15 @@ import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import com.invadermonky.survivaltools.SurvivalTools;
 import com.invadermonky.survivaltools.api.IAddition;
+import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
 import com.invadermonky.survivaltools.api.fluid.FluidEnergyContainerItemWrapper;
 import com.invadermonky.survivaltools.api.fluid.IFluidContainerItem;
 import com.invadermonky.survivaltools.api.items.AbstractRFItem;
 import com.invadermonky.survivaltools.config.ConfigHandlerST;
 import com.invadermonky.survivaltools.registry.ModItemsST;
 import com.invadermonky.survivaltools.util.helpers.StringHelper;
-import com.invadermonky.survivaltools.util.helpers.SurvivalHelper;
-import com.invadermonky.survivaltools.util.helpers.SurvivalItemHelper;
 import com.invadermonky.survivaltools.util.libs.LibTags;
 import com.mojang.realmsclient.gui.ChatFormatting;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -23,9 +20,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
@@ -150,8 +145,8 @@ public class ItemPortablePurifier extends AbstractRFItem implements IFluidContai
                 this.setActivated(stack, false);
             } else {
                 if (player.ticksExisted % 60 == 0 && !(player).isCreative()) {
-                    if (SurvivalHelper.isThirsty(player)) {
-                        SurvivalHelper.hydratePlayer(player, 1, 1.0f);
+                    if (SurvivalToolsAPI.isPlayerThirsty(player)) {
+                        SurvivalToolsAPI.hydratePlayer(player, 1, 1.0f);
                         this.drain(stack, this.getFluidCost(), true);
                     }
                 }
@@ -315,7 +310,7 @@ public class ItemPortablePurifier extends AbstractRFItem implements IFluidContai
                 "BEB", "FHF", "RHR",
                 'B', Items.GLASS_BOTTLE,
                 'E', Items.ENDER_PEARL,
-                'F', SurvivalItemHelper.getCharcoalFilterStack(),
+                'F', SurvivalToolsAPI.getWaterFilterStack(),
                 'H', ModItemsST.hydration_pack_reinforced,
                 'R', "blockRedstone"
         );
@@ -333,6 +328,6 @@ public class ItemPortablePurifier extends AbstractRFItem implements IFluidContai
 
     @Override
     public boolean isEnabled() {
-        return ConfigHandlerST.flux_tools.portable_purifier.enable && SurvivalHelper.isThirstFeatureEnabled();
+        return ConfigHandlerST.flux_tools.portable_purifier.enable && SurvivalToolsAPI.isThirstFeatureEnabled();
     }
 }

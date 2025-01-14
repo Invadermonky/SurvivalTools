@@ -2,13 +2,16 @@ package com.invadermonky.survivaltools.registry;
 
 import com.invadermonky.survivaltools.SurvivalTools;
 import com.invadermonky.survivaltools.api.IAddition;
-import com.invadermonky.survivaltools.blocks.BlockCentralAirUnit;
-import com.invadermonky.survivaltools.blocks.BlockRainCollector;
+import com.invadermonky.survivaltools.blocks.*;
+import com.invadermonky.survivaltools.blocks.tile.TileBarrelHeater;
+import com.invadermonky.survivaltools.blocks.tile.TileBarrelHeaterPowered;
 import com.invadermonky.survivaltools.blocks.tile.TileCentralAirUnit;
-import com.invadermonky.survivaltools.blocks.tile.TileRainCollector;
+import com.invadermonky.survivaltools.blocks.tile.TileOpenBarrel;
+import com.invadermonky.survivaltools.config.ConfigHandlerST;
 import com.invadermonky.survivaltools.util.libs.CreativeTabST;
 import com.invadermonky.survivaltools.util.libs.LibNames;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
@@ -26,7 +29,11 @@ import java.util.Map;
 @Mod.EventBusSubscriber(modid = SurvivalTools.MOD_ID)
 public class ModBlocksST {
     public static BlockCentralAirUnit central_air_unit;
-    public static BlockRainCollector rain_collector;
+    public static BlockOpenBarrel open_barrel;
+    public static BlockBarrelHeater open_barrel_heater;
+    public static BlockBarrelHeaterPowered open_barrel_heater_powered;
+    public static BlockBarrelLid open_barrel_lid;
+    public static BlockBarrelLid open_barrel_lid_solar;
 
     public static Map<Block,Class<? extends TileEntity>> allBlocks = new LinkedHashMap<>();
 
@@ -78,6 +85,10 @@ public class ModBlocksST {
 
     static {
         addBlockToRegister(central_air_unit = new BlockCentralAirUnit(), LibNames.CENTRAL_AIR_UNIT, TileCentralAirUnit.class);
-        addBlockToRegister(rain_collector = new BlockRainCollector(), LibNames.RAIN_COLLECTOR, TileRainCollector.class);
+        addBlockToRegister(open_barrel = new BlockOpenBarrel(), LibNames.OPEN_BARREL, TileOpenBarrel.class);
+        addBlockToRegister(open_barrel_lid = new BlockBarrelLid(Material.ROCK, ConfigHandlerST.open_barrel._enable && (ConfigHandlerST.open_barrel.water_boiler._enable || ConfigHandlerST.open_barrel.solar_purifier._enable)), LibNames.OPEN_BARREL_LID);
+        addBlockToRegister(open_barrel_lid_solar = new BlockBarrelLid(Material.GLASS, ConfigHandlerST.open_barrel._enable && ConfigHandlerST.open_barrel.solar_purifier._enable), LibNames.OPEN_BARREL_LID_SOLAR);
+        addBlockToRegister(open_barrel_heater = new BlockBarrelHeater(), LibNames.OPEN_BARREL_HEATER, TileBarrelHeater.class);
+        addBlockToRegister(open_barrel_heater_powered = new BlockBarrelHeaterPowered(), LibNames.OPEN_BARREL_HEATER_POWERED, TileBarrelHeaterPowered.class);
     }
 }

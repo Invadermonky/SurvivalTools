@@ -2,9 +2,9 @@ package com.invadermonky.survivaltools.compat.bloodmagic;
 
 import WayofTime.bloodmagic.BloodMagic;
 import WayofTime.bloodmagic.ritual.*;
+import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
 import com.invadermonky.survivaltools.config.ConfigHandlerST;
 import com.invadermonky.survivaltools.util.helpers.StringHelper;
-import com.invadermonky.survivaltools.util.helpers.SurvivalHelper;
 import com.invadermonky.survivaltools.util.libs.LibNames;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -34,18 +34,11 @@ public class RitualSoothingHearth extends Ritual {
         World world = masterRitualStone.getWorldObj();
         int currentEssence = masterRitualStone.getOwnerNetwork().getCurrentEssence();
         BlockPos pos = masterRitualStone.getBlockPos();
-        double x = pos.getX();
-        double y = pos.getY();
-        double z = pos.getZ();
         if(currentEssence < this.getRefreshCost()) {
             masterRitualStone.getOwnerNetwork().causeNausea();
         } else {
             int maxEffects = currentEssence / this.getRefreshCost();
             int totalEffects = 0;
-            if(masterRitualStone.getCooldown() > 0) {
-
-            }
-
             AreaDescriptor tempControlRange = masterRitualStone.getBlockRange(TEMP_CONTROL_RANGE);
             AxisAlignedBB tempControlBB = tempControlRange.getAABB(masterRitualStone.getBlockPos());
             List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, tempControlBB);
@@ -58,7 +51,7 @@ public class RitualSoothingHearth extends Ritual {
                 if(totalEffects >= maxEffects)
                     break;
 
-                if(SurvivalHelper.stabilizePlayerTemperature(player))
+                if(SurvivalToolsAPI.stabilizePlayerTemperature(player, ConfigHandlerST.blood_magic.soothing_hearth.maxCooling, ConfigHandlerST.blood_magic.soothing_hearth.maxHeating))
                     totalEffects++;
             }
 

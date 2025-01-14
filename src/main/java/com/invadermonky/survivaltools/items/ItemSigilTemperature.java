@@ -6,13 +6,17 @@ import WayofTime.bloodmagic.item.sigil.ItemSigilToggleableBase;
 import WayofTime.bloodmagic.util.helper.PlayerHelper;
 import com.invadermonky.survivaltools.SurvivalTools;
 import com.invadermonky.survivaltools.api.IAddition;
+import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
 import com.invadermonky.survivaltools.compat.bloodmagic.BloodMagicST;
 import com.invadermonky.survivaltools.compat.bloodmagic.BloodMagicUtils;
 import com.invadermonky.survivaltools.config.ConfigHandlerST;
-import com.invadermonky.survivaltools.util.helpers.SurvivalHelper;
+import com.invadermonky.survivaltools.util.helpers.StringHelper;
 import com.invadermonky.survivaltools.util.libs.LibNames;
 import com.invadermonky.survivaltools.util.libs.ModIds;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -21,6 +25,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.registries.IForgeRegistry;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemSigilTemperature extends ItemSigilToggleableBase implements IAddition {
     public static final ItemSigilTemperature TEMPERATURE_SIGIL = new ItemSigilTemperature();
@@ -35,7 +42,22 @@ public class ItemSigilTemperature extends ItemSigilToggleableBase implements IAd
     public void onSigilUpdate(ItemStack stack, World world, EntityPlayer player, int itemSlot, boolean isSelected) {
         if(!PlayerHelper.isFakePlayer(player)) {
             if(player.ticksExisted % ConfigHandlerST.blood_magic.sigil_of_temperate_lands.delay == 0) {
-                SurvivalHelper.stabilizePlayerTemperature(player);
+                SurvivalToolsAPI.stabilizePlayerTemperature(player, ConfigHandlerST.blood_magic.sigil_of_temperate_lands.maxCooling, ConfigHandlerST.blood_magic.sigil_of_temperate_lands.maxHeating);
+            }
+        }
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+        if(GuiScreen.isShiftKeyDown()) {
+            int cooling = ConfigHandlerST.blood_magic.sigil_of_temperate_lands.maxCooling;
+            int heating = ConfigHandlerST.blood_magic.sigil_of_temperate_lands.maxHeating;
+            if(cooling > -1) {
+                tooltip.add(I18n.format(StringHelper.getTranslationKey("max_cooling", "tooltip", "desc"), cooling));
+            }
+            if(heating > -1) {
+                tooltip.add(I18n.format(StringHelper.getTranslationKey("max_heating", "tooltip", "desc"), heating));
             }
         }
     }

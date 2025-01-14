@@ -1,174 +1,173 @@
 package com.invadermonky.survivaltools.util.helpers;
 
-import com.charles445.simpledifficulty.api.SDCapabilities;
-import com.charles445.simpledifficulty.api.SDFluids;
-import com.charles445.simpledifficulty.api.SDPotions;
-import com.charles445.simpledifficulty.api.temperature.ITemperatureCapability;
-import com.charles445.simpledifficulty.api.thirst.IThirstCapability;
-import com.invadermonky.survivaltools.config.ConfigHandlerST;
-import com.invadermonky.survivaltools.registry.ModSoundsST;
-import com.invadermonky.survivaltools.util.libs.ModIds;
+import com.invadermonky.survivaltools.api.ISurvivalMod;
+import com.invadermonky.survivaltools.survivalmods.SurvivalModVanilla;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import toughasnails.api.TANBlocks;
-import toughasnails.api.TANPotions;
-import toughasnails.api.stat.capability.ITemperature;
-import toughasnails.api.stat.capability.IThirst;
-import toughasnails.api.temperature.Temperature;
-import toughasnails.api.temperature.TemperatureHelper;
-import toughasnails.api.thirst.ThirstHelper;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SurvivalHelper {
-    public static boolean stabilizePlayerTemperature(EntityPlayer player) {
-        boolean did = false;
-        if(ModIds.simpledifficulty.isLoaded) {
-            if(SDHelper.isSDTemperatureEnabled()) {
-                ITemperatureCapability tempData = SDCapabilities.getTemperatureData(player);
-                if (tempData.getTemperatureLevel() < 12) {
-                    tempData.addTemperatureLevel(2);
-                    did = true;
-                } else if (tempData.getTemperatureLevel() > 13) {
-                    tempData.addTemperatureLevel(-2);
-                    did = true;
+public class SurvivalHelper implements ISurvivalMod {
+    private static final List<ISurvivalMod> survivalMods = new ArrayList<>();
+    private static final ISurvivalMod vanillaSurvivalMod = new SurvivalModVanilla();
+
+    public static void registerSurvivalMod(ISurvivalMod survivalMod) {
+        survivalMods.add(survivalMod);
+    }
+
+    public static final SurvivalHelper internal = new SurvivalHelper();
+
+    @Override
+    public ItemStack getPurifiedWaterBottleStack() {
+        for(ISurvivalMod survivalMod : survivalMods) {
+            return survivalMod.getPurifiedWaterBottleStack();
+        }
+        return vanillaSurvivalMod.getPurifiedWaterBottleStack();
+    }
+
+    @Override
+    public ItemStack getWaterFilterStack() {
+        for(ISurvivalMod survivalMod : survivalMods) {
+            return survivalMod.getWaterFilterStack();
+        }
+        return vanillaSurvivalMod.getWaterFilterStack();
+    }
+
+    @Override
+    public ItemStack getCoolerStack() {
+        for(ISurvivalMod survivalMod : survivalMods) {
+            return survivalMod.getCoolerStack();
+        }
+        return vanillaSurvivalMod.getCoolerStack();
+    }
+
+    @Override
+    public ItemStack getHeaterStack() {
+        for(ISurvivalMod survivalMod : survivalMods) {
+            return survivalMod.getHeaterStack();
+        }
+        return vanillaSurvivalMod.getHeaterStack();
+    }
+
+    @Override
+    public ItemStack getThermometerStack() {
+        for(ISurvivalMod survivalMod : survivalMods) {
+            return survivalMod.getThermometerStack();
+        }
+        return vanillaSurvivalMod.getThermometerStack();
+    }
+
+    @Override
+    public Fluid getPurifiedWater() {
+        for(ISurvivalMod survivalMod : survivalMods) {
+            return survivalMod.getPurifiedWater();
+        }
+        return vanillaSurvivalMod.getPurifiedWater();
+    }
+
+    @Override
+    public boolean isPurifiedWater(@Nullable Fluid fluid) {
+        if(fluid != null) {
+            if (survivalMods.isEmpty()) {
+                return fluid == FluidRegistry.WATER;
+            } else {
+                for (ISurvivalMod survivalMod : survivalMods) {
+                    if(survivalMod.isPurifiedWater(fluid)){
+                        return true;
+                    }
                 }
             }
         }
+        return false;
+    }
 
-        if(ModIds.tough_as_nails.isLoaded) {
-            if (TANHelper.isTanTemperatureEnabled()) {
-                ITemperature temperature = TemperatureHelper.getTemperatureData(player);
-                int curTemp = temperature.getTemperature().getRawValue();
-                if (curTemp < 12) {
-                    temperature.setTemperature(new Temperature(curTemp + 1));
-                    did = true;
-                } else if (curTemp > 13) {
-                    temperature.setTemperature(new Temperature(curTemp - 1));
-                    did = true;
+    @Override
+    public boolean isPurifiedWaterBottle(ItemStack stack) {
+        if(survivalMods.isEmpty()) {
+            vanillaSurvivalMod.isPurifiedWaterBottle(stack);
+        } else {
+            for(ISurvivalMod survivalMod : survivalMods) {
+                if(survivalMod.isPurifiedWaterBottle(stack)) {
+                    return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isPlayerThirsty(EntityPlayer player) {
+        for(ISurvivalMod survivalMod : survivalMods) {
+            if(survivalMod.isPlayerThirsty(player)) {
+                return true;
+            }
+        }
+        return vanillaSurvivalMod.isPlayerThirsty(player);
+    }
+
+    @Override
+    public boolean isTemperatureFeatureEnabled() {
+        boolean enabled = false;
+        for(ISurvivalMod survivalMod : survivalMods) {
+            if(survivalMod.isTemperatureFeatureEnabled()) {
+                enabled = true;
+                break;
+            }
+        }
+        return enabled || vanillaSurvivalMod.isTemperatureFeatureEnabled();
+    }
+
+    @Override
+    public boolean isThirstFeatureEnabled() {
+        boolean enabled = false;
+        for(ISurvivalMod survivalMod : survivalMods) {
+            if(survivalMod.isThirstFeatureEnabled()) {
+                enabled = true;
+                break;
+            }
+        }
+        return enabled || vanillaSurvivalMod.isThirstFeatureEnabled();
+    }
+
+    @Override
+    public boolean stabilizePlayerTemperature(EntityPlayer player, int maxCooling, int maxHeating) {
+        boolean did = false;
+        for(ISurvivalMod survivalMod : survivalMods) {
+            if(survivalMod.stabilizePlayerTemperature(player, maxCooling, maxHeating)) {
+                did = true;
             }
         }
         return did;
     }
 
-    public static void clearTemperatureDebuffs(EntityPlayer player) {
-        if(ModIds.simpledifficulty.isLoaded) {
-            if(player.isPotionActive(SDPotions.hyperthermia)) {
-                player.removePotionEffect(SDPotions.hyperthermia);
-            }
-            if(player.isPotionActive(SDPotions.hypothermia)) {
-                player.removePotionEffect(SDPotions.hypothermia);
-            }
-        }
-        if(ModIds.tough_as_nails.isLoaded) {
-            if (player.isPotionActive(TANPotions.hyperthermia)) {
-                player.removePotionEffect(TANPotions.hyperthermia);
-            }
-            if (player.isPotionActive(TANPotions.hypothermia)) {
-                player.removePotionEffect(TANPotions.hypothermia);
-            }
-        }
-    }
-
-    public static boolean hydratePlayer(EntityPlayer player, int amount, float saturation) {
+    @Override
+    public boolean clearTemperatureDebuffs(EntityPlayer player) {
         boolean did = false;
-        if(ModIds.simpledifficulty.isLoaded) {
-            if(SDHelper.isSDThirstEnabled()) {
-                IThirstCapability thirstData = SDCapabilities.getThirstData(player);
-                thirstData.addThirstLevel(amount);
-                thirstData.addThirstSaturation(saturation);
+        for(ISurvivalMod survivalMod : survivalMods) {
+            if(survivalMod.clearTemperatureDebuffs(player)) {
                 did = true;
             }
-        }
-        if(ModIds.tough_as_nails.isLoaded) {
-            if(TANHelper.isTanThirstEnabled()) {
-                IThirst thirst = ThirstHelper.getThirstData(player);
-                thirst.addStats(amount, saturation);
-                did = true;
-            }
-        }
-        if(did && player.world.rand.nextInt(200) == 0) {
-            player.world.playSound(null, player.posX, player.posY, player.posZ, ModSoundsST.easter_egg, SoundCategory.PLAYERS, 1.0f, 1.0f);
-            player.sendMessage(new TextComponentTranslation(StringHelper.getTranslationKey("drink", "chat", "easter_egg0")));
-            player.sendMessage(new TextComponentTranslation(StringHelper.getTranslationKey("drink", "chat", "easter_egg1")));
-            player.sendMessage(new TextComponentTranslation(StringHelper.getTranslationKey("drink", "chat", "easter_egg2")));
         }
         return did;
     }
 
-    public static int getMissingThirst(EntityPlayer player) {
-        int missingThirst = 20;
-        if(ModIds.simpledifficulty.isLoaded) {
-            missingThirst = 20 - SDCapabilities.getThirstData(player).getThirstLevel();
+    @Override
+    public int getMissingThirst(EntityPlayer player) {
+        for(ISurvivalMod survivalMod : survivalMods) {
+            return survivalMod.getMissingThirst(player);
         }
-        if(ModIds.tough_as_nails.isLoaded) {
-            missingThirst = Math.min(missingThirst, 20 - ThirstHelper.getThirstData(player).getThirst());
-        }
-        return missingThirst;
+        return vanillaSurvivalMod.getMissingThirst(player);
     }
 
-    public static boolean isThirsty(EntityPlayer player) {
-        boolean isThirsty = false;
-        if(ModIds.simpledifficulty.isLoaded) {
-            IThirstCapability thirstData = SDCapabilities.getThirstData(player);
-            isThirsty = thirstData.isThirsty();
+    @Override
+    public void hydratePlayer(EntityPlayer player, int amount, float saturation) {
+        for(ISurvivalMod survivalMod : survivalMods) {
+            if(survivalMod.isPlayerThirsty(player))
+                survivalMod.hydratePlayer(player, amount, saturation);
         }
-        if(ModIds.tough_as_nails.isLoaded && !isThirsty) {
-            IThirst thirst = ThirstHelper.getThirstData(player);
-            isThirsty = thirst.getThirst() < 20;
-        }
-        return isThirsty;
-    }
-
-    public static Fluid getPurifiedWater() {
-        if(ModIds.simpledifficulty.isLoaded) {
-            return SDFluids.purifiedWater;
-        } else if(ModIds.tough_as_nails.isLoaded) {
-            return TANBlocks.purified_water_fluid;
-        }
-        return FluidRegistry.WATER;
-    }
-
-    public static boolean isPurifiedWater(@Nullable Fluid fluid) {
-        if(fluid == null) return false;
-        boolean isPurifiedWater = false;
-        if(ModIds.simpledifficulty.isLoaded) {
-            isPurifiedWater = fluid == SDFluids.purifiedWater;
-        }
-        if(ModIds.tough_as_nails.isLoaded && !isPurifiedWater) {
-            isPurifiedWater = fluid == TANBlocks.purified_water_fluid;
-        }
-        if(!ModIds.simpledifficulty.isLoaded && !ModIds.tough_as_nails.isLoaded) {
-            isPurifiedWater = fluid == FluidRegistry.WATER;
-        }
-        return isPurifiedWater;
-    }
-
-    public static boolean isTemperatureFeatureEnabled() {
-        boolean isEnabled = false;
-        if(ModIds.simpledifficulty.isLoaded) {
-            isEnabled = SDHelper.isSDTemperatureEnabled();
-        }
-        if(ModIds.tough_as_nails.isLoaded && !isEnabled) {
-            isEnabled = TANHelper.isTanTemperatureEnabled();
-        }
-
-        return isEnabled || ConfigHandlerST.forceLoadTemperatureFeatures;
-    }
-
-    public static boolean isThirstFeatureEnabled() {
-        boolean isEnabled = false;
-        if(ModIds.simpledifficulty.isLoaded) {
-            isEnabled = SDHelper.isSDThirstEnabled();
-        }
-        if(ModIds.tough_as_nails.isLoaded && !isEnabled) {
-            isEnabled = TANHelper.isTanThirstEnabled();
-        }
-
-        return isEnabled || ConfigHandlerST.forceLoadThirstFeatures;
     }
 }

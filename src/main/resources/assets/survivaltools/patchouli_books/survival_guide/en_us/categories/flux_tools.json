@@ -1,0 +1,7 @@
+{
+  "name": "Redstone Flux Tools",
+  "description": "",
+  "icon": "minecraft:redstone",
+  "sortnum": 2,
+  "secret": true
+}

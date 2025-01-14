@@ -1,0 +1,6 @@
+{
+  "parent": "block/trapdoor_top",
+  "textures": {
+    "texture": "survivaltools:blocks/barrel_lid_top"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Open Barrel",
+  "description": "",
+  "icon": "survivaltools:open_barrel",
+  "flags": "survivaltools:open-barrel",
+  "sortnum": 1,
+  "secret": true
+}

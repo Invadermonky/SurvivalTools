@@ -29,8 +29,10 @@ repositories {
 }
 
 dependencies {
+    implementation "com.cleanroommc:strip-latest-forge-requirements:1.0"
     implementation rfg.deobf('curse.maven:had-enough-items-557549:4543375')
     implementation rfg.deobf('curse.maven:baubles-227083:2518667')
+    implementation rfg.deobf("vazkii.patchouli:Patchouli:1.0-23.6")
 
     // Mod Integrations
     def modMap = [:]
@@ -40,7 +42,8 @@ dependencies {
     modMap.put(["botania-225643:3330934"], project.botania)
     modMap.put(["embers-rekindled-300777:3695248"], project.embers)
     modMap.put(["immersive-engineering-231951:2974106"], project.immersiveengineering)
-    modMap.put(["natures-aura-306626:2882138", "patchouli-306770:3162874"], project.naturesaura)
+    modMap.put(["magiculture-integrations-1064613:5807502"], project.magicultureintegrations)
+    modMap.put(["natures-aura-306626:2882138"], project.naturesaura)
     modMap.put(["simpledifficulty-360779:3613814"], project.simpledifficulty)
     modMap.put(["thaumcraft-223628:2629023"], project.thaumcraft)
     modMap.put(["tough-as-nails-246391:2639903"], project.toughasnails)

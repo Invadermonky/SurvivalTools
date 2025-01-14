@@ -1,0 +1,17 @@
+{
+  "name": "Handheld Purifier",
+  "icon": "survivaltools:handheld_purifier",
+  "category": "survivaltools:simple_tools",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "text",
+      "text": "The $(item)Handheld Water Purifier$() is a tool that allows players to convert $(water)Water$() into $(water)Purified Water$().$(br2)To use the handheld purifier, hold a fluid container in your offhand and target a water source block or fluid tank and hold [$(k:use)].$(br2)After a short duration, the purifier will attempt to drain"
+    },
+    {
+      "type": "crafting",
+      "recipe": "survivaltools:handheld_purifier",
+      "text": "$(br)one bucket of water from the source and fill the offhand container item with an equal amount of $(water)Purified Water$()."
+    }
+  ]
+}

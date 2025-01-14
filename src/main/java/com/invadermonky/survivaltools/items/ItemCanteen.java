@@ -1,10 +1,10 @@
 package com.invadermonky.survivaltools.items;
 
 import com.invadermonky.survivaltools.api.IAddition;
+import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
 import com.invadermonky.survivaltools.api.fluid.FluidContainerItemWrapper;
 import com.invadermonky.survivaltools.api.fluid.IPurifiedFluidContainerItem;
 import com.invadermonky.survivaltools.config.ConfigHandlerST;
-import com.invadermonky.survivaltools.util.helpers.SurvivalHelper;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -126,7 +126,7 @@ public class ItemCanteen extends Item implements IPurifiedFluidContainerItem, IA
             if (!world.isRemote && entity.isWet() && !entity.isInWater() && (isSelected || ((EntityLivingBase) entity).getHeldItemOffhand() == stack)) {
                 IFluidHandlerItem handler = FluidUtil.getFluidHandler(stack);
                 if (world.getTotalWorldTime() % 20L == 0 && handler != null) {
-                    handler.fill(new FluidStack(SurvivalHelper.getPurifiedWater(), 5), true);
+                    handler.fill(new FluidStack(SurvivalToolsAPI.getPurifiedWater(), 5), true);
                 }
             }
         }
@@ -170,7 +170,7 @@ public class ItemCanteen extends Item implements IPurifiedFluidContainerItem, IA
                 FluidStack drainFluid = this.drain(stack, this.getFluidCost(), true);
                 if(drainFluid != null) {
                     int restoredThirst = (int) ((double) this.getRestoredThirst() * Math.min(1.0, (double) drainFluid.amount / this.getRestoredThirst()));
-                    SurvivalHelper.hydratePlayer(player, restoredThirst, this.getRestoredHydration());
+                    SurvivalToolsAPI.hydratePlayer(player, restoredThirst, this.getRestoredHydration());
                     return this.getContainer(stack);
                 }
             }
@@ -196,7 +196,7 @@ public class ItemCanteen extends Item implements IPurifiedFluidContainerItem, IA
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(String.format("%d/%dmb %s", getFluidAmountStored(stack), this.capacity, new FluidStack(SurvivalHelper.getPurifiedWater(), 1).getLocalizedName()));
+        tooltip.add(String.format("%d/%dmb %s", getFluidAmountStored(stack), this.capacity, new FluidStack(SurvivalToolsAPI.getPurifiedWater(), 1).getLocalizedName()));
     }
 
     @Override

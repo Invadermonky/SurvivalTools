@@ -3,18 +3,22 @@ package com.invadermonky.survivaltools.items;
 import baubles.api.BaubleType;
 import com.invadermonky.survivaltools.SurvivalTools;
 import com.invadermonky.survivaltools.api.IAddition;
+import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
 import com.invadermonky.survivaltools.api.items.AbstractEquipableBauble;
 import com.invadermonky.survivaltools.compat.thaumcraft.ThaumcraftST;
 import com.invadermonky.survivaltools.config.ConfigHandlerST;
-import com.invadermonky.survivaltools.util.helpers.SurvivalHelper;
-import com.invadermonky.survivaltools.util.helpers.SurvivalItemHelper;
+import com.invadermonky.survivaltools.util.helpers.StringHelper;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -26,6 +30,9 @@ import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.items.IRechargable;
 import thaumcraft.api.items.ItemsTC;
 import thaumcraft.api.items.RechargeHelper;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 import static com.invadermonky.survivaltools.util.libs.LibTags.TAG_ENERGY;
 
@@ -57,7 +64,7 @@ public class ItemThaumicRegulator extends AbstractEquipableBauble implements IRe
 
 
             if(used) {
-                SurvivalHelper.stabilizePlayerTemperature((EntityPlayer) player);
+                SurvivalToolsAPI.stabilizePlayerTemperature((EntityPlayer) player, ConfigHandlerST.thaumcraft.thaumic_regulator.maxCooling, ConfigHandlerST.thaumcraft.thaumic_regulator.maxHeating);
             }
         }
     }
@@ -83,6 +90,25 @@ public class ItemThaumicRegulator extends AbstractEquipableBauble implements IRe
     }
 
     @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+        if(GuiScreen.isShiftKeyDown()) {
+            int cooling = ConfigHandlerST.thaumcraft.thaumic_regulator.maxCooling;
+            int heating = ConfigHandlerST.thaumcraft.thaumic_regulator.maxHeating;
+            if(cooling > -1) {
+                tooltip.add(I18n.format(StringHelper.getTranslationKey("max_cooling", "tooltip", "desc"), cooling));
+            }
+            if(heating > -1) {
+                tooltip.add(I18n.format(StringHelper.getTranslationKey("max_heating", "tooltip", "desc"), heating));
+            }
+        }
+    }
+
+    /*
+        IAddition
+    */
+
+    @Override
     public void preInit() {
         ThaumcraftApi.registerResearchLocation(new ResourceLocation(SurvivalTools.MOD_ID, "research/thaumic_regulator"));
     }
@@ -95,9 +121,9 @@ public class ItemThaumicRegulator extends AbstractEquipableBauble implements IRe
                 5,
                 (new AspectList()).add(Aspect.FIRE, 60).add(Aspect.COLD, 60).add(Aspect.MAN, 30),
                 new ItemStack(ItemsTC.baubles, 1, 4),
-                SurvivalItemHelper.getCoolerStack(),
+                SurvivalToolsAPI.getCoolerStack(),
                 ThaumcraftApiHelper.makeCrystal(Aspect.FIRE),
-                SurvivalItemHelper.getHeaterStack(),
+                SurvivalToolsAPI.getHeaterStack(),
                 ThaumcraftApiHelper.makeCrystal(Aspect.COLD)
         ));
     }
@@ -109,6 +135,6 @@ public class ItemThaumicRegulator extends AbstractEquipableBauble implements IRe
 
     @Override
     public boolean isEnabled() {
-        return ConfigHandlerST.thaumcraft.thaumic_regulator.enable && SurvivalHelper.isTemperatureFeatureEnabled();
+        return ConfigHandlerST.thaumcraft.thaumic_regulator.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled();
     }
 }

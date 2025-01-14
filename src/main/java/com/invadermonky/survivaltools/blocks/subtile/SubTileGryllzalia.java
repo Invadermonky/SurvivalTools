@@ -2,8 +2,8 @@ package com.invadermonky.survivaltools.blocks.subtile;
 
 import com.invadermonky.survivaltools.SurvivalTools;
 import com.invadermonky.survivaltools.api.IAddition;
+import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
 import com.invadermonky.survivaltools.config.ConfigHandlerST;
-import com.invadermonky.survivaltools.util.helpers.SurvivalHelper;
 import com.invadermonky.survivaltools.util.libs.LibNames;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,7 +43,7 @@ public class SubTileGryllzalia extends SubTileFunctional implements IAddition {
             boolean did = false;
             List<EntityPlayer> players = this.supertile.getWorld().getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(this.supertile.getPos().add(-RANGE, -RANGE, -RANGE), this.supertile.getPos().add(RANGE,RANGE,RANGE)));
             for(EntityPlayer player : players) {
-                if(SurvivalHelper.stabilizePlayerTemperature(player)) {
+                if(SurvivalToolsAPI.stabilizePlayerTemperature(player, ConfigHandlerST.botania.gryllzalia.maxCooling, ConfigHandlerST.botania.gryllzalia.maxHeating)) {
                     this.mana -= cost;
                     did = true;
                 }
@@ -107,6 +107,6 @@ public class SubTileGryllzalia extends SubTileFunctional implements IAddition {
 
     @Override
     public boolean isEnabled() {
-        return ConfigHandlerST.botania.gryllzalia.enable && SurvivalHelper.isTemperatureFeatureEnabled();
+        return ConfigHandlerST.botania.gryllzalia.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled();
     }
 }

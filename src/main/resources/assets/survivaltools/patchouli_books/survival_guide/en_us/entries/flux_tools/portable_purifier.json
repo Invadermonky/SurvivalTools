@@ -1,0 +1,17 @@
+{
+  "name": "Portable Purifier",
+  "icon": "survivaltools:portable_purifier",
+  "category": "survivaltools:flux_tools",
+  "flags": "survivaltools:portable_purifier",
+  "pages": [
+    {
+      "type": "text",
+      "text": "The $(item)Portable Purifier$() is a $(thing)Redstone Flux$() powered device that, when active, will purify $(water)Water$() contained within the unit and automatically hydrate the player as needed.$(br2)As opposed to the less advanced $(l:simple_tools/hydration_pack)Hydration Pack$(), the $(item)Portable Purifier$() does not require $(water)Purified Water$() and can instead be filled with normal $(water)Water$()."
+    },
+    {
+      "type": "crafting",
+      "recipe": "survivaltools:portable_purifier",
+      "text": "$(br)The $(item)Portable Purifier$() can either be equipped as a bauble or placed in the player's inventory and will remain fully functional."
+    }
+  ]
+}

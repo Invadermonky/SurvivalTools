@@ -1,6 +1,6 @@
 package com.invadermonky.survivaltools.api.fluid;
 
-import com.invadermonky.survivaltools.util.helpers.SurvivalHelper;
+import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
@@ -11,7 +11,7 @@ public class PurifiedFluidTankProperties implements IFluidTankProperties {
     private final int maxCapacity;
 
     public PurifiedFluidTankProperties(int currentAmount, int capacity) {
-        this.contents = new FluidStack(SurvivalHelper.getPurifiedWater(), currentAmount);
+        this.contents = new FluidStack(SurvivalToolsAPI.getPurifiedWater(), currentAmount);
         this.maxCapacity = capacity;
     }
 
@@ -38,11 +38,11 @@ public class PurifiedFluidTankProperties implements IFluidTankProperties {
 
     @Override
     public boolean canFillFluidType(FluidStack fluidStack) {
-        return fluidStack != null && SurvivalHelper.isPurifiedWater(fluidStack.getFluid());
+        return fluidStack != null && SurvivalToolsAPI.isPurifiedWater(fluidStack.getFluid());
     }
 
     @Override
     public boolean canDrainFluidType(FluidStack fluidStack) {
-        return fluidStack != null && SurvivalHelper.isPurifiedWater(fluidStack.getFluid());
+        return fluidStack != null && SurvivalToolsAPI.isPurifiedWater(fluidStack.getFluid());
     }
 }

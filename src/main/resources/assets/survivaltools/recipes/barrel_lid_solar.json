@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "survivaltools:barrel_lid_solar"
+  },
+  "pattern": [
+    "IGI",
+    "TGT",
+    "B B"
+  ],
+  "key": {
+    "T": {
+      "item": "minecraft:tripwire_hook"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "paneGlassColorless"
+    },
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "slimeball"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    }
+  },
+  "conditions": [
+    {
+      "type": "survivaltools_item_exists",
+      "item": "survivaltools:barrel_lid_solar"
+    }
+  ]
+}

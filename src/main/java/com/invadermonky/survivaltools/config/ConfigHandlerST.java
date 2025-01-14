@@ -15,6 +15,7 @@ public class ConfigHandlerST {
     public static ConfigEmbers embers = new ConfigEmbers();
     public static ConfigFluxTools flux_tools = new ConfigFluxTools();
     public static ConfigNaturesAura natures_aura = new ConfigNaturesAura();
+    public static ConfigOpenBarrel open_barrel = new ConfigOpenBarrel();
     public static ConfigSimpleTools simple_tools = new ConfigSimpleTools();
     public static ConfigThaumcraft thaumcraft = new ConfigThaumcraft();
 
@@ -33,6 +34,7 @@ public class ConfigHandlerST {
         public static void onConfigChange(ConfigChangedEvent.OnConfigChangedEvent event) {
             if(event.getModID().equals(SurvivalTools.MOD_ID)) {
                 ConfigManager.sync(SurvivalTools.MOD_ID, Config.Type.INSTANCE);
+                ModTags.syncConfig();
             }
         }
     }
