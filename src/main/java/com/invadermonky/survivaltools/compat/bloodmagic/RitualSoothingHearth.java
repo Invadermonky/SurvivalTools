@@ -17,24 +17,23 @@ import java.util.function.Consumer;
 @RitualRegister(value = LibNames.RITUAL_SOOTHING_HEARTH)
 public class RitualSoothingHearth extends Ritual {
     public static final String TEMP_CONTROL_RANGE = "tempControlRange";
-    private final int refreshCost;
-    private final int refreshInterval;
 
     public RitualSoothingHearth() {
-        super(LibNames.RITUAL_SOOTHING_HEARTH, 0, ConfigHandlerST.blood_magic.soothing_hearth.activationCost, StringHelper.getTranslationKey(LibNames.RITUAL_SOOTHING_HEARTH, "ritual"));
+        super(LibNames.RITUAL_SOOTHING_HEARTH, 0, ConfigHandlerST.integrations.blood_magic.soothing_hearth.activationCost, StringHelper.getTranslationKey(LibNames.RITUAL_SOOTHING_HEARTH, "ritual"));
         this.addBlockRange(TEMP_CONTROL_RANGE, new AreaDescriptor.Rectangle(new BlockPos(-25, 0, -25), new BlockPos(25, 30, 25)));
         this.setMaximumVolumeAndDistanceOfRange(TEMP_CONTROL_RANGE, 0, 200, 200);
-        this.refreshCost = ConfigHandlerST.blood_magic.soothing_hearth.refreshCost;
-        this.refreshInterval = ConfigHandlerST.blood_magic.soothing_hearth.refreshInterval;
     }
 
+    public static boolean isEnabled() {
+        return BloodMagic.RITUAL_MANAGER.getConfig().getBoolean(LibNames.RITUAL_SOOTHING_HEARTH, "rituals", true, "Enable the " + LibNames.RITUAL_SOOTHING_HEARTH + " ritual.");
+    }
 
     @Override
     public void performRitual(IMasterRitualStone masterRitualStone) {
         World world = masterRitualStone.getWorldObj();
         int currentEssence = masterRitualStone.getOwnerNetwork().getCurrentEssence();
         BlockPos pos = masterRitualStone.getBlockPos();
-        if(currentEssence < this.getRefreshCost()) {
+        if (currentEssence < this.getRefreshCost()) {
             masterRitualStone.getOwnerNetwork().causeNausea();
         } else {
             int maxEffects = currentEssence / this.getRefreshCost();
@@ -44,14 +43,14 @@ public class RitualSoothingHearth extends Ritual {
             List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, tempControlBB);
 
 
-            for(EntityPlayer player : players) {
-                if(player.isCreative())
+            for (EntityPlayer player : players) {
+                if (player.isCreative())
                     continue;
 
-                if(totalEffects >= maxEffects)
+                if (totalEffects >= maxEffects)
                     break;
 
-                if(SurvivalToolsAPI.stabilizePlayerTemperature(player, ConfigHandlerST.blood_magic.soothing_hearth.maxCooling, ConfigHandlerST.blood_magic.soothing_hearth.maxHeating))
+                if (SurvivalToolsAPI.stabilizePlayerTemperature(player, ConfigHandlerST.integrations.blood_magic.soothing_hearth.maxCooling, ConfigHandlerST.integrations.blood_magic.soothing_hearth.maxHeating))
                     totalEffects++;
             }
 
@@ -60,13 +59,13 @@ public class RitualSoothingHearth extends Ritual {
     }
 
     @Override
-    public int getRefreshTime() {
-        return this.refreshInterval;
+    public int getRefreshCost() {
+        return ConfigHandlerST.integrations.blood_magic.soothing_hearth.refreshCost;
     }
 
     @Override
-    public int getRefreshCost() {
-        return this.refreshCost;
+    public int getRefreshTime() {
+        return ConfigHandlerST.integrations.blood_magic.soothing_hearth.refreshInterval;
     }
 
     @Override
@@ -80,9 +79,5 @@ public class RitualSoothingHearth extends Ritual {
     @Override
     public Ritual getNewCopy() {
         return new RitualSoothingHearth();
-    }
-
-    public static boolean isEnabled() {
-        return BloodMagic.RITUAL_MANAGER.getConfig().getBoolean(LibNames.RITUAL_SOOTHING_HEARTH, "rituals", true, "Enable the " + LibNames.RITUAL_SOOTHING_HEARTH + " ritual.");
     }
 }

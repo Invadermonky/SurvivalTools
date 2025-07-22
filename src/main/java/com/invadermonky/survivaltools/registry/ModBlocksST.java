@@ -2,16 +2,17 @@ package com.invadermonky.survivaltools.registry;
 
 import com.invadermonky.survivaltools.SurvivalTools;
 import com.invadermonky.survivaltools.api.IAddition;
-import com.invadermonky.survivaltools.blocks.*;
-import com.invadermonky.survivaltools.blocks.tile.TileBarrelHeater;
-import com.invadermonky.survivaltools.blocks.tile.TileBarrelHeaterPowered;
-import com.invadermonky.survivaltools.blocks.tile.TileCentralAirUnit;
-import com.invadermonky.survivaltools.blocks.tile.TileOpenBarrel;
-import com.invadermonky.survivaltools.config.ConfigHandlerST;
+import com.invadermonky.survivaltools.blocks.BlockCentralAirUnit;
+import com.invadermonky.survivaltools.blocks.BlockOpenBarrel;
+import com.invadermonky.survivaltools.blocks.BlockPoweredPurifier;
+import com.invadermonky.survivaltools.blocks.BlockSolidFuelPurifier;
+import com.invadermonky.survivaltools.tile.TileCentralAirUnit;
+import com.invadermonky.survivaltools.tile.TileOpenBarrel;
+import com.invadermonky.survivaltools.tile.TilePoweredPurifier;
+import com.invadermonky.survivaltools.tile.TileSolidFuelPurifier;
 import com.invadermonky.survivaltools.util.libs.CreativeTabST;
 import com.invadermonky.survivaltools.util.libs.LibNames;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
@@ -30,19 +31,17 @@ import java.util.Map;
 public class ModBlocksST {
     public static BlockCentralAirUnit central_air_unit;
     public static BlockOpenBarrel open_barrel;
-    public static BlockBarrelHeater open_barrel_heater;
-    public static BlockBarrelHeaterPowered open_barrel_heater_powered;
-    public static BlockBarrelLid open_barrel_lid;
-    public static BlockBarrelLid open_barrel_lid_solar;
+    public static BlockPoweredPurifier powered_purifier;
+    public static BlockSolidFuelPurifier solid_fuel_purifier;
 
-    public static Map<Block,Class<? extends TileEntity>> allBlocks = new LinkedHashMap<>();
+    public static Map<Block, Class<? extends TileEntity>> allBlocks = new LinkedHashMap<>();
 
     public static <T extends Block & IAddition> void addBlockToRegister(T block, String blockId) {
         addBlockToRegister(block, blockId, null);
     }
 
     public static <T extends Block & IAddition> void addBlockToRegister(T block, String blockId, @Nullable Class<? extends TileEntity> clazz) {
-        if(block != null && block.isEnabled()) {
+        if (block != null && block.isEnabled()) {
             block.setRegistryName(SurvivalTools.MOD_ID, blockId)
                     .setTranslationKey(block.getRegistryName().toString())
                     .setCreativeTab(CreativeTabST.TAB_ST);
@@ -59,9 +58,7 @@ public class ModBlocksST {
     @SubscribeEvent
     public static void registerBlockItems(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> registry = event.getRegistry();
-        allBlocks.keySet().forEach(block -> {
-            registry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
-        });
+        allBlocks.keySet().forEach(block -> registry.register(new ItemBlock(block).setRegistryName(block.getRegistryName())));
 
         registerTileEntities();
     }
@@ -69,7 +66,7 @@ public class ModBlocksST {
     @SubscribeEvent
     public static void registerBlockModels(ModelRegistryEvent event) {
         allBlocks.keySet().forEach(block -> {
-            if(block instanceof IAddition) {
+            if (block instanceof IAddition) {
                 ((IAddition) block).registerModel(event);
             }
         });
@@ -77,7 +74,7 @@ public class ModBlocksST {
 
     private static void registerTileEntities() {
         allBlocks.forEach((block, teClass) -> {
-            if(teClass != null) {
+            if (teClass != null) {
                 GameRegistry.registerTileEntity(teClass, block.getRegistryName());
             }
         });
@@ -86,9 +83,7 @@ public class ModBlocksST {
     static {
         addBlockToRegister(central_air_unit = new BlockCentralAirUnit(), LibNames.CENTRAL_AIR_UNIT, TileCentralAirUnit.class);
         addBlockToRegister(open_barrel = new BlockOpenBarrel(), LibNames.OPEN_BARREL, TileOpenBarrel.class);
-        addBlockToRegister(open_barrel_lid = new BlockBarrelLid(Material.ROCK, ConfigHandlerST.open_barrel._enable && (ConfigHandlerST.open_barrel.water_boiler._enable || ConfigHandlerST.open_barrel.solar_purifier._enable)), LibNames.OPEN_BARREL_LID);
-        addBlockToRegister(open_barrel_lid_solar = new BlockBarrelLid(Material.GLASS, ConfigHandlerST.open_barrel._enable && ConfigHandlerST.open_barrel.solar_purifier._enable), LibNames.OPEN_BARREL_LID_SOLAR);
-        addBlockToRegister(open_barrel_heater = new BlockBarrelHeater(), LibNames.OPEN_BARREL_HEATER, TileBarrelHeater.class);
-        addBlockToRegister(open_barrel_heater_powered = new BlockBarrelHeaterPowered(), LibNames.OPEN_BARREL_HEATER_POWERED, TileBarrelHeaterPowered.class);
+        addBlockToRegister(powered_purifier = new BlockPoweredPurifier(), LibNames.POWERED_PURIFIER, TilePoweredPurifier.class);
+        addBlockToRegister(solid_fuel_purifier = new BlockSolidFuelPurifier(), LibNames.SOLID_FUEL_PURIFIER, TileSolidFuelPurifier.class);
     }
 }

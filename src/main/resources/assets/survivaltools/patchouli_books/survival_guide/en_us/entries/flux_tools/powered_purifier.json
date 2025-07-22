@@ -1,0 +1,17 @@
+{
+  "name": "Powered Purifier",
+  "icon": "survivaltools:powered_purifier",
+  "category": "survivaltools:flux_tools",
+  "flag": "survivaltools:powered_purifier",
+  "pages": [
+    {
+      "type": "text",
+      "text": "The $(item)Powered Purifier$() is a $(thing)Redstone Flux$() powered machine that uses redstone flux and a filter to purify liquids.$(br2)Filter items can be inserted into the top of the block and liquids can be pumped into or out of the machine from any face.$(br2)By default, the purifier requires a redstone signal to activate."
+    },
+    {
+      "type": "crafting",
+      "recipe": "survivaltools:powered_purifier",
+      "text": "$(br)Redstone mode can be toggled by interacting with the device while holding a $(item)Redstone Torch$().$(br2)The $(item)Powered Purifier$() cannot fill $(item)Empty Bottles$()."
+    }
+  ]
+}

@@ -2,9 +2,10 @@ package com.invadermonky.survivaltools.items;
 
 import baubles.api.BaubleType;
 import com.invadermonky.survivaltools.api.IAddition;
+import com.invadermonky.survivaltools.api.IProxy;
 import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
-import com.invadermonky.survivaltools.api.items.AbstractEquipableBauble;
 import com.invadermonky.survivaltools.config.ConfigHandlerST;
+import com.invadermonky.survivaltools.items.base.AbstractEquipableBauble;
 import com.invadermonky.survivaltools.util.helpers.StringHelper;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -16,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import org.jetbrains.annotations.NotNull;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.lexicon.LexiconCategory;
 import vazkii.botania.api.lexicon.LexiconEntry;
@@ -28,25 +30,25 @@ import vazkii.botania.common.lexicon.page.PageText;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemSeasonsRing extends AbstractEquipableBauble implements IManaUsingItem, IAddition {
-    @Override
-    public void onWornTick(ItemStack stack, EntityLivingBase player) {
-        super.onWornTick(stack, player);
-        if(player.world.isRemote || !(player instanceof EntityPlayer) || ((EntityPlayer) player).isCreative())
-            return;
-
-        int manaCost = ConfigHandlerST.botania.ring_of_seasons.cost;
-        boolean hasMana = ManaItemHandler.requestManaExact(stack, (EntityPlayer) player, manaCost, false);
-
-        if(hasMana && player.ticksExisted % ConfigHandlerST.botania.ring_of_seasons.delay == 0) {
-            SurvivalToolsAPI.stabilizePlayerTemperature((EntityPlayer) player, ConfigHandlerST.botania.ring_of_seasons.maxCooling, ConfigHandlerST.botania.ring_of_seasons.maxHeating);
-            ManaItemHandler.requestManaExact(stack, (EntityPlayer) player, manaCost, true);
-        }
-    }
-
+public class ItemSeasonsRing extends AbstractEquipableBauble implements IManaUsingItem, IAddition, IProxy {
     @Override
     public BaubleType getBaubleType(ItemStack itemStack) {
         return BaubleType.RING;
+    }
+
+    @Override
+    public void onWornTick(ItemStack stack, EntityLivingBase player) {
+        super.onWornTick(stack, player);
+        if (player.world.isRemote || !(player instanceof EntityPlayer) || ((EntityPlayer) player).isCreative())
+            return;
+
+        int manaCost = ConfigHandlerST.integrations.botania.ring_of_seasons.cost;
+        boolean hasMana = ManaItemHandler.requestManaExact(stack, (EntityPlayer) player, manaCost, false);
+
+        if (hasMana && player.ticksExisted % ConfigHandlerST.integrations.botania.ring_of_seasons.delay == 0) {
+            SurvivalToolsAPI.stabilizePlayerTemperature((EntityPlayer) player, ConfigHandlerST.integrations.botania.ring_of_seasons.maxCooling, ConfigHandlerST.integrations.botania.ring_of_seasons.maxHeating);
+            ManaItemHandler.requestManaExact(stack, (EntityPlayer) player, manaCost, true);
+        }
     }
 
     @Override
@@ -55,15 +57,15 @@ public class ItemSeasonsRing extends AbstractEquipableBauble implements IManaUsi
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, @NotNull List<String> tooltip, @NotNull ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        if(GuiScreen.isShiftKeyDown()) {
-            int cooling = ConfigHandlerST.botania.ring_of_seasons.maxCooling;
-            int heating = ConfigHandlerST.botania.ring_of_seasons.maxHeating;
-            if(cooling > -1) {
+        if (GuiScreen.isShiftKeyDown()) {
+            int cooling = ConfigHandlerST.integrations.botania.ring_of_seasons.maxCooling;
+            int heating = ConfigHandlerST.integrations.botania.ring_of_seasons.maxHeating;
+            if (cooling > -1) {
                 tooltip.add(I18n.format(StringHelper.getTranslationKey("max_cooling", "tooltip", "desc"), cooling));
             }
-            if(heating > -1) {
+            if (heating > -1) {
                 tooltip.add(I18n.format(StringHelper.getTranslationKey("max_heating", "tooltip", "desc"), heating));
             }
         }
@@ -83,6 +85,6 @@ public class ItemSeasonsRing extends AbstractEquipableBauble implements IManaUsi
 
     @Override
     public boolean isEnabled() {
-        return ConfigHandlerST.botania.ring_of_seasons.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled();
+        return ConfigHandlerST.integrations.botania.ring_of_seasons.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled();
     }
 }

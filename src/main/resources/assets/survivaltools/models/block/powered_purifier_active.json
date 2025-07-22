@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "survivaltools:blocks/machine_bottom",
+    "down": "survivaltools:blocks/machine_bottom",
+    "up": "survivaltools:blocks/machine_bottom",
+    "north": "survivaltools:blocks/powered_purifier_active",
+    "south": "survivaltools:blocks/purifier_side",
+    "west": "survivaltools:blocks/purifier_side",
+    "east": "survivaltools:blocks/purifier_side"
+  }
+}

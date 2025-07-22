@@ -30,9 +30,17 @@ repositories {
 
 dependencies {
     implementation "com.cleanroommc:strip-latest-forge-requirements:1.0"
+    compileOnly 'org.jetbrains:annotations:24.1.0'
+
     implementation rfg.deobf('curse.maven:had-enough-items-557549:4543375')
     implementation rfg.deobf('curse.maven:baubles-227083:2518667')
     implementation rfg.deobf("vazkii.patchouli:Patchouli:1.0-23.6")
+    implementation rfg.deobf("curse.maven:the-one-probe-245211:2667280")
+
+    implementation "CraftTweaker2:CraftTweaker2-API:4.1.20.695"
+    implementation "CraftTweaker2:ZenScript:4.1.20.695"
+    implementation "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.695"
+    implementation("com.cleanroommc:groovyscript:1.2.2") { transitive = false }
 
     // Mod Integrations
     def modMap = [:]
@@ -42,11 +50,13 @@ dependencies {
     modMap.put(["botania-225643:3330934"], project.botania)
     modMap.put(["embers-rekindled-300777:3695248"], project.embers)
     modMap.put(["immersive-engineering-231951:2974106"], project.immersiveengineering)
-    modMap.put(["magiculture-integrations-1064613:5807502"], project.magicultureintegrations)
+    modMap.put(["magiculture-integrations-1064613:6766756", "configanytime-870276:5212709"], project.magicultureintegrations)
     modMap.put(["natures-aura-306626:2882138"], project.naturesaura)
     modMap.put(["simpledifficulty-360779:3613814"], project.simpledifficulty)
     modMap.put(["thaumcraft-223628:2629023"], project.thaumcraft)
     modMap.put(["tough-as-nails-246391:2639903"], project.toughasnails)
+    modMap.put(["waterskin-simple-difficulty-619774:3776463", "simpledifficulty-360779:3613814"], project.waterskinSD)
+    modMap.put(["waterskin-441560:3191584", "tough-as-nails-246391:2639903"], project.waterskinTAN)
 
 
     modMap.each{mods, load -> {

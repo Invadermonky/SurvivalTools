@@ -39,7 +39,6 @@ public interface ISurvivalMod {
     Fluid getPurifiedWater();
 
     /**
-     *
      * @param fluidAmount
      * @return
      */
@@ -49,7 +48,6 @@ public interface ISurvivalMod {
     }
 
     /**
-     *
      * @param fluid
      * @return
      */
@@ -58,7 +56,6 @@ public interface ISurvivalMod {
     }
 
     /**
-     *
      * @param fluidStack
      * @return
      */
@@ -67,52 +64,44 @@ public interface ISurvivalMod {
     }
 
     /**
-     *
      * @param stack
      * @return
      */
     boolean isPurifiedWaterBottle(ItemStack stack);
 
     /**
-     *
      * @return
      */
     boolean isTemperatureFeatureEnabled();
 
     /**
-     *
      * @param player
      */
     boolean stabilizePlayerTemperature(EntityPlayer player, int maxCooling, int maxHeating);
 
     /**
-     *
      * @param player
      */
     boolean clearTemperatureDebuffs(EntityPlayer player);
 
     /**
-     *
      * @return
      */
     boolean isThirstFeatureEnabled();
 
     /**
-     *
      * @param player
      * @return
      */
     boolean isPlayerThirsty(EntityPlayer player);
 
     /**
-     *
      * @param player
      * @return
      */
     int getMissingThirst(EntityPlayer player);
 
     /**
-     *
      * @param player
      * @param amount
      * @param saturation

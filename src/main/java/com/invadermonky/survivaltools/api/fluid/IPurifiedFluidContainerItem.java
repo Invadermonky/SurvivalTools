@@ -15,11 +15,11 @@ public interface IPurifiedFluidContainerItem extends IFluidContainerItem {
     int getMaxFluidCapacity(ItemStack stack);
 
     default NBTTagCompound getFluidTagCompound(ItemStack stack) {
-        if(!stack.hasTagCompound()) {
+        if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
         }
         NBTTagCompound tag = stack.getTagCompound();
-        if(!tag.hasKey(TAG_FLUID)) {
+        if (!tag.hasKey(TAG_FLUID)) {
             tag.setInteger(TAG_FLUID, 0);
         }
         return stack.getTagCompound();
@@ -45,15 +45,15 @@ public interface IPurifiedFluidContainerItem extends IFluidContainerItem {
 
     @Override
     default IFluidTankProperties[] getTankProperties(ItemStack stack) {
-        return new IFluidTankProperties[] { new PurifiedFluidTankProperties(this.getFluidAmountStored(stack), this.getMaxFluidCapacity(stack)) };
+        return new IFluidTankProperties[]{new PurifiedFluidTankProperties(this.getFluidAmountStored(stack), this.getMaxFluidCapacity(stack))};
     }
 
     @Override
     default int fill(ItemStack stack, FluidStack resource, boolean doFill) {
-        if(resource != null && SurvivalToolsAPI.isPurifiedWater(resource.getFluid())) {
+        if (resource != null && SurvivalToolsAPI.isPurifiedWater(resource.getFluid())) {
             int fluid = this.getFluidAmountStored(stack);
             int fluidReceived = Math.min(this.getMaxFluidCapacity(stack) - fluid, resource.amount);
-            if(doFill) {
+            if (doFill) {
                 fluid += fluidReceived;
                 this.setFluidAmountStored(stack, fluid);
             }
@@ -65,7 +65,7 @@ public interface IPurifiedFluidContainerItem extends IFluidContainerItem {
     @Nullable
     @Override
     default FluidStack drain(ItemStack stack, FluidStack resource, boolean doDrain) {
-        if(resource != null && resource.getFluid() == SurvivalToolsAPI.getPurifiedWater()) {
+        if (resource != null && resource.getFluid() == SurvivalToolsAPI.getPurifiedWater()) {
             return this.drain(stack, resource.amount, doDrain);
         }
         return null;
@@ -76,7 +76,7 @@ public interface IPurifiedFluidContainerItem extends IFluidContainerItem {
     default FluidStack drain(ItemStack stack, int maxDrain, boolean doDrain) {
         int fluid = this.getFluidAmountStored(stack);
         int fluidDrained = Math.min(fluid, maxDrain);
-        if(doDrain) {
+        if (doDrain) {
             fluid -= fluidDrained;
             this.setFluidAmountStored(stack, fluid);
         }

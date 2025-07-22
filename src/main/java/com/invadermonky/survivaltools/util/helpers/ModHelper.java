@@ -22,16 +22,17 @@ public class ModHelper {
     }
 
     private static boolean isSpecifiedVersion(String modId, @Nullable String version, boolean isMinVersion, boolean isMaxVersion) {
-        if(version == null)
+        if (version == null)
             return true;
 
         boolean match = true;
         ModContainer container = Loader.instance().getIndexedModList().get(modId);
-        if(container != null) {
+        if (container != null) {
             try {
                 VersionRange versionRange = VersionParser.parseRange(getVersionString(version, isMinVersion, isMaxVersion));
                 match = versionRange.containsVersion(container.getProcessedVersion());
-            } catch (LoaderException ignored) {}
+            } catch (LoaderException ignored) {
+            }
         }
         return match;
     }

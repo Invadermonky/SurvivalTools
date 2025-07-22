@@ -12,6 +12,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import org.jetbrains.annotations.NotNull;
 
 public class RecipeHydrationPackRemove extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
     public RecipeHydrationPackRemove() {
@@ -19,13 +20,13 @@ public class RecipeHydrationPackRemove extends IForgeRegistryEntry.Impl<IRecipe>
     }
 
     @Override
-    public boolean matches(InventoryCrafting inv, World worldIn) {
+    public boolean matches(InventoryCrafting inv, @NotNull World worldIn) {
         boolean found = false;
 
-        for(int i = 0; i < inv.getSizeInventory(); i++) {
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
-            if(!stack.isEmpty()) {
-                if(EntityLiving.getSlotForItemStack(stack) == EntityEquipmentSlot.CHEST && ItemHydrationPack.hasHydrationPackAttached(stack) && !found) {
+            if (!stack.isEmpty()) {
+                if (EntityLiving.getSlotForItemStack(stack) == EntityEquipmentSlot.CHEST && ItemHydrationPack.hasHydrationPackAttached(stack) && !found) {
                     found = true;
                 } else {
                     return false;
@@ -37,18 +38,18 @@ public class RecipeHydrationPackRemove extends IForgeRegistryEntry.Impl<IRecipe>
     }
 
     @Override
-    public ItemStack getCraftingResult(InventoryCrafting inv) {
+    public @NotNull ItemStack getCraftingResult(InventoryCrafting inv) {
         ItemStack chestStack = ItemStack.EMPTY;
 
-        for(int i = 0; i < inv.getSizeInventory(); i++) {
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack checkStack = inv.getStackInSlot(i);
-            if(!checkStack.isEmpty()) {
-                if(EntityLiving.getSlotForItemStack(checkStack) == EntityEquipmentSlot.CHEST && ItemHydrationPack.hasHydrationPackAttached(checkStack)) {
+            if (!checkStack.isEmpty()) {
+                if (EntityLiving.getSlotForItemStack(checkStack) == EntityEquipmentSlot.CHEST && ItemHydrationPack.hasHydrationPackAttached(checkStack)) {
                     chestStack = checkStack.copy();
                 }
             }
         }
-        if(!chestStack.isEmpty()) {
+        if (!chestStack.isEmpty()) {
             ItemHydrationPack.removeHydrationPack(chestStack);
         }
         return chestStack;
@@ -60,16 +61,16 @@ public class RecipeHydrationPackRemove extends IForgeRegistryEntry.Impl<IRecipe>
     }
 
     @Override
-    public ItemStack getRecipeOutput() {
+    public @NotNull ItemStack getRecipeOutput() {
         return ItemStack.EMPTY;
     }
 
     @Override
-    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
+    public @NotNull NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
         NonNullList<ItemStack> rev = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
-        for(int i = 0; i < rev.size(); i++) {
+        for (int i = 0; i < rev.size(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
-            if(EntityLiving.getSlotForItemStack(stack) == EntityEquipmentSlot.CHEST && ItemHydrationPack.hasHydrationPackAttached(stack)) {
+            if (EntityLiving.getSlotForItemStack(stack) == EntityEquipmentSlot.CHEST && ItemHydrationPack.hasHydrationPackAttached(stack)) {
                 rev.set(i, ItemHydrationPack.getHydrationPack(stack).copy());
                 break;
             }

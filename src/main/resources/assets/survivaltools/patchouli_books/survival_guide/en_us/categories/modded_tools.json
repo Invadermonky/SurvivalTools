@@ -1,7 +1,7 @@
 {
   "name": "Mod Integrations",
-  "description": "",
-  "icon": "minecraft:book",
-  "sortnum": 3,
+  "description": "Tools and devices from other mods to help manage thirst and temperature.",
+  "icon": "survivaltools:textures/items/environmental_amulet.png",
+  "sortnum": 2,
   "secret": true
 }

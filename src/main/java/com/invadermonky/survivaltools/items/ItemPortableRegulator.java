@@ -4,13 +4,12 @@ import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import com.invadermonky.survivaltools.api.IAddition;
 import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
-import com.invadermonky.survivaltools.api.items.AbstractRFItem;
 import com.invadermonky.survivaltools.config.ConfigHandlerST;
+import com.invadermonky.survivaltools.items.base.AbstractRFItem;
 import com.invadermonky.survivaltools.util.helpers.StringHelper;
 import com.invadermonky.survivaltools.util.libs.LibTags;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,7 +18,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -30,6 +28,7 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -38,36 +37,22 @@ public class ItemPortableRegulator extends AbstractRFItem implements IBauble, IA
     public ItemPortableRegulator() {
         this.setEnergyMaxReceive(20000);
         this.setEnergyMaxExtract(0);
-        this.setEnergyCapacity(ConfigHandlerST.flux_tools.portable_regulator.energyCapacity);
-        this.setEnergyCost(ConfigHandlerST.flux_tools.portable_regulator.energyCost);
+        this.setEnergyCapacity(ConfigHandlerST.tools.portable_regulator.energyCapacity);
+        this.setEnergyCost(ConfigHandlerST.tools.portable_regulator.energyCost);
         this.setMaxStackSize(1);
     }
 
-    @Override
-    public void onUpdate(ItemStack stack, World worldIn, Entity entity, int itemSlot, boolean isSelected) {
-        if(!worldIn.isRemote && entity instanceof EntityPlayer) {
-            doUpdateTick(stack, (EntityPlayer) entity);
-        }
-    }
-
-    @Override
-    public void onWornTick(ItemStack stack, EntityLivingBase player) {
-        if(!player.world.isRemote && player instanceof EntityPlayer) {
-            doUpdateTick(stack, (EntityPlayer) player);
-        }
-    }
-
     private void doUpdateTick(ItemStack stack, EntityPlayer player) {
-        if(getMaxEnergyStored(stack) < getEnergyStored(stack)) {
+        if (getMaxEnergyStored(stack) < getEnergyStored(stack)) {
             setEnergyStored(stack, getMaxEnergyStored(stack));
         }
 
-        if(getActivated(stack)) {
-            if(getEnergyStored(stack) < getEnergyCost()) {
+        if (getActivated(stack)) {
+            if (getEnergyStored(stack) < getEnergyCost()) {
                 setActivated(stack, false);
             } else {
-                if(player.ticksExisted % 100 == 0) {
-                    SurvivalToolsAPI.stabilizePlayerTemperature(player, ConfigHandlerST.flux_tools.portable_regulator.maxCooling, ConfigHandlerST.flux_tools.portable_regulator.maxHeating);
+                if (player.ticksExisted % 100 == 0) {
+                    SurvivalToolsAPI.stabilizePlayerTemperature(player, ConfigHandlerST.tools.portable_regulator.maxCooling, ConfigHandlerST.tools.portable_regulator.maxHeating);
                 }
                 setEnergyStored(stack, getEnergyStored(stack) - this.energyCost);
             }
@@ -75,14 +60,9 @@ public class ItemPortableRegulator extends AbstractRFItem implements IBauble, IA
     }
 
     @Override
-    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return oldStack.getItem() != newStack.getItem() || slotChanged;
-    }
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    public @NotNull ActionResult<ItemStack> onItemRightClick(@NotNull World world, EntityPlayer player, @NotNull EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
-        if(player.isSneaking() && getEnergyStored(stack) > getEnergyCost()) {
+        if (player.isSneaking() && getEnergyStored(stack) > getEnergyCost()) {
             setActivated(stack, !getActivated(stack));
             return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         }
@@ -90,8 +70,33 @@ public class ItemPortableRegulator extends AbstractRFItem implements IBauble, IA
     }
 
     @Override
-    public boolean hasEffect(ItemStack stack) {
+    public void onUpdate(@NotNull ItemStack stack, World worldIn, @NotNull Entity entity, int itemSlot, boolean isSelected) {
+        if (!worldIn.isRemote && entity instanceof EntityPlayer) {
+            doUpdateTick(stack, (EntityPlayer) entity);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, @NotNull List<String> tooltip, @NotNull ITooltipFlag flagIn) {
+        if (ConfigHandlerST.tools.portable_regulator.shortenEnergyTooltip) {
+            tooltip.add(ChatFormatting.ITALIC + String.format("%s/%s RF", StringHelper.getCleanNumber(getEnergyStored(stack)), StringHelper.getCleanNumber(getMaxEnergyStored(stack))));
+        } else {
+            tooltip.add(ChatFormatting.ITALIC + String.format("%,d/%,d RF", getEnergyStored(stack), getMaxEnergyStored(stack)));
+        }
+        tooltip.add(StringHelper.getTranslatedString(getTag(stack).getBoolean(LibTags.TAG_ENABLED) ? "enabled" : "disabled", "tooltip"));
+        tooltip.add(StringHelper.getTranslatedString("portable_regulator", "tooltip", "desc"));
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+    }
+
+    @Override
+    public boolean hasEffect(@NotNull ItemStack stack) {
         return getActivated(stack);
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return oldStack.getItem() != newStack.getItem() || slotChanged;
     }
 
     public boolean getActivated(ItemStack stack) {
@@ -102,34 +107,21 @@ public class ItemPortableRegulator extends AbstractRFItem implements IBauble, IA
         getTag(stack).setBoolean(LibTags.TAG_ENABLED, activated);
     }
 
-    public NBTTagCompound getTag(ItemStack stack) {
-        if(!stack.hasTagCompound()) {
-            stack.setTagCompound(new NBTTagCompound());
-        }
-        return stack.getTagCompound();
+    @Override
+    public BaubleType getBaubleType(ItemStack itemStack) {
+        return BaubleType.TRINKET;
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        if(ConfigHandlerST.flux_tools.portable_regulator.shortenEnergyTooltip) {
-            tooltip.add(ChatFormatting.ITALIC + String.format("%s/%s RF", StringHelper.getCleanNumber(getEnergyStored(stack)), StringHelper.getCleanNumber(getMaxEnergyStored(stack))));
-        } else {
-            tooltip.add(ChatFormatting.ITALIC + String.format("%,d/%,d RF", getEnergyStored(stack), getMaxEnergyStored(stack)));
+    public void onWornTick(ItemStack stack, EntityLivingBase player) {
+        if (!player.world.isRemote && player instanceof EntityPlayer) {
+            doUpdateTick(stack, (EntityPlayer) player);
         }
-        tooltip.add(I18n.format(StringHelper.getTranslationKey(getTag(stack).getBoolean(LibTags.TAG_ENABLED) ? "enabled" : "disabled", "tooltip")));
-        tooltip.add(I18n.format(StringHelper.getTranslationKey("portable_regulator", "tooltip", "desc")));
-        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
     public boolean willAutoSync(ItemStack itemstack, EntityLivingBase player) {
         return true;
-    }
-
-    @Override
-    public BaubleType getBaubleType(ItemStack itemStack) {
-        return BaubleType.TRINKET;
     }
 
     /*
@@ -160,6 +152,6 @@ public class ItemPortableRegulator extends AbstractRFItem implements IBauble, IA
 
     @Override
     public boolean isEnabled() {
-        return ConfigHandlerST.flux_tools.portable_regulator.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled();
+        return ConfigHandlerST.tools.portable_regulator.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled();
     }
 }

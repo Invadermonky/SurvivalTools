@@ -32,7 +32,7 @@ public class ModItemsST {
     public static List<Item> allItems = new ArrayList<>();
 
     public static <T extends Item & IAddition> void addItemToRegister(T item, String itemId) {
-        if(item != null && item.isEnabled()) {
+        if (item != null && item.isEnabled()) {
             item.setRegistryName(new ResourceLocation(SurvivalTools.MOD_ID, itemId))
                     .setTranslationKey(item.getRegistryName().toString())
                     .setCreativeTab(CreativeTabST.TAB_ST);
@@ -50,17 +50,17 @@ public class ModItemsST {
     @SubscribeEvent
     public static void registerItemModels(ModelRegistryEvent event) {
         ModItemsST.allItems.forEach(item -> {
-            if(item instanceof IAddition) {
+            if (item instanceof IAddition) {
                 ((IAddition) item).registerModel(event);
             }
         });
     }
 
     static {
-        addItemToRegister(canteen = new ItemCanteen(ConfigHandlerST.simple_tools.canteen.fluidCapacityBasic), LibNames.CANTEEN);
-        addItemToRegister(canteen_reinforced = new ItemCanteen(ConfigHandlerST.simple_tools.canteen.fluidCapacityReinforced), LibNames.CANTEEN_REINFORCED);
-        addItemToRegister(hydration_pack = new ItemHydrationPack(ConfigHandlerST.simple_tools.hydration_pack.fluidCapacityBasic), LibNames.HYDRATION_PACK);
-        addItemToRegister(hydration_pack_reinforced = new ItemHydrationPack(ConfigHandlerST.simple_tools.hydration_pack.fluidCapacityReinforced), LibNames.HYDRATION_PACK_REINFORCED);
+        addItemToRegister(canteen = new ItemCanteen(ConfigHandlerST.tools.canteens.fluidCapacityBasic), LibNames.CANTEEN);
+        addItemToRegister(canteen_reinforced = new ItemCanteen(ConfigHandlerST.tools.canteens.fluidCapacityReinforced), LibNames.CANTEEN_REINFORCED);
+        addItemToRegister(hydration_pack = new ItemHydrationPack(ConfigHandlerST.tools.hydration_packs.fluidCapacityBasic), LibNames.HYDRATION_PACK);
+        addItemToRegister(hydration_pack_reinforced = new ItemHydrationPack(ConfigHandlerST.tools.hydration_packs.fluidCapacityReinforced), LibNames.HYDRATION_PACK_REINFORCED);
         addItemToRegister(handheld_purifier = new ItemHandheldPurifier(), LibNames.HANDHELD_PURIFIER);
         addItemToRegister(portable_purifier = new ItemPortablePurifier(), LibNames.PORTABLE_PURIFIER);
         addItemToRegister(portable_regulator = new ItemPortableRegulator(), LibNames.PORTABLE_REGULATOR);

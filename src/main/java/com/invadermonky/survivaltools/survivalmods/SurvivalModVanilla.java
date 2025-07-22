@@ -49,18 +49,8 @@ public class SurvivalModVanilla implements ISurvivalMod {
     }
 
     @Override
-    public boolean isPlayerThirsty(EntityPlayer player) {
-        return false;
-    }
-
-    @Override
     public boolean isTemperatureFeatureEnabled() {
-        return ConfigHandlerST.forceLoadTemperatureFeatures;
-    }
-
-    @Override
-    public boolean isThirstFeatureEnabled() {
-        return ConfigHandlerST.forceLoadThirstFeatures;
+        return ConfigHandlerST.general.forceLoadTemperatureFeatures;
     }
 
     @Override
@@ -70,6 +60,16 @@ public class SurvivalModVanilla implements ISurvivalMod {
 
     @Override
     public boolean clearTemperatureDebuffs(EntityPlayer player) {
+        return false;
+    }
+
+    @Override
+    public boolean isThirstFeatureEnabled() {
+        return ConfigHandlerST.general.forceLoadThirstFeatures;
+    }
+
+    @Override
+    public boolean isPlayerThirsty(EntityPlayer player) {
         return false;
     }
 

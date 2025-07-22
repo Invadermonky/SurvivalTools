@@ -6,6 +6,7 @@ chat.survivaltools:hydration_pack.empty=Your hydration pack is empty.
 chat.survivaltools:redstone.required=Redstone Mode: REQUIRED
 chat.survivaltools:redstone.inverted=Redstone Mode: INVERTED
 chat.survivaltools:redstone.ignored=Redstone Mode: IGNORED
+chat.survivaltools:redstone.disabled=Redstone Mod: DISABLED
 chat.survivaltools:rf_info=RF: %d (%d RF/t used while active)
 
 # Blocks
@@ -13,16 +14,14 @@ tile.botania:flower.gryllzalia.name=Gryllzalia
 tile.botania:flower.gryllzalia.reference=Man vs. Wild
 tile.botania:flower.pure_pitcher.name=Pure Pitcher
 tile.botania:flower.pure_pitcher.reference=Natural Filtration!
-tile.survivaltools:barrel_heater.name=Barrel Heater
-tile.survivaltools:barrel_heater_powered.name=Powered Barrel Heater
-tile.survivaltools:barrel_lid.name=Barrel Lid
-tile.survivaltools:barrel_lid_solar.name=Solar Collector Barrel Lid
 tile.survivaltools:central_air_unit.name=Central Air Unit
+tile.survivaltools:powered_purifier.name=Powered Purifier
 tile.survivaltools:open_barrel.name=Open Barrel
+tile.survivaltools:solid_fuel_purifier.name=Solid Fuel Purifier
 
 # Gui
-container.survivaltools:barrel_heater=Barrel Heater
 itemGroup.survivaltools=Survival Tools
+jei.survivaltools.recipe.purifier=Water Purifier
 
 # Items
 item.survivaltools:canteen.name=Canteen
@@ -96,16 +95,38 @@ subtitle.survivaltools:easter_egg=The House Always Wins.
 
 # Tooltips
 tooltip.survivaltools:disabled=Disabled
+tooltip.survivaltools:empty=Empty
 tooltip.survivaltools:enabled=Enabled
 tooltip.survivaltools:handheld_purifier.desc0=Converts water into purified water
-tooltip.survivaltools:handheld_purifier.desc1=Hold fluid container in offhand to fill=
+tooltip.survivaltools:handheld_purifier.desc1=Hold fluid container in offhand to fill
 tooltip.survivaltools:hydration_pack.attached=§bHydro-Pack: %d/%d
 tooltip.survivaltools:hydration_pack.desc0=Hydrates the player when worn
 tooltip.survivaltools:hydration_pack.desc1=Can be attached to chestplates
-tooltip.survivaltools:environmental_amulet.desc=Uses Aura to regulate player temperature
+tooltip.survivaltools:environmental_amulet.desc=Uses Aura to regulate body temperature
 tooltip.survivaltools:max_cooling.desc=Max Cooling: %d
 tooltip.survivaltools:max_heating.desc=Max Heating: %d
 tooltip.survivaltools:portable_purifier.desc=Uses RF and water to restore thirst
-tooltip.survivaltools:portable_regulator.desc=Uses RF to regulate player temperature
+tooltip.survivaltools:portable_regulator.desc=Uses RF to regulate body temperature
 tooltip.survivaltools:redstone.desc=Right-click with a Redstone Torch to change redstone mode
 tooltip.survivaltools:rf_info.desc=Right-click with an empty hand to display RF info
+tooltip.survivaltools:tank_input=Input: %dmB %s
+tooltip.survivaltools:tank_input.empty=Input: Empty
+tooltip.survivaltools:tank_output=Output: %dmB %s
+tooltip.survivaltools:tank_output.empty=Output: Empty
+
+
+# GroovyScript
+groovyscript.wiki.survivaltools.handheld_purifier.title=Handheld Purifier
+groovyscript.wiki.survivaltools.handheld_purifier.description=Adds new fluid interactions when using Survival Tools Handheld Purifier. You can use this to define new fluid interactions when attempting to convert liquids into purified water.
+groovyscript.wiki.survivaltools.handheld_purifier.addRecipe=Adds a new Handheld Purifier interaction in the format `fluid`, `purifiedWaterOutputAmount`, `canFillBottles`
+groovyscript.wiki.survivaltools.handheld_purifier.removeRecipe=Removes the fluid purifier recipe for this fluid
+
+groovyscript.wiki.survivaltools.purifier.title=Solid Fuel Purifier and Powered Purifier
+groovyscript.wiki.survivaltools.purifier.description=Fluid recipes that use a filter item to convert one fluid into another. Recipes are used by both the Solid Fuel Purifier and the Powered Purifier.
+groovyscript.wiki.survivaltools.purifier.addRecipe1=Adds a new Purifier recipe in the format `inputFluid`, `outputFluid`, `filterItem`, `recipeDuration` where `recipeDuration` refers to the time (in ticks) it takes to process the recipe. This time translates directly to how long each `filterItem` lasts
+groovyscript.wiki.survivaltools.purifier.addRecipe2=Adds a new Purifier recipe in the format `inputFluid`, `outputFluid`, `filterItem`. This recipe will complete after 800 ticks or 20 seconds
+groovyscript.wiki.survivaltools.purifier.addRecipe3=Adds a new Purifier recipe in the format `inputFluid`, `outputFluid`
+groovyscript.wiki.survivaltools.purifier.inputFluid.value=The input fluid to be processed
+groovyscript.wiki.survivaltools.purifier.outputFluid.value=The output fluid that will be created
+groovyscript.wiki.survivaltools.purifier.filterIngredient.value=The filter ingredient for this recipe. If this item is damageable, it will be damaged instead of being consumed
+groovyscript.wiki.survivaltools.purifier.recipeDuration.value=The amount of time this recipe takes to complete. This value translates to how long it takes for the filter item to be consumed.

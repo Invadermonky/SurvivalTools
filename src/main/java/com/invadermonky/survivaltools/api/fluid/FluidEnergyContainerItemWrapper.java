@@ -60,7 +60,7 @@ public class FluidEnergyContainerItemWrapper extends EnergyContainerItemWrapper 
     @Nullable
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-        if(this.hasCapability(capability, facing)) {
+        if (this.hasCapability(capability, facing)) {
             return capability == CapabilityEnergy.ENERGY ? super.getCapability(capability, facing) : CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY.cast(this.fluidHandler);
         }
         return null;

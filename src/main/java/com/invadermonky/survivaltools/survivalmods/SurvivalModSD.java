@@ -47,24 +47,14 @@ public class SurvivalModSD implements ISurvivalMod {
     }
 
     @Override
-    public boolean isPlayerThirsty(EntityPlayer player) {
-        return SDCapabilities.getThirstData(player).isThirsty();
-    }
-
-    @Override
     public boolean isTemperatureFeatureEnabled() {
         return QuickConfig.isTemperatureEnabled();
     }
 
     @Override
-    public boolean isThirstFeatureEnabled() {
-        return QuickConfig.isThirstEnabled();
-    }
-
-    @Override
     public boolean stabilizePlayerTemperature(EntityPlayer player, int maxCooling, int maxHeating) {
         boolean did = false;
-        if(this.isTemperatureFeatureEnabled()) {
+        if (this.isTemperatureFeatureEnabled()) {
             ITemperatureCapability tempData = SDCapabilities.getTemperatureData(player);
             int tempTarget = TemperatureUtil.getPlayerTargetTemperature(player);
             //The temperature the cooling will reach
@@ -85,15 +75,25 @@ public class SurvivalModSD implements ISurvivalMod {
     @Override
     public boolean clearTemperatureDebuffs(EntityPlayer player) {
         boolean did = false;
-        if(player.isPotionActive(SDPotions.hyperthermia)) {
+        if (player.isPotionActive(SDPotions.hyperthermia)) {
             player.removePotionEffect(SDPotions.hyperthermia);
             did = true;
         }
-        if(player.isPotionActive(SDPotions.hypothermia)) {
+        if (player.isPotionActive(SDPotions.hypothermia)) {
             player.removePotionEffect(SDPotions.hypothermia);
             did = true;
         }
         return did;
+    }
+
+    @Override
+    public boolean isThirstFeatureEnabled() {
+        return QuickConfig.isThirstEnabled();
+    }
+
+    @Override
+    public boolean isPlayerThirsty(EntityPlayer player) {
+        return SDCapabilities.getThirstData(player).isThirsty();
     }
 
     @Override

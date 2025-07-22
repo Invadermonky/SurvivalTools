@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "The $(item)Central Air Unit$() is a $(thing)Redstone Flux$() powered machine that regulates the body temperature of all players in a large area."
+      "text": "The $(item)Central Air Unit$() is a $(thing)Redstone Flux$() powered machine that regulates the body temperature of all players in a large area.$(br2)By default, the unit requires a redstone signal to activate.$(br2)Redstone mode can be toggled by interacting with the device while holding a $(item)Redstone Torch$()."
     },
     {
       "type": "crafting",

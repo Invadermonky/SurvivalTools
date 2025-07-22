@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SurvivalHelper implements ISurvivalMod {
+    public static final SurvivalHelper internal = new SurvivalHelper();
     private static final List<ISurvivalMod> survivalMods = new ArrayList<>();
     private static final ISurvivalMod vanillaSurvivalMod = new SurvivalModVanilla();
 
@@ -19,11 +20,9 @@ public class SurvivalHelper implements ISurvivalMod {
         survivalMods.add(survivalMod);
     }
 
-    public static final SurvivalHelper internal = new SurvivalHelper();
-
     @Override
     public ItemStack getPurifiedWaterBottleStack() {
-        for(ISurvivalMod survivalMod : survivalMods) {
+        for (ISurvivalMod survivalMod : survivalMods) {
             return survivalMod.getPurifiedWaterBottleStack();
         }
         return vanillaSurvivalMod.getPurifiedWaterBottleStack();
@@ -31,7 +30,7 @@ public class SurvivalHelper implements ISurvivalMod {
 
     @Override
     public ItemStack getWaterFilterStack() {
-        for(ISurvivalMod survivalMod : survivalMods) {
+        for (ISurvivalMod survivalMod : survivalMods) {
             return survivalMod.getWaterFilterStack();
         }
         return vanillaSurvivalMod.getWaterFilterStack();
@@ -39,7 +38,7 @@ public class SurvivalHelper implements ISurvivalMod {
 
     @Override
     public ItemStack getCoolerStack() {
-        for(ISurvivalMod survivalMod : survivalMods) {
+        for (ISurvivalMod survivalMod : survivalMods) {
             return survivalMod.getCoolerStack();
         }
         return vanillaSurvivalMod.getCoolerStack();
@@ -47,7 +46,7 @@ public class SurvivalHelper implements ISurvivalMod {
 
     @Override
     public ItemStack getHeaterStack() {
-        for(ISurvivalMod survivalMod : survivalMods) {
+        for (ISurvivalMod survivalMod : survivalMods) {
             return survivalMod.getHeaterStack();
         }
         return vanillaSurvivalMod.getHeaterStack();
@@ -55,7 +54,7 @@ public class SurvivalHelper implements ISurvivalMod {
 
     @Override
     public ItemStack getThermometerStack() {
-        for(ISurvivalMod survivalMod : survivalMods) {
+        for (ISurvivalMod survivalMod : survivalMods) {
             return survivalMod.getThermometerStack();
         }
         return vanillaSurvivalMod.getThermometerStack();
@@ -63,7 +62,7 @@ public class SurvivalHelper implements ISurvivalMod {
 
     @Override
     public Fluid getPurifiedWater() {
-        for(ISurvivalMod survivalMod : survivalMods) {
+        for (ISurvivalMod survivalMod : survivalMods) {
             return survivalMod.getPurifiedWater();
         }
         return vanillaSurvivalMod.getPurifiedWater();
@@ -71,12 +70,12 @@ public class SurvivalHelper implements ISurvivalMod {
 
     @Override
     public boolean isPurifiedWater(@Nullable Fluid fluid) {
-        if(fluid != null) {
+        if (fluid != null) {
             if (survivalMods.isEmpty()) {
                 return fluid == FluidRegistry.WATER;
             } else {
                 for (ISurvivalMod survivalMod : survivalMods) {
-                    if(survivalMod.isPurifiedWater(fluid)){
+                    if (survivalMod.isPurifiedWater(fluid)) {
                         return true;
                     }
                 }
@@ -87,11 +86,11 @@ public class SurvivalHelper implements ISurvivalMod {
 
     @Override
     public boolean isPurifiedWaterBottle(ItemStack stack) {
-        if(survivalMods.isEmpty()) {
+        if (survivalMods.isEmpty()) {
             vanillaSurvivalMod.isPurifiedWaterBottle(stack);
         } else {
-            for(ISurvivalMod survivalMod : survivalMods) {
-                if(survivalMod.isPurifiedWaterBottle(stack)) {
+            for (ISurvivalMod survivalMod : survivalMods) {
+                if (survivalMod.isPurifiedWaterBottle(stack)) {
                     return true;
                 }
             }
@@ -100,20 +99,10 @@ public class SurvivalHelper implements ISurvivalMod {
     }
 
     @Override
-    public boolean isPlayerThirsty(EntityPlayer player) {
-        for(ISurvivalMod survivalMod : survivalMods) {
-            if(survivalMod.isPlayerThirsty(player)) {
-                return true;
-            }
-        }
-        return vanillaSurvivalMod.isPlayerThirsty(player);
-    }
-
-    @Override
     public boolean isTemperatureFeatureEnabled() {
         boolean enabled = false;
-        for(ISurvivalMod survivalMod : survivalMods) {
-            if(survivalMod.isTemperatureFeatureEnabled()) {
+        for (ISurvivalMod survivalMod : survivalMods) {
+            if (survivalMod.isTemperatureFeatureEnabled()) {
                 enabled = true;
                 break;
             }
@@ -122,22 +111,10 @@ public class SurvivalHelper implements ISurvivalMod {
     }
 
     @Override
-    public boolean isThirstFeatureEnabled() {
-        boolean enabled = false;
-        for(ISurvivalMod survivalMod : survivalMods) {
-            if(survivalMod.isThirstFeatureEnabled()) {
-                enabled = true;
-                break;
-            }
-        }
-        return enabled || vanillaSurvivalMod.isThirstFeatureEnabled();
-    }
-
-    @Override
     public boolean stabilizePlayerTemperature(EntityPlayer player, int maxCooling, int maxHeating) {
         boolean did = false;
-        for(ISurvivalMod survivalMod : survivalMods) {
-            if(survivalMod.stabilizePlayerTemperature(player, maxCooling, maxHeating)) {
+        for (ISurvivalMod survivalMod : survivalMods) {
+            if (survivalMod.stabilizePlayerTemperature(player, maxCooling, maxHeating)) {
                 did = true;
             }
         }
@@ -147,8 +124,8 @@ public class SurvivalHelper implements ISurvivalMod {
     @Override
     public boolean clearTemperatureDebuffs(EntityPlayer player) {
         boolean did = false;
-        for(ISurvivalMod survivalMod : survivalMods) {
-            if(survivalMod.clearTemperatureDebuffs(player)) {
+        for (ISurvivalMod survivalMod : survivalMods) {
+            if (survivalMod.clearTemperatureDebuffs(player)) {
                 did = true;
             }
         }
@@ -156,8 +133,30 @@ public class SurvivalHelper implements ISurvivalMod {
     }
 
     @Override
+    public boolean isThirstFeatureEnabled() {
+        boolean enabled = false;
+        for (ISurvivalMod survivalMod : survivalMods) {
+            if (survivalMod.isThirstFeatureEnabled()) {
+                enabled = true;
+                break;
+            }
+        }
+        return enabled || vanillaSurvivalMod.isThirstFeatureEnabled();
+    }
+
+    @Override
+    public boolean isPlayerThirsty(EntityPlayer player) {
+        for (ISurvivalMod survivalMod : survivalMods) {
+            if (survivalMod.isPlayerThirsty(player)) {
+                return true;
+            }
+        }
+        return vanillaSurvivalMod.isPlayerThirsty(player);
+    }
+
+    @Override
     public int getMissingThirst(EntityPlayer player) {
-        for(ISurvivalMod survivalMod : survivalMods) {
+        for (ISurvivalMod survivalMod : survivalMods) {
             return survivalMod.getMissingThirst(player);
         }
         return vanillaSurvivalMod.getMissingThirst(player);
@@ -165,8 +164,8 @@ public class SurvivalHelper implements ISurvivalMod {
 
     @Override
     public void hydratePlayer(EntityPlayer player, int amount, float saturation) {
-        for(ISurvivalMod survivalMod : survivalMods) {
-            if(survivalMod.isPlayerThirsty(player))
+        for (ISurvivalMod survivalMod : survivalMods) {
+            if (survivalMod.isPlayerThirsty(player))
                 survivalMod.hydratePlayer(player, amount, saturation);
         }
     }

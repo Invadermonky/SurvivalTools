@@ -14,18 +14,8 @@ public class BloodMagicST implements IProxy {
     public static ItemSigilTemperature sigil_temperature;
 
     @Override
-    public void preInit() {
-
-    }
-
-    @Override
-    public void init() {
-
-    }
-
-    @Override
     public void postInit() {
-        if(RitualSoothingHearth.isEnabled()) {
+        if (RitualSoothingHearth.isEnabled()) {
             BloodMagicUtils.addGuideEntry("ritual", LibNames.RITUAL_SOOTHING_HEARTH);
         }
         BloodMagicUtils.buildGuideEntries();

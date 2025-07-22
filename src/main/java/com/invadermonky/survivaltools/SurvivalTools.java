@@ -1,6 +1,5 @@
 package com.invadermonky.survivaltools;
 
-import com.invadermonky.survivaltools.config.ModTags;
 import com.invadermonky.survivaltools.network.PacketHandlerST;
 import com.invadermonky.survivaltools.proxy.CommonProxy;
 import com.invadermonky.survivaltools.util.helpers.LogHelper;
@@ -21,18 +20,18 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class SurvivalTools {
     public static final String MOD_ID = "survivaltools";
     public static final String MOD_NAME = "Survival Tools";
-    public static final String VERSION = "1.12.2-1.1.0";
+    public static final String VERSION = "1.2.0";
     public static final String MC_VERSION = "[1.12.2]";
     public static final String DEPENDENCIES =
             "required-after:" + ModIds.ConstIds.baubles +
-            ";after:" + ModIds.ConstIds.bloodmagic +
-            ";after:" + ModIds.ConstIds.botania +
-            ";after:" + ModIds.ConstIds.embers +
-            ";after:" + ModIds.ConstIds.natures_aura +
-            ";after:" + ModIds.ConstIds.patchouli +
-            ";after:" + ModIds.ConstIds.simpledifficulty +
-            ";after:" + ModIds.ConstIds.thaumcraft +
-            ";after:" + ModIds.ConstIds.toughasnails;
+                    ";after:" + ModIds.ConstIds.bloodmagic +
+                    ";after:" + ModIds.ConstIds.botania +
+                    ";after:" + ModIds.ConstIds.embers +
+                    ";after:" + ModIds.ConstIds.natures_aura +
+                    ";after:" + ModIds.ConstIds.patchouli +
+                    ";after:" + ModIds.ConstIds.simpledifficulty +
+                    ";after:" + ModIds.ConstIds.thaumcraft +
+                    ";after:" + ModIds.ConstIds.toughasnails;
 
     public static final String ProxyClientClass = "com.invadermonky." + MOD_ID + ".proxy.ClientProxy";
     public static final String ProxyServerClass = "com.invadermonky." + MOD_ID + ".proxy.CommonProxy";
@@ -60,7 +59,6 @@ public class SurvivalTools {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
-        ModTags.syncConfig();
         LogHelper.debug("Finished postInit phase.");
     }
 }

@@ -4,7 +4,8 @@
     "top": "survivaltools:blocks/open_barrel_top",
     "bottom": "minecraft:blocks/cauldron_bottom",
     "side": "survivaltools:blocks/open_barrel_side",
-    "inside": "minecraft:blocks/cauldron_inner"
+    "inside": "minecraft:blocks/cauldron_inner",
+    "particle": "minecraft:blocks/cauldron_inner"
   },
   "elements": [
     {

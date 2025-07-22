@@ -7,10 +7,10 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 
 public class ItemAddition extends Item implements IAddition {
-    protected boolean enabled;
+    private final boolean isEnabled;
 
-    public ItemAddition(boolean enabled) {
-        this.enabled = enabled;
+    public ItemAddition(boolean isEnabled) {
+        this.isEnabled = isEnabled;
     }
 
     @Override
@@ -21,6 +21,6 @@ public class ItemAddition extends Item implements IAddition {
 
     @Override
     public boolean isEnabled() {
-        return this.enabled;
+        return this.isEnabled;
     }
 }

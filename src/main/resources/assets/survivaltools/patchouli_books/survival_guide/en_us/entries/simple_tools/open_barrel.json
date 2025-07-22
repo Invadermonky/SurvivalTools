@@ -1,0 +1,17 @@
+{
+  "name": "Rainwater Collection",
+  "icon": "survivaltools:open_barrel",
+  "category": "survivaltools:simple_tools",
+  "flag": "survivaltools:open_barrel",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "text",
+      "text": "The $(item)Open Barrel$() is a basic fluid tank that can store any fluid.$(br2)When empty barrels are left out in the rain or snow, they will slowly accumulate $(water)Purified Water$().$(br2)$(item)Open Barrels$() do not retain their contents when broken."
+    },
+    {
+      "type": "crafting",
+      "recipe": "survivaltools:open_barrel"
+    }
+  ]
+}

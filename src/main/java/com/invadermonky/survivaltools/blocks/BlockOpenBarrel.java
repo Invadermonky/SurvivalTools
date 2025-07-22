@@ -1,9 +1,9 @@
 package com.invadermonky.survivaltools.blocks;
 
 import com.invadermonky.survivaltools.api.IAddition;
-import com.invadermonky.survivaltools.blocks.tile.TileOpenBarrel;
 import com.invadermonky.survivaltools.client.render.RenderOpenBarrel;
 import com.invadermonky.survivaltools.config.ConfigHandlerST;
+import com.invadermonky.survivaltools.tile.TileOpenBarrel;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -29,6 +29,7 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -40,15 +41,15 @@ public class BlockOpenBarrel extends BlockContainer implements IAddition {
         https://github.com/KnightMiner/Inspirations/blob/1.12/src/main/java/knightminer/inspirations/recipes/block/BlockEnhancedCauldron.java
     */
     public static final AxisAlignedBB[] BOUNDS = {
-            new AxisAlignedBB(0,0.1875,0,1,1,1),
-            new AxisAlignedBB(0,0,0,0.25,0.1875,0.125),
-            new AxisAlignedBB(0,0,0.125, 0.125,0.1875, 0.25),
-            new AxisAlignedBB(0.75,0,0,1,0.1875, 0.125),
-            new AxisAlignedBB(0.875,0,0.125,1,0.1875, 0.25),
-            new AxisAlignedBB(0,0, 0.875,0.25,0.1875, 1),
-            new AxisAlignedBB(0,0, 0.75,0.125,0.1875, 0.875),
-            new AxisAlignedBB(0.75,0, 0.875,1,0.1875, 1),
-            new AxisAlignedBB(0.875,0,0.75,1,0.1875, 0.875)
+            new AxisAlignedBB(0, 0.1875, 0, 1, 1, 1),
+            new AxisAlignedBB(0, 0, 0, 0.25, 0.1875, 0.125),
+            new AxisAlignedBB(0, 0, 0.125, 0.125, 0.1875, 0.25),
+            new AxisAlignedBB(0.75, 0, 0, 1, 0.1875, 0.125),
+            new AxisAlignedBB(0.875, 0, 0.125, 1, 0.1875, 0.25),
+            new AxisAlignedBB(0, 0, 0.875, 0.25, 0.1875, 1),
+            new AxisAlignedBB(0, 0, 0.75, 0.125, 0.1875, 0.875),
+            new AxisAlignedBB(0.75, 0, 0.875, 1, 0.1875, 1),
+            new AxisAlignedBB(0.875, 0, 0.75, 1, 0.1875, 0.875)
     };
 
     public BlockOpenBarrel() {
@@ -57,18 +58,38 @@ public class BlockOpenBarrel extends BlockContainer implements IAddition {
         this.setHarvestLevel("pickaxe", 1);
     }
 
+    @Override
+    public boolean isFullCube(@NotNull IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean hasTileEntity() {
+        return true;
+    }
+
+    @Override
+    public @NotNull BlockFaceShape getBlockFaceShape(@NotNull IBlockAccess worldIn, @NotNull IBlockState state, @NotNull BlockPos pos, @NotNull EnumFacing face) {
+        return face == EnumFacing.DOWN ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
+    }
+
+    @Override
+    public boolean isOpaqueCube(@NotNull IBlockState state) {
+        return false;
+    }
+
     @Nullable
     @Override
-    public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d start, Vec3d end) {
+    public RayTraceResult collisionRayTrace(@NotNull IBlockState blockState, @NotNull World worldIn, @NotNull BlockPos pos, @NotNull Vec3d start, @NotNull Vec3d end) {
         List<RayTraceResult> list = new ArrayList<>();
-        for(AxisAlignedBB axisAlignedBB : BOUNDS) {
+        for (AxisAlignedBB axisAlignedBB : BOUNDS) {
             list.add(this.rayTrace(pos, start, end, axisAlignedBB));
         }
 
         RayTraceResult closest = null;
         double max = 0;
-        for(RayTraceResult trace : list) {
-            if(trace != null) {
+        for (RayTraceResult trace : list) {
+            if (trace != null) {
                 double distance = trace.hitVec.squareDistanceTo(end);
                 if (distance > max) {
                     closest = trace;
@@ -76,33 +97,12 @@ public class BlockOpenBarrel extends BlockContainer implements IAddition {
                 }
             }
         }
-        return  closest;
+        return closest;
     }
 
     @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    public BlockRenderLayer getRenderLayer() {
+    public @NotNull BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT_MIPPED;
-    }
-
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-        return face == EnumFacing.DOWN ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
-    }
-
-    @Nullable
-    public TileOpenBarrel getTileEntity(World world, BlockPos pos) {
-        TileEntity tile = world.getTileEntity(pos);
-        return tile instanceof TileOpenBarrel ? (TileOpenBarrel) tile : null;
     }
 
     /*
@@ -110,11 +110,11 @@ public class BlockOpenBarrel extends BlockContainer implements IAddition {
      */
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(@NotNull World world, @NotNull BlockPos pos, @NotNull IBlockState state, EntityPlayer player, @NotNull EnumHand hand, @NotNull EnumFacing facing, float hitX, float hitY, float hitZ) {
         boolean isFluidContainer = FluidUtil.getFluidHandler(player.getHeldItem(hand)) != null;
         boolean success = FluidUtil.interactWithFluidHandler(player, hand, world, pos, facing);
-        if(isFluidContainer) {
-            if(success) {
+        if (isFluidContainer) {
+            if (success) {
                 world.checkLight(pos);
                 world.updateComparatorOutputLevel(pos, this);
                 world.markAndNotifyBlock(pos, world.getChunk(pos), state, state, 3);
@@ -125,34 +125,35 @@ public class BlockOpenBarrel extends BlockContainer implements IAddition {
     }
 
     @Override
-    public boolean hasTileEntity() {
-        return true;
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileOpenBarrel();
-    }
-
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.MODEL;
-    }
-
-    @Override
-    public boolean hasComparatorInputOverride(IBlockState state) {
+    public boolean hasComparatorInputOverride(@NotNull IBlockState state) {
         return true;
     }
 
     @Override
-    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+    public int getComparatorInputOverride(@NotNull IBlockState blockState, @NotNull World worldIn, @NotNull BlockPos pos) {
         TileOpenBarrel tile = this.getTileEntity(worldIn, pos);
-        if(tile != null) {
+        if (tile != null) {
             int fluidAmount = tile.getFluidAmount();
             return (int) Math.floor((float) fluidAmount / (float) tile.getFluidMaxCapacity() * 14.0F) + (fluidAmount > 0 ? 1 : 0);
         }
         return 0;
+    }
+
+    @Nullable
+    public TileOpenBarrel getTileEntity(World world, BlockPos pos) {
+        TileEntity tile = world.getTileEntity(pos);
+        return tile instanceof TileOpenBarrel ? (TileOpenBarrel) tile : null;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createNewTileEntity(@NotNull World worldIn, int meta) {
+        return new TileOpenBarrel();
+    }
+
+    @Override
+    public @NotNull EnumBlockRenderType getRenderType(@NotNull IBlockState state) {
+        return EnumBlockRenderType.MODEL;
     }
 
     /*
@@ -168,6 +169,6 @@ public class BlockOpenBarrel extends BlockContainer implements IAddition {
 
     @Override
     public boolean isEnabled() {
-        return ConfigHandlerST.open_barrel._enable;
+        return ConfigHandlerST.machines.rain_collector.enable;
     }
 }

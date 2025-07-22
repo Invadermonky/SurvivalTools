@@ -22,14 +22,14 @@ public class BloodMagicUtils {
     /**
      * Adds an entry to the Blood Magic Sanguine Scientiem guide.
      *
-     * @param category valid categories - alchemy, architect, demon, ritual
+     * @param category       valid categories - alchemy, architect, demon, ritual
      * @param guideEntryName The entry name. This will generate the localization key for the book text.
      */
     public static void addGuideEntry(String category, String guideEntryName) {
         String categoryName = "guide.bloodmagic.category." + category;
         String keyBase = "guide.bloodmagic.entry." + category + ".";
         List<IPage> pages = new ArrayList<>(PageHelper.pagesForLongText(TextHelper.localize(keyBase + guideEntryName + ".info"), 370));
-        if(!guideAdditions.containsKey(categoryName))
+        if (!guideAdditions.containsKey(categoryName))
             guideAdditions.put(categoryName, new LinkedHashMap<>());
         guideAdditions.get(categoryName).put(new ResourceLocation(keyBase + guideEntryName), new EntryText(pages, TextHelper.localize(keyBase + guideEntryName), true));
     }
@@ -37,7 +37,7 @@ public class BloodMagicUtils {
     public static void buildGuideEntries() {
         guideAdditions.forEach((category, entries) -> {
             entries.forEach((loc, entry) -> {
-                for(IPage page : entry.pageList) {
+                for (IPage page : entry.pageList) {
                     ((PageText) page).setUnicodeFlag(true);
                 }
             });
@@ -45,9 +45,9 @@ public class BloodMagicUtils {
 
         Book guideBook = GuideBloodMagic.GUIDE_BOOK;
         List<CategoryAbstract> categoryList = guideBook.getCategoryList();
-        for(CategoryAbstract category : categoryList) {
+        for (CategoryAbstract category : categoryList) {
             Map<ResourceLocation, EntryAbstract> entries = guideAdditions.get(category.name);
-            if(entries != null && !entries.isEmpty()) {
+            if (entries != null && !entries.isEmpty()) {
                 category.addEntries(entries);
             }
         }

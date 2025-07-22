@@ -53,30 +53,14 @@ public class SurvivalModTAN implements ISurvivalMod {
     }
 
     @Override
-    public boolean isPlayerThirsty(EntityPlayer player) {
-        IThirst thirst = ThirstHelper.getThirstData(player);
-        return thirst.getThirst() < 20;
-    }
-
-    @Override
     public boolean isTemperatureFeatureEnabled() {
         return SyncedConfig.getBooleanValue(GameplayOption.ENABLE_TEMPERATURE);
     }
 
     @Override
-    public boolean isThirstFeatureEnabled() {
-        return SyncedConfig.getBooleanValue(GameplayOption.ENABLE_THIRST);
-    }
-
-    @Override
-    public int getMissingThirst(EntityPlayer player) {
-        return 20 - ThirstHelper.getThirstData(player).getThirst();
-    }
-
-    @Override
     public boolean stabilizePlayerTemperature(EntityPlayer player, int maxCooling, int maxHeating) {
         boolean did = false;
-        if(this.isTemperatureFeatureEnabled()) {
+        if (this.isTemperatureFeatureEnabled()) {
             ITemperature temperature = TemperatureHelper.getTemperatureData(player);
             int currTemp = temperature.getTemperature().getRawValue();
             int tempTarget = TemperatureHelper.getTemperatureData(player).getPlayerTarget(player);
@@ -107,6 +91,22 @@ public class SurvivalModTAN implements ISurvivalMod {
             did = true;
         }
         return did;
+    }
+
+    @Override
+    public boolean isThirstFeatureEnabled() {
+        return SyncedConfig.getBooleanValue(GameplayOption.ENABLE_THIRST);
+    }
+
+    @Override
+    public boolean isPlayerThirsty(EntityPlayer player) {
+        IThirst thirst = ThirstHelper.getThirstData(player);
+        return thirst.getThirst() < 20;
+    }
+
+    @Override
+    public int getMissingThirst(EntityPlayer player) {
+        return 20 - ThirstHelper.getThirstData(player).getThirst();
     }
 
     @Override

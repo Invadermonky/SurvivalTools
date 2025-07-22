@@ -1,7 +1,7 @@
 {
   "name": "Redstone Flux Tools",
-  "description": "",
+  "description": "Redstone Flux powered tools to manage thirst and temperature.",
   "icon": "minecraft:redstone",
-  "sortnum": 2,
+  "sortnum": 1,
   "secret": true
 }

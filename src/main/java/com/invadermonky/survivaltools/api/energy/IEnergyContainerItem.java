@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 
 /**
  * Implement this interface on Item classes that support external manipulation of their internal energy storages.
+ *
  * @author King Lemming
  */
 public interface IEnergyContainerItem {

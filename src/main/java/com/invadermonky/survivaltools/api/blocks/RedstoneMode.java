@@ -3,7 +3,8 @@ package com.invadermonky.survivaltools.api.blocks;
 public enum RedstoneMode {
     REQUIRED,
     INVERTED,
-    IGNORED;
+    IGNORED,
+    DISABLED;
 
     public RedstoneMode next() {
         return RedstoneMode.values()[(this.ordinal() + 1) % values().length];

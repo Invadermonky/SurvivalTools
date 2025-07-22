@@ -1,16 +1,6 @@
 package com.invadermonky.survivaltools.util.libs;
 
-import WayofTime.bloodmagic.BloodMagic;
-import baubles.common.Baubles;
-import com.charles445.simpledifficulty.SimpleDifficulty;
-import com.invadermonky.magicultureintegrations.MagicultureIntegrations;
 import com.invadermonky.survivaltools.util.helpers.ModHelper;
-import de.ellpeck.naturesaura.NaturesAura;
-import teamroots.embers.Embers;
-import thaumcraft.Thaumcraft;
-import toughasnails.core.ToughAsNails;
-import vazkii.botania.common.lib.LibMisc;
-import vazkii.patchouli.common.base.Patchouli;
 
 import javax.annotation.Nullable;
 
@@ -25,7 +15,7 @@ public enum ModIds {
     simpledifficulty(ConstIds.simpledifficulty),
     thaumcraft(ConstIds.thaumcraft),
     tough_as_nails(ConstIds.toughasnails),
-    ;
+    waterskin(ConstIds.waterskin);
 
     public final String modId;
     public final String version;
@@ -53,15 +43,16 @@ public enum ModIds {
     }
 
     public static class ConstIds {
-        public static final String baubles = Baubles.MODID;
-        public static final String bloodmagic = BloodMagic.MODID;
-        public static final String botania = LibMisc.MOD_ID;
-        public static final String embers = Embers.MODID;
-        public static final String magicluture_integrations = MagicultureIntegrations.MOD_ID;
-        public static final String natures_aura = NaturesAura.MOD_ID;
-        public static final String patchouli = Patchouli.MOD_ID;
-        public static final String simpledifficulty = SimpleDifficulty.MODID;
-        public static final String thaumcraft = Thaumcraft.MODID;
-        public static final String toughasnails = ToughAsNails.MOD_ID;
+        public static final String baubles = "baubles";
+        public static final String bloodmagic = "bloodmagic";
+        public static final String botania = "botania";
+        public static final String embers = "embers";
+        public static final String magicluture_integrations = "magicultureintegrations";
+        public static final String natures_aura = "naturesaura";
+        public static final String patchouli = "patchouli";
+        public static final String simpledifficulty = "simpledifficulty";
+        public static final String thaumcraft = "thaumcraft";
+        public static final String toughasnails = "toughasnails";
+        public static final String waterskin = "waterskin";
     }
 }

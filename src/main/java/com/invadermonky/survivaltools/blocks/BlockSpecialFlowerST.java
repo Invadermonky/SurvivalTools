@@ -1,6 +1,7 @@
 package com.invadermonky.survivaltools.blocks;
 
 import com.invadermonky.survivaltools.api.IAddition;
+import com.invadermonky.survivaltools.api.IProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -14,7 +15,7 @@ import vazkii.botania.common.item.block.ItemBlockSpecialFlower;
 
 import javax.annotation.Nonnull;
 
-public class BlockSpecialFlowerST <T extends SubTileEntity & IAddition> extends BlockSpecialFlower implements IAddition {
+public class BlockSpecialFlowerST<T extends SubTileEntity & IAddition & IProxy> extends BlockSpecialFlower implements IAddition, IProxy {
     private final T subTile;
     private final String name;
 
@@ -29,7 +30,7 @@ public class BlockSpecialFlowerST <T extends SubTileEntity & IAddition> extends 
 
     @Override
     public void getSubBlocks(CreativeTabs tab, @Nonnull NonNullList<ItemStack> stacks) {
-        if(this.isEnabled()) {
+        if (this.isEnabled()) {
             stacks.add(ItemBlockSpecialFlower.ofType(this.name));
             stacks.add(ItemBlockSpecialFlower.ofType(new ItemStack(ModBlocks.floatingSpecialFlower), this.name));
         }

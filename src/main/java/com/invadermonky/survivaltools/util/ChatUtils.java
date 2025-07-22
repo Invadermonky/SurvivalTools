@@ -22,11 +22,11 @@ public class ChatUtils {
         GuiNewChat chat = Minecraft.getMinecraft().ingameGUI.getChatGUI();
 
         int i;
-        for(i = DELETION_ID + messages.length - 1; i <= lastAdded; ++i) {
+        for (i = DELETION_ID + messages.length - 1; i <= lastAdded; ++i) {
             chat.deleteChatLine(i);
         }
 
-        for(i = 0; i < messages.length; ++i) {
+        for (i = 0; i < messages.length; ++i) {
             chat.printChatMessageWithOptionalDeletion(messages[i], DELETION_ID + i);
         }
 
@@ -40,7 +40,7 @@ public class ChatUtils {
     public static ITextComponent[] wrap(String... s) {
         ITextComponent[] ret = new ITextComponent[s.length];
 
-        for(int i = 0; i < ret.length; ++i) {
+        for (int i = 0; i < ret.length; ++i) {
             ret[i] = wrap(s[i]);
         }
 
@@ -56,11 +56,7 @@ public class ChatUtils {
     }
 
     public static void sendChat(EntityPlayer player, ITextComponent... lines) {
-        ITextComponent[] var2 = lines;
-        int var3 = lines.length;
-
-        for(int var4 = 0; var4 < var3; ++var4) {
-            ITextComponent c = var2[var4];
+        for (ITextComponent c : lines) {
             player.sendMessage(c);
         }
 
@@ -80,7 +76,7 @@ public class ChatUtils {
 
     public static void sendNoSpam(EntityPlayer player, ITextComponent... lines) {
         if (player instanceof EntityPlayerMP) {
-            sendNoSpam((EntityPlayerMP)player, lines);
+            sendNoSpam((EntityPlayerMP) player, lines);
         }
 
     }
@@ -107,23 +103,20 @@ public class ChatUtils {
             this.chatLines = lines;
         }
 
-        public void toBytes(ByteBuf buf) {
-            buf.writeInt(this.chatLines.length);
-            ITextComponent[] var2 = this.chatLines;
-            int var3 = var2.length;
+        public void fromBytes(ByteBuf buf) {
+            this.chatLines = new ITextComponent[buf.readInt()];
 
-            for(int var4 = 0; var4 < var3; ++var4) {
-                ITextComponent c = var2[var4];
-                ByteBufUtils.writeUTF8String(buf, ITextComponent.Serializer.componentToJson(c));
+            for (int i = 0; i < this.chatLines.length; ++i) {
+                this.chatLines[i] = ITextComponent.Serializer.jsonToComponent(ByteBufUtils.readUTF8String(buf));
             }
 
         }
 
-        public void fromBytes(ByteBuf buf) {
-            this.chatLines = new ITextComponent[buf.readInt()];
-
-            for(int i = 0; i < this.chatLines.length; ++i) {
-                this.chatLines[i] = ITextComponent.Serializer.jsonToComponent(ByteBufUtils.readUTF8String(buf));
+        public void toBytes(ByteBuf buf) {
+            buf.writeInt(this.chatLines.length);
+            ITextComponent[] var2 = this.chatLines;
+            for (ITextComponent c : var2) {
+                ByteBufUtils.writeUTF8String(buf, ITextComponent.Serializer.componentToJson(c));
             }
 
         }
@@ -133,9 +126,7 @@ public class ChatUtils {
             }
 
             public IMessage onMessage(PacketNoSpamChat message, MessageContext ctx) {
-                Minecraft.getMinecraft().addScheduledTask(() -> {
-                    sendNoSpamMessages(message.chatLines);
-                });
+                Minecraft.getMinecraft().addScheduledTask(() -> sendNoSpamMessages(message.chatLines));
                 return null;
             }
         }

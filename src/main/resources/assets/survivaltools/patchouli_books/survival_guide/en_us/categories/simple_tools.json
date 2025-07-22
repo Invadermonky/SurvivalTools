@@ -1,6 +1,6 @@
 {
   "name": "Simple Tools",
-  "description": "",
+  "description": "Simple tools to help manage thirst and temperature.",
   "icon": "survivaltools:canteen",
   "sortnum": 0
 }

@@ -1,0 +1,17 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "survivaltools:powered_purifier"
+  },
+  "variants": {
+    "inventory": [{}],
+    "enabled=false,facing=north": { "model": "survivaltools:powered_purifier" },
+    "enabled=false,facing=south": { "model": "survivaltools:powered_purifier", "y": 180 },
+    "enabled=false,facing=east":  { "model": "survivaltools:powered_purifier", "y": 90 },
+    "enabled=false,facing=west":  { "model": "survivaltools:powered_purifier", "y": 270 },
+    "enabled=true,facing=north": { "model": "survivaltools:powered_purifier_active" },
+    "enabled=true,facing=south": { "model": "survivaltools:powered_purifier_active", "y": 180 },
+    "enabled=true,facing=east":  { "model": "survivaltools:powered_purifier_active", "y": 90 },
+    "enabled=true,facing=west":  { "model": "survivaltools:powered_purifier_active", "y": 270 }
+  }
+}

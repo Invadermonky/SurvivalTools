@@ -3,8 +3,8 @@ package com.invadermonky.survivaltools.items;
 import baubles.api.BaubleType;
 import com.invadermonky.survivaltools.api.IAddition;
 import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
-import com.invadermonky.survivaltools.api.items.AbstractEquipableBauble;
 import com.invadermonky.survivaltools.config.ConfigHandlerST;
+import com.invadermonky.survivaltools.items.base.AbstractEquipableBauble;
 import com.invadermonky.survivaltools.util.helpers.StringHelper;
 import com.invadermonky.survivaltools.util.libs.LibNames;
 import de.ellpeck.naturesaura.api.NaturesAuraAPI;
@@ -24,34 +24,22 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.registries.IForgeRegistry;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemEnvironmentalAmulet extends AbstractEquipableBauble implements IAddition {
-    public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
-        if(player.world.isRemote || !(player instanceof EntityPlayer) || ((EntityPlayer) player).isCreative())
-            return;
-
-        if(player.ticksExisted % ConfigHandlerST.natures_aura.environmental_amulet.delay == 0) {
-            int cost = ConfigHandlerST.natures_aura.environmental_amulet.cost;
-
-            if(NaturesAuraAPI.instance().extractAuraFromPlayer((EntityPlayer) player, cost, false)) {
-                SurvivalToolsAPI.stabilizePlayerTemperature((EntityPlayer) player, ConfigHandlerST.natures_aura.environmental_amulet.maxCooling, ConfigHandlerST.natures_aura.environmental_amulet.maxHeating);
-            }
-        }
-    }
-
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(I18n.format(StringHelper.getTranslationKey(LibNames.ENVIRONMENTAL_AMULET, "tooltip", "desc")));
-        if(GuiScreen.isShiftKeyDown()) {
-            int cooling = ConfigHandlerST.natures_aura.environmental_amulet.maxCooling;
-            int heating = ConfigHandlerST.natures_aura.environmental_amulet.maxHeating;
-            if(cooling > -1) {
+    public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, List<String> tooltip, @NotNull ITooltipFlag flagIn) {
+        tooltip.add(StringHelper.getTranslatedString(LibNames.ENVIRONMENTAL_AMULET, "tooltip", "desc"));
+        if (GuiScreen.isShiftKeyDown()) {
+            int cooling = ConfigHandlerST.integrations.natures_aura.environmental_amulet.maxCooling;
+            int heating = ConfigHandlerST.integrations.natures_aura.environmental_amulet.maxHeating;
+            if (cooling > -1) {
                 tooltip.add(I18n.format(StringHelper.getTranslationKey("max_cooling", "tooltip", "desc"), cooling));
             }
-            if(heating > -1) {
+            if (heating > -1) {
                 tooltip.add(I18n.format(StringHelper.getTranslationKey("max_heating", "tooltip", "desc"), heating));
             }
         }
@@ -59,6 +47,19 @@ public class ItemEnvironmentalAmulet extends AbstractEquipableBauble implements 
 
     public BaubleType getBaubleType(ItemStack itemStack) {
         return BaubleType.AMULET;
+    }
+
+    public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
+        if (player.world.isRemote || !(player instanceof EntityPlayer) || ((EntityPlayer) player).isCreative())
+            return;
+
+        if (player.ticksExisted % ConfigHandlerST.integrations.natures_aura.environmental_amulet.delay == 0) {
+            int cost = ConfigHandlerST.integrations.natures_aura.environmental_amulet.cost;
+
+            if (NaturesAuraAPI.instance().extractAuraFromPlayer((EntityPlayer) player, cost, false)) {
+                SurvivalToolsAPI.stabilizePlayerTemperature((EntityPlayer) player, ConfigHandlerST.integrations.natures_aura.environmental_amulet.maxCooling, ConfigHandlerST.integrations.natures_aura.environmental_amulet.maxHeating);
+            }
+        }
     }
 
     /*
@@ -88,6 +89,6 @@ public class ItemEnvironmentalAmulet extends AbstractEquipableBauble implements 
 
     @Override
     public boolean isEnabled() {
-        return ConfigHandlerST.natures_aura.environmental_amulet.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled();
+        return ConfigHandlerST.integrations.natures_aura.environmental_amulet.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled();
     }
 }

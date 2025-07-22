@@ -1,8 +1,9 @@
 package com.invadermonky.survivaltools.blocks;
 
 import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
-import com.invadermonky.survivaltools.blocks.tile.TileCentralAirUnit;
+import com.invadermonky.survivaltools.blocks.base.AbstractBlockFluxMachine;
 import com.invadermonky.survivaltools.config.ConfigHandlerST;
+import com.invadermonky.survivaltools.tile.TileCentralAirUnit;
 import com.invadermonky.survivaltools.util.libs.LibTags;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -15,18 +16,19 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.registries.IForgeRegistry;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
 public class BlockCentralAirUnit extends AbstractBlockFluxMachine {
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
+    public TileEntity createNewTileEntity(@NotNull World worldIn, int meta) {
         return new TileCentralAirUnit();
     }
 
     @Override
-    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+    public int getLightValue(IBlockState state, @NotNull IBlockAccess world, @NotNull BlockPos pos) {
         return state.getValue(LibTags.ACTIVE) ? 7 : 0;
     }
 
@@ -52,6 +54,6 @@ public class BlockCentralAirUnit extends AbstractBlockFluxMachine {
 
     @Override
     public boolean isEnabled() {
-        return ConfigHandlerST.flux_tools.central_air_unit.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled();
+        return ConfigHandlerST.machines.central_air_unit.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled();
     }
 }

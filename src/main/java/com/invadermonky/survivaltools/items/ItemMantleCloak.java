@@ -2,10 +2,11 @@ package com.invadermonky.survivaltools.items;
 
 import baubles.api.BaubleType;
 import com.invadermonky.survivaltools.api.IAddition;
+import com.invadermonky.survivaltools.api.IProxy;
 import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
-import com.invadermonky.survivaltools.api.items.AbstractEquipableBauble;
 import com.invadermonky.survivaltools.compat.embers.EmbersST;
 import com.invadermonky.survivaltools.config.ConfigHandlerST;
+import com.invadermonky.survivaltools.items.base.AbstractEquipableBauble;
 import com.invadermonky.survivaltools.util.helpers.StringHelper;
 import com.invadermonky.survivaltools.util.libs.LibNames;
 import com.invadermonky.survivaltools.util.libs.ModIds;
@@ -25,6 +26,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
+import org.jetbrains.annotations.NotNull;
 import teamroots.embers.research.ResearchBase;
 import teamroots.embers.research.ResearchManager;
 import teamroots.embers.util.EmberInventoryUtil;
@@ -32,34 +34,34 @@ import teamroots.embers.util.EmberInventoryUtil;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemMantleCloak extends AbstractEquipableBauble implements IAddition {
+public class ItemMantleCloak extends AbstractEquipableBauble implements IAddition, IProxy {
+    public BaubleType getBaubleType(ItemStack itemStack) {
+        return BaubleType.BODY;
+    }
+
     public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
-        if(player.world.isRemote || !(player instanceof EntityPlayer) || ((EntityPlayer) player).isCreative())
+        if (player.world.isRemote || !(player instanceof EntityPlayer) || ((EntityPlayer) player).isCreative())
             return;
 
-        if(player.ticksExisted % ConfigHandlerST.embers.mantle_cloak.delay == 0) {
-            int cost = ConfigHandlerST.embers.mantle_cloak.cost;
-            if(EmberInventoryUtil.getEmberTotal((EntityPlayer) player) >= cost) {
-                SurvivalToolsAPI.stabilizePlayerTemperature((EntityPlayer) player, ConfigHandlerST.embers.mantle_cloak.maxCooling, ConfigHandlerST.embers.mantle_cloak.maxHeating);
+        if (player.ticksExisted % ConfigHandlerST.integrations.embers.mantle_cloak.delay == 0) {
+            int cost = ConfigHandlerST.integrations.embers.mantle_cloak.cost;
+            if (EmberInventoryUtil.getEmberTotal((EntityPlayer) player) >= cost) {
+                SurvivalToolsAPI.stabilizePlayerTemperature((EntityPlayer) player, ConfigHandlerST.integrations.embers.mantle_cloak.maxCooling, ConfigHandlerST.integrations.embers.mantle_cloak.maxHeating);
                 EmberInventoryUtil.removeEmber((EntityPlayer) player, cost);
             }
         }
     }
 
-    public BaubleType getBaubleType(ItemStack itemStack) {
-        return BaubleType.BODY;
-    }
-
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, @NotNull List<String> tooltip, @NotNull ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        if(GuiScreen.isShiftKeyDown()) {
-            int cooling = ConfigHandlerST.embers.mantle_cloak.maxCooling;
-            int heating = ConfigHandlerST.embers.mantle_cloak.maxHeating;
-            if(cooling > -1) {
+        if (GuiScreen.isShiftKeyDown()) {
+            int cooling = ConfigHandlerST.integrations.embers.mantle_cloak.maxCooling;
+            int heating = ConfigHandlerST.integrations.embers.mantle_cloak.maxHeating;
+            if (cooling > -1) {
                 tooltip.add(I18n.format(StringHelper.getTranslationKey("max_cooling", "tooltip", "desc"), cooling));
             }
-            if(heating > -1) {
+            if (heating > -1) {
                 tooltip.add(I18n.format(StringHelper.getTranslationKey("max_heating", "tooltip", "desc"), heating));
             }
         }
@@ -98,6 +100,6 @@ public class ItemMantleCloak extends AbstractEquipableBauble implements IAdditio
 
     @Override
     public boolean isEnabled() {
-        return ConfigHandlerST.embers.mantle_cloak.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled();
+        return ConfigHandlerST.integrations.embers.mantle_cloak.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled();
     }
 }

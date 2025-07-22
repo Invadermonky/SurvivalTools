@@ -8,21 +8,6 @@ import com.invadermonky.survivaltools.util.libs.LibNames;
 public class NaturesAuraST implements IProxy {
     public static ItemEnvironmentalAmulet environmental_amulet;
 
-    @Override
-    public void preInit() {
-
-    }
-
-    @Override
-    public void init() {
-
-    }
-
-    @Override
-    public void postInit() {
-
-    }
-
     static {
         ModItemsST.addItemToRegister(environmental_amulet = new ItemEnvironmentalAmulet(), LibNames.ENVIRONMENTAL_AMULET);
     }

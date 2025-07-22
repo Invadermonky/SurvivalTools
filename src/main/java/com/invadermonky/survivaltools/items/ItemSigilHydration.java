@@ -6,6 +6,7 @@ import WayofTime.bloodmagic.item.sigil.ItemSigilToggleableBase;
 import WayofTime.bloodmagic.util.helper.PlayerHelper;
 import com.invadermonky.survivaltools.SurvivalTools;
 import com.invadermonky.survivaltools.api.IAddition;
+import com.invadermonky.survivaltools.api.IProxy;
 import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
 import com.invadermonky.survivaltools.compat.bloodmagic.BloodMagicST;
 import com.invadermonky.survivaltools.compat.bloodmagic.BloodMagicUtils;
@@ -23,16 +24,16 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.registries.IForgeRegistry;
 
-public class ItemSigilHydration extends ItemSigilToggleableBase implements IAddition {
+public class ItemSigilHydration extends ItemSigilToggleableBase implements IAddition, IProxy {
     public ItemSigilHydration() {
-        super(LibNames.SIGIL_HYDRATION, ConfigHandlerST.blood_magic.sigil_of_hydration.cost);
+        super(LibNames.SIGIL_HYDRATION, ConfigHandlerST.integrations.blood_magic.sigil_of_hydration.cost);
         this.addPropertyOverride(new ResourceLocation(SurvivalTools.MOD_ID, "enabled"), (stack, world, entity) -> this.getActivated(stack) ? 1 : 0);
     }
 
     @Override
     public void onSigilUpdate(ItemStack stack, World world, EntityPlayer player, int itemSlot, boolean isSelected) {
-        if(!PlayerHelper.isFakePlayer(player)) {
-            if(player.ticksExisted % ConfigHandlerST.blood_magic.sigil_of_hydration.delay == 0)
+        if (!PlayerHelper.isFakePlayer(player)) {
+            if (player.ticksExisted % ConfigHandlerST.integrations.blood_magic.sigil_of_hydration.delay == 0)
                 SurvivalToolsAPI.hydratePlayer(player, 1, 0.6F);
         }
     }
@@ -70,6 +71,6 @@ public class ItemSigilHydration extends ItemSigilToggleableBase implements IAddi
 
     @Override
     public boolean isEnabled() {
-        return ConfigHandlerST.blood_magic.sigil_of_hydration.enable && SurvivalToolsAPI.isThirstFeatureEnabled();
+        return ConfigHandlerST.integrations.blood_magic.sigil_of_hydration.enable && SurvivalToolsAPI.isThirstFeatureEnabled();
     }
 }

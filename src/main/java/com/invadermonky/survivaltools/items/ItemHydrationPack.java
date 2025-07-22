@@ -5,10 +5,10 @@ import com.invadermonky.survivaltools.api.IAddition;
 import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
 import com.invadermonky.survivaltools.api.fluid.FluidContainerItemWrapper;
 import com.invadermonky.survivaltools.api.fluid.IPurifiedFluidContainerItem;
-import com.invadermonky.survivaltools.api.items.AbstractEquipableBauble;
 import com.invadermonky.survivaltools.config.ConfigHandlerST;
 import com.invadermonky.survivaltools.crafting.recipes.RecipeHydrationPackAttach;
 import com.invadermonky.survivaltools.crafting.recipes.RecipeHydrationPackRemove;
+import com.invadermonky.survivaltools.items.base.AbstractEquipableBauble;
 import com.invadermonky.survivaltools.util.ChatUtils;
 import com.invadermonky.survivaltools.util.helpers.StringHelper;
 import com.invadermonky.survivaltools.util.libs.LibNames;
@@ -27,7 +27,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -39,6 +38,7 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -54,60 +54,13 @@ public class ItemHydrationPack extends AbstractEquipableBauble implements IPurif
     public ItemHydrationPack(int maxCapacity) {
         this.setMaxStackSize(1);
         this.setMaxFluidCapacity(maxCapacity);
-        this.setFluidCost(ConfigHandlerST.simple_tools.hydration_pack.fluidCost);
-        this.setRestoredThirst(ConfigHandlerST.simple_tools.hydration_pack.restoredThirst);
-        this.setRestoredHydration(ConfigHandlerST.simple_tools.hydration_pack.restoredHydration);
+        this.setFluidCost(ConfigHandlerST.tools.hydration_packs.fluidCost);
+        this.setRestoredThirst(ConfigHandlerST.tools.hydration_packs.restoredThirst);
+        this.setRestoredHydration(ConfigHandlerST.tools.hydration_packs.restoredHydration);
     }
 
     public ItemHydrationPack() {
-        this(ConfigHandlerST.simple_tools.hydration_pack.fluidCapacityBasic);
-    }
-
-    public ItemHydrationPack setMaxFluidCapacity(int capacity) {
-        this.capacity = capacity;
-        return this;
-    }
-
-    public ItemHydrationPack setFluidCost(int fluidCost) {
-        this.fluidCost = fluidCost;
-        return this;
-    }
-
-    public int getFluidCost() {
-        return this.fluidCost;
-    }
-
-    public ItemHydrationPack setRestoredThirst(int restoredThirst) {
-        this.restoredThirst = restoredThirst;
-        return this;
-    }
-
-    public ItemHydrationPack setRestoredHydration(double restoredHydration) {
-        this.restoredHydration = (float) restoredHydration;
-        return this;
-    }
-
-    public boolean doTick(EntityPlayer player, ItemStack stack) {
-        boolean did = false;
-        if(this.getFluidAmountStored(stack) > this.capacity) {
-            this.setFluidAmountStored(stack, this.capacity);
-            did = true;
-        }
-
-        if(player.ticksExisted % 60 == 0 && !player.isCreative()) {
-            int currentFluid = this.getFluidAmountStored(stack);
-            if(this.restoredThirst <= SurvivalToolsAPI.getMissingThirst(player) && currentFluid > 0) {
-                int thirstRestored = this.getFluidCost() <= currentFluid ? this.restoredThirst : (int) (((double) currentFluid / this.getFluidCost()) * this.restoredThirst);
-                SurvivalToolsAPI.hydratePlayer(player, thirstRestored, this.restoredHydration);
-                player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.PLAYERS, 0.6f, 1.0f);
-                this.drain(stack, this.getFluidCost(), true);
-                did = true;
-                if(this.getFluidAmountStored(stack) <= 0) {
-                    ChatUtils.sendNoSpam(player, new TextComponentTranslation(StringHelper.getTranslationKey(LibNames.HYDRATION_PACK, "chat", "empty")));
-                }
-            }
-        }
-        return did;
+        this(ConfigHandlerST.tools.hydration_packs.fluidCapacityBasic);
     }
 
     public static boolean hasHydrationPackAttached(ItemStack stack) {
@@ -115,7 +68,7 @@ public class ItemHydrationPack extends AbstractEquipableBauble implements IPurif
     }
 
     public static ItemStack getHydrationPack(ItemStack stack) {
-        if(stack.hasTagCompound() && hasHydrationPackAttached(stack)) {
+        if (stack.hasTagCompound() && hasHydrationPackAttached(stack)) {
             NBTTagCompound packTag = stack.getTagCompound().getCompoundTag(TAG_HYDRATION_PACK);
             return new ItemStack(packTag);
         }
@@ -123,7 +76,7 @@ public class ItemHydrationPack extends AbstractEquipableBauble implements IPurif
     }
 
     public static void attachHydrationPack(ItemStack chestStack, ItemStack hydrationPack) {
-        if(!chestStack.hasTagCompound()) {
+        if (!chestStack.hasTagCompound()) {
             chestStack.setTagCompound(new NBTTagCompound());
         }
         NBTTagCompound packTag = new NBTTagCompound();
@@ -132,7 +85,7 @@ public class ItemHydrationPack extends AbstractEquipableBauble implements IPurif
     }
 
     public static ItemStack removeHydrationPack(ItemStack chestStack) {
-        if(chestStack.hasTagCompound() && hasHydrationPackAttached(chestStack)) {
+        if (chestStack.hasTagCompound() && hasHydrationPackAttached(chestStack)) {
             NBTTagCompound packTag = chestStack.getTagCompound().getCompoundTag(TAG_HYDRATION_PACK);
             chestStack.getTagCompound().removeTag(TAG_HYDRATION_PACK);
             return new ItemStack(packTag);
@@ -141,7 +94,7 @@ public class ItemHydrationPack extends AbstractEquipableBauble implements IPurif
     }
 
     public static void onEntityUpdate(LivingEvent.LivingUpdateEvent event) {
-        if(ConfigHandlerST.simple_tools.hydration_pack.attachmentRecipe) {
+        if (ConfigHandlerST.tools.hydration_packs.attachmentRecipe) {
             if (event.getEntityLiving().world.isRemote || !(event.getEntityLiving() instanceof EntityPlayer))
                 return;
 
@@ -158,7 +111,7 @@ public class ItemHydrationPack extends AbstractEquipableBauble implements IPurif
 
     @SideOnly(Side.CLIENT)
     public static void onTooltipEvent(ItemTooltipEvent event) {
-        if(ConfigHandlerST.simple_tools.hydration_pack.attachmentRecipe) {
+        if (ConfigHandlerST.tools.hydration_packs.attachmentRecipe) {
             ItemStack stack = event.getItemStack();
             if (!stack.isEmpty() && hasHydrationPackAttached(stack)) {
                 ItemStack packStack = getHydrationPack(stack);
@@ -168,50 +121,68 @@ public class ItemHydrationPack extends AbstractEquipableBauble implements IPurif
         }
     }
 
+    public ItemHydrationPack setMaxFluidCapacity(int capacity) {
+        this.capacity = capacity;
+        return this;
+    }
+
+    public int getFluidCost() {
+        return this.fluidCost;
+    }
+
+    public ItemHydrationPack setFluidCost(int fluidCost) {
+        this.fluidCost = fluidCost;
+        return this;
+    }
+
+    public ItemHydrationPack setRestoredThirst(int restoredThirst) {
+        this.restoredThirst = restoredThirst;
+        return this;
+    }
+
+    public ItemHydrationPack setRestoredHydration(double restoredHydration) {
+        this.restoredHydration = (float) restoredHydration;
+        return this;
+    }
+
+    public boolean doTick(EntityPlayer player, ItemStack stack) {
+        boolean did = false;
+        if (this.getFluidAmountStored(stack) > this.capacity) {
+            this.setFluidAmountStored(stack, this.capacity);
+            did = true;
+        }
+
+        if (player.ticksExisted % 60 == 0 && !player.isCreative()) {
+            int currentFluid = this.getFluidAmountStored(stack);
+            if (this.restoredThirst <= SurvivalToolsAPI.getMissingThirst(player) && currentFluid > 0) {
+                int thirstRestored = this.getFluidCost() <= currentFluid ? this.restoredThirst : (int) (((double) currentFluid / this.getFluidCost()) * this.restoredThirst);
+                SurvivalToolsAPI.hydratePlayer(player, thirstRestored, this.restoredHydration);
+                player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.PLAYERS, 0.6f, 1.0f);
+                this.drain(stack, this.getFluidCost(), true);
+                did = true;
+                if (this.getFluidAmountStored(stack) <= 0) {
+                    ChatUtils.sendNoSpam(player, StringHelper.getTranslatedComponent(LibNames.HYDRATION_PACK, "chat", "empty"));
+                }
+            }
+        }
+        return did;
+    }
+
     /*
      * Item
      */
 
     @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if(this.isInCreativeTab(tab)) {
-            items.add(new ItemStack(this));
-            if (ConfigHandlerST.enableFullVariants) {
-                ItemStack stack = new ItemStack(this);
-                this.setFluidFull(stack);
-                items.add(stack);
-            }
-        }
-    }
-
-    @Override
-    public boolean showDurabilityBar(ItemStack stack) {
-        return this.getFluidAmountStored(stack) != this.getMaxFluidCapacity(stack);
-    }
-
-    @Override
-    public double getDurabilityForDisplay(ItemStack stack) {
-        double max = this.getMaxFluidCapacity(stack);
-        return (max - this.getFluidAmountStored(stack)) / max;
-    }
-
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-        return new FluidContainerItemWrapper(stack, this);
-    }
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    public @NotNull ActionResult<ItemStack> onItemRightClick(@NotNull World world, EntityPlayer player, @NotNull EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
         int fluidAmount = this.getFluidAmountStored(stack);
         int fluidMissing = this.getMaxFluidCapacity(stack) - fluidAmount;
-        if(fluidMissing > 0) {
+        if (fluidMissing > 0) {
             RayTraceResult rtr = this.rayTrace(world, player, true);
-            if(rtr != null && rtr.typeOfHit == RayTraceResult.Type.BLOCK) {
+            if (rtr != null && rtr.typeOfHit == RayTraceResult.Type.BLOCK) {
                 BlockPos tracePos = rtr.getBlockPos();
-                if(world.isBlockModifiable(player, tracePos) && player.canPlayerEdit(tracePos, rtr.sideHit, stack)) {
-                    if(FluidUtil.interactWithFluidHandler(player, hand, world, tracePos, rtr.sideHit)) {
+                if (world.isBlockModifiable(player, tracePos) && player.canPlayerEdit(tracePos, rtr.sideHit, stack)) {
+                    if (FluidUtil.interactWithFluidHandler(player, hand, world, tracePos, rtr.sideHit)) {
                         return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
                     }
                 }
@@ -221,20 +192,49 @@ public class ItemHydrationPack extends AbstractEquipableBauble implements IPurif
     }
 
     @Override
-    public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
-        if(this.getFluidAmountStored(stack) > this.getMaxFluidCapacity(stack)) {
+    public void onUpdate(@NotNull ItemStack stack, @NotNull World world, @NotNull Entity entity, int itemSlot, boolean isSelected) {
+        if (this.getFluidAmountStored(stack) > this.getMaxFluidCapacity(stack)) {
             this.setFluidAmountStored(stack, getMaxFluidCapacity(stack));
         }
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, List<String> tooltip, @NotNull ITooltipFlag flagIn) {
         tooltip.add(String.format("%d/%dmb %s", getFluidAmountStored(stack), this.capacity, new FluidStack(SurvivalToolsAPI.getPurifiedWater(), 1).getLocalizedName()));
-        tooltip.add(I18n.format(StringHelper.getTranslationKey(LibNames.HYDRATION_PACK, "tooltip", "desc0")));
-        if(ConfigHandlerST.simple_tools.hydration_pack.attachmentRecipe) {
-            tooltip.add(I18n.format(StringHelper.getTranslationKey(TAG_HYDRATION_PACK, "tooltip", "desc1")));
+        tooltip.add(StringHelper.getTranslatedString(LibNames.HYDRATION_PACK, "tooltip", "desc0"));
+        if (ConfigHandlerST.tools.hydration_packs.attachmentRecipe) {
+            tooltip.add(StringHelper.getTranslatedString(TAG_HYDRATION_PACK, "tooltip", "desc1"));
         }
+    }
+
+    @Override
+    public void getSubItems(@NotNull CreativeTabs tab, @NotNull NonNullList<ItemStack> items) {
+        if (this.isInCreativeTab(tab)) {
+            items.add(new ItemStack(this));
+            if (ConfigHandlerST.general.enableFullVariants) {
+                ItemStack stack = new ItemStack(this);
+                this.setFluidFull(stack);
+                items.add(stack);
+            }
+        }
+    }
+
+    @Override
+    public boolean showDurabilityBar(@NotNull ItemStack stack) {
+        return this.getFluidAmountStored(stack) != this.getMaxFluidCapacity(stack);
+    }
+
+    @Override
+    public double getDurabilityForDisplay(@NotNull ItemStack stack) {
+        double max = this.getMaxFluidCapacity(stack);
+        return (max - this.getFluidAmountStored(stack)) / max;
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(@NotNull ItemStack stack, @Nullable NBTTagCompound nbt) {
+        return new FluidContainerItemWrapper(stack, this);
     }
 
     /*
@@ -251,8 +251,13 @@ public class ItemHydrationPack extends AbstractEquipableBauble implements IPurif
      */
 
     @Override
+    public BaubleType getBaubleType(ItemStack itemStack) {
+        return BaubleType.BODY;
+    }
+
+    @Override
     public void onWornTick(ItemStack stack, EntityLivingBase player) {
-        if(player.world.isRemote || !(player instanceof EntityPlayer))
+        if (player.world.isRemote || !(player instanceof EntityPlayer))
             return;
 
         this.doTick((EntityPlayer) player, stack);
@@ -263,18 +268,13 @@ public class ItemHydrationPack extends AbstractEquipableBauble implements IPurif
         return true;
     }
 
-    @Override
-    public BaubleType getBaubleType(ItemStack itemStack) {
-        return BaubleType.BODY;
-    }
-
     /*
      *  IAddition
      */
 
     @Override
     public void registerRecipe(IForgeRegistry<IRecipe> registry) {
-        if(ConfigHandlerST.simple_tools.hydration_pack.attachmentRecipe) {
+        if (ConfigHandlerST.tools.hydration_packs.attachmentRecipe) {
             registry.register(new RecipeHydrationPackAttach());
             registry.register(new RecipeHydrationPackRemove());
         }

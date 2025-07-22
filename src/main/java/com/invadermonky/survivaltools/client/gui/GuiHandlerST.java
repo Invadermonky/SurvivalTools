@@ -1,7 +1,10 @@
 package com.invadermonky.survivaltools.client.gui;
 
-import com.invadermonky.survivaltools.blocks.tile.TileBarrelHeater;
-import com.invadermonky.survivaltools.inventory.ContainerBarrelHeater;
+import com.invadermonky.survivaltools.inventory.container.ContainerPoweredPurifier;
+import com.invadermonky.survivaltools.inventory.container.ContainerSolidFuelPurifier;
+import com.invadermonky.survivaltools.tile.TilePoweredPurifier;
+import com.invadermonky.survivaltools.tile.TileSolidFuelPurifier;
+import com.invadermonky.survivaltools.util.libs.ModGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -14,10 +17,15 @@ public class GuiHandlerST implements IGuiHandler {
     @Nullable
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        BlockPos pos = new BlockPos(x, y, z);
-        TileEntity tile = world.getTileEntity(pos);
-        if(ID == 0 && tile instanceof TileBarrelHeater) {
-            return new ContainerBarrelHeater(player.inventory, (TileBarrelHeater) tile);
+        TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
+        ModGui guiId = ModGui.values()[ID];
+        switch (guiId) {
+            case CENTRAL_AIR_UNIT:
+                return null;
+            case POWERED_PURIFIER:
+                return new ContainerPoweredPurifier(player.inventory, (TilePoweredPurifier) tile);
+            case SOLID_FUEL_PURIFIER:
+                return new ContainerSolidFuelPurifier(player.inventory, (TileSolidFuelPurifier) tile);
         }
         return null;
     }
@@ -25,10 +33,15 @@ public class GuiHandlerST implements IGuiHandler {
     @Nullable
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        BlockPos pos = new BlockPos(x, y, z);
-        TileEntity tile = world.getTileEntity(pos);
-        if(ID == 0 && tile instanceof TileBarrelHeater) {
-            return new GuiBarrelHeater(player.inventory, (TileBarrelHeater) tile);
+        TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
+        ModGui modGui = ModGui.values()[ID];
+        switch (modGui) {
+            case CENTRAL_AIR_UNIT:
+                return null;
+            case POWERED_PURIFIER:
+                return new GuiPoweredPurifier(new ContainerPoweredPurifier(player.inventory, (TilePoweredPurifier) tile));
+            case SOLID_FUEL_PURIFIER:
+                return new GuiSolidFuelPurifier(new ContainerSolidFuelPurifier(player.inventory, (TileSolidFuelPurifier) tile));
         }
         return null;
     }
