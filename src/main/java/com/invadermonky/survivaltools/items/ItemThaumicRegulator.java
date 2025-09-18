@@ -135,6 +135,14 @@ public class ItemThaumicRegulator extends AbstractEquipableBauble implements IRe
                 knowledge.sync((EntityPlayerMP) player);
                 player.sendStatusMessage(new TextComponentString(TextFormatting.DARK_PURPLE + net.minecraft.util.text.translation.I18n.translateToLocal("got.finddesert")), true);
             }
+
+            if (knowledge.isResearchKnown("UNLOCKAUROMANCY@1") && !knowledge.isResearchKnown("m_uphigh")) {
+                if (player.posY > (double)player.getEntityWorld().getActualHeight() * 0.4) {
+                    knowledge.addResearch("m_uphigh");
+                    knowledge.sync((EntityPlayerMP)player);
+                    player.sendStatusMessage(new TextComponentString(TextFormatting.DARK_PURPLE + net.minecraft.util.text.translation.I18n.translateToLocal("got.uphigh")), true);
+                }
+            }
         }
     }
 
