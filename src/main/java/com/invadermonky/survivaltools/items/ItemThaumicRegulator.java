@@ -15,21 +15,31 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.IRarity;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.capabilities.IPlayerKnowledge;
+import thaumcraft.api.capabilities.ThaumcraftCapabilities;
 import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.items.IRechargable;
 import thaumcraft.api.items.ItemsTC;
@@ -113,12 +123,28 @@ public class ItemThaumicRegulator extends AbstractEquipableBauble implements IRe
         return EnumRarity.RARE;
     }
 
+    @SubscribeEvent
+    public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
+        if(!event.getEntityLiving().world.isRemote && event.getEntityLiving() instanceof EntityPlayer && event.getEntityLiving().ticksExisted % 200 == 0) {
+            //Handles adding the correct research because TC is 'tarded again.
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            IPlayerKnowledge knowledge = ThaumcraftCapabilities.getKnowledge(player);
+            Biome biome = player.world.getBiome(player.getPosition());
+            if (!knowledge.isResearchKnown("m_finddesert") && BiomeDictionary.hasType(biome, BiomeDictionary.Type.HOT)) {
+                knowledge.addResearch("m_finddesert");
+                knowledge.sync((EntityPlayerMP) player);
+                player.sendStatusMessage(new TextComponentString(TextFormatting.DARK_PURPLE + net.minecraft.util.text.translation.I18n.translateToLocal("got.finddesert")), true);
+            }
+        }
+    }
+
     /*
         IAddition
     */
 
     @Override
     public void preInit() {
+        MinecraftForge.EVENT_BUS.register(this);
         ThaumcraftApi.registerResearchLocation(new ResourceLocation(SurvivalTools.MOD_ID, "research/thaumic_regulator"));
     }
 
