@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class SurvivalTools {
     public static final String MOD_ID = "survivaltools";
     public static final String MOD_NAME = "Survival Tools";
-    public static final String VERSION = "1.2.0";
+    public static final String VERSION = "1.2.1";
     public static final String MC_VERSION = "[1.12.2]";
     public static final String DEPENDENCIES =
             "required-after:" + ModIds.ConstIds.baubles +
