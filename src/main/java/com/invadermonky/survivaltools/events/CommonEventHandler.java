@@ -1,7 +1,7 @@
 package com.invadermonky.survivaltools.events;
 
 import com.invadermonky.survivaltools.SurvivalTools;
-import com.invadermonky.survivaltools.items.ItemHydrationPack;
+import com.invadermonky.survivaltools.compat.survivaltools.items.ItemHydrationPack;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

@@ -1,7 +1,7 @@
 package com.invadermonky.survivaltools.inventory.container;
 
+import com.invadermonky.survivaltools.compat.survivaltools.tiles.TilePoweredPurifier;
 import com.invadermonky.survivaltools.inventory.container.base.AbstractContainerWaterPurifier;
-import com.invadermonky.survivaltools.tile.TilePoweredPurifier;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class ContainerPoweredPurifier extends AbstractContainerWaterPurifier<TilePoweredPurifier> {

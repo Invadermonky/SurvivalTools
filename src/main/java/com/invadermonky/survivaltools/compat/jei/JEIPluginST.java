@@ -20,10 +20,11 @@ public class JEIPluginST implements IModPlugin {
     public static PurifierCategory purifierCategory;
     public boolean isPurifierCategoryEnabled;
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry) {
         IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
-        this.isPurifierCategoryEnabled = ModBlocksST.solid_fuel_purifier.isEnabled() || ModBlocksST.powered_purifier.isEnabled();
+        this.isPurifierCategoryEnabled = ModBlocksST.isBlockEnabled(ModBlocksST.SOLID_FUEL_PURIFIER) || ModBlocksST.isBlockEnabled(ModBlocksST.POWERED_PURIFIER);
 
         if (this.isPurifierCategoryEnabled) {
             registry.addRecipeCategories(purifierCategory = new PurifierCategory(guiHelper));
@@ -39,13 +40,14 @@ public class JEIPluginST implements IModPlugin {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void handlePurifierRecipes(IModRegistry registry) {
         registry.handleRecipes(PurifierRecipe.class, PurifierRecipeWrapper::new, PurifierCategory.UID);
-        if (ModBlocksST.solid_fuel_purifier.isEnabled()) {
-            registry.addRecipeCatalyst(Item.getItemFromBlock(ModBlocksST.solid_fuel_purifier).getDefaultInstance(), PurifierCategory.UID);
+        if (ModBlocksST.isBlockEnabled(ModBlocksST.SOLID_FUEL_PURIFIER)) {
+            registry.addRecipeCatalyst(Item.getItemFromBlock(ModBlocksST.SOLID_FUEL_PURIFIER).getDefaultInstance(), PurifierCategory.UID);
         }
-        if (ModBlocksST.powered_purifier.isEnabled()) {
-            registry.addRecipeCatalyst(Item.getItemFromBlock(ModBlocksST.powered_purifier).getDefaultInstance(), PurifierCategory.UID);
+        if (ModBlocksST.isBlockEnabled(ModBlocksST.POWERED_PURIFIER)) {
+            registry.addRecipeCatalyst(Item.getItemFromBlock(ModBlocksST.POWERED_PURIFIER).getDefaultInstance(), PurifierCategory.UID);
         }
         registry.addRecipes(PurifierRecipeRegistry.getPurifierRecipes(), PurifierCategory.UID);
     }

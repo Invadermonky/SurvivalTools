@@ -1,5 +1,0 @@
-{
-  "conditions": {
-    "survivaltools_item_exists": "com.invadermonky.survivaltools.util.factories.ConditionFactoryItemExists"
-  }
-}

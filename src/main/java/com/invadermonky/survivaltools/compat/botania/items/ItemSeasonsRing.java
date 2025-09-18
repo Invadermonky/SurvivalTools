@@ -1,0 +1,86 @@
+package com.invadermonky.survivaltools.compat.botania.items;
+
+import baubles.api.BaubleType;
+import com.invadermonky.survivaltools.api.IProxy;
+import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
+import com.invadermonky.survivaltools.api.items.AbstractEquipableBauble;
+import com.invadermonky.survivaltools.config.ConfigHandlerST;
+import com.invadermonky.survivaltools.util.helpers.StringHelper;
+import com.invadermonky.survivaltools.util.libs.LibNames;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
+import vazkii.botania.api.BotaniaAPI;
+import vazkii.botania.api.lexicon.LexiconCategory;
+import vazkii.botania.api.lexicon.LexiconEntry;
+import vazkii.botania.api.mana.IManaUsingItem;
+import vazkii.botania.api.mana.ManaItemHandler;
+import vazkii.botania.common.lexicon.BasicLexiconEntry;
+import vazkii.botania.common.lexicon.page.PageCraftingRecipe;
+import vazkii.botania.common.lexicon.page.PageText;
+
+import javax.annotation.Nullable;
+import java.util.List;
+
+public class ItemSeasonsRing extends AbstractEquipableBauble implements IManaUsingItem, IProxy {
+    public ItemSeasonsRing() {
+        super(LibNames.SEASONS_RING);
+    }
+
+    @Override
+    public BaubleType getBaubleType(ItemStack itemStack) {
+        return BaubleType.RING;
+    }
+
+    @Override
+    public void onWornTick(ItemStack stack, EntityLivingBase player) {
+        super.onWornTick(stack, player);
+        if (player.world.isRemote || !(player instanceof EntityPlayer) || ((EntityPlayer) player).isCreative())
+            return;
+
+        int manaCost = ConfigHandlerST.integrations.botania.ring_of_seasons.cost;
+        boolean hasMana = ManaItemHandler.requestManaExact(stack, (EntityPlayer) player, manaCost, false);
+
+        if (hasMana && player.ticksExisted % ConfigHandlerST.integrations.botania.ring_of_seasons.delay == 0) {
+            SurvivalToolsAPI.stabilizePlayerTemperature((EntityPlayer) player, ConfigHandlerST.integrations.botania.ring_of_seasons.maxCooling, ConfigHandlerST.integrations.botania.ring_of_seasons.maxHeating);
+            ManaItemHandler.requestManaExact(stack, (EntityPlayer) player, manaCost, true);
+        }
+    }
+
+    @Override
+    public boolean usesMana(ItemStack itemStack) {
+        return true;
+    }
+
+    @Override
+    public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, @NotNull List<String> tooltip, @NotNull ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+        if (GuiScreen.isShiftKeyDown()) {
+            int cooling = ConfigHandlerST.integrations.botania.ring_of_seasons.maxCooling;
+            int heating = ConfigHandlerST.integrations.botania.ring_of_seasons.maxHeating;
+            if (cooling > -1) {
+                tooltip.add(I18n.format(StringHelper.getTranslationKey("max_cooling", "tooltip", "desc"), cooling));
+            }
+            if (heating > -1) {
+                tooltip.add(I18n.format(StringHelper.getTranslationKey("max_heating", "tooltip", "desc"), heating));
+            }
+        }
+    }
+
+    @Override
+    public void postInit() {
+        LexiconCategory categoryBaubles = BotaniaAPI.categoryBaubles;
+        LexiconEntry temperatureRing = new BasicLexiconEntry("seasonsRing", categoryBaubles);
+        temperatureRing.setLexiconPages(new PageText("0"), new PageCraftingRecipe("1", this.getRegistryName()));
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return ConfigHandlerST.integrations.botania.ring_of_seasons.enable && SurvivalToolsAPI.isTemperatureFeatureEnabled();
+    }
+}

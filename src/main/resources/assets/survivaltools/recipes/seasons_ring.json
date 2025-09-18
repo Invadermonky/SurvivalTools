@@ -28,7 +28,7 @@
   },
   "conditions": [
     {
-      "type": "survivaltools_item_exists",
+      "type": "minecraft:item_exists",
       "item": "survivaltools:seasons_ring"
     }
   ]

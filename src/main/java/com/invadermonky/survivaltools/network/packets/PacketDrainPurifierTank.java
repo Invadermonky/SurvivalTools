@@ -1,6 +1,6 @@
 package com.invadermonky.survivaltools.network.packets;
 
-import com.invadermonky.survivaltools.tile.base.AbstractTileWaterPurifier;
+import com.invadermonky.survivaltools.api.tiles.AbstractTileWaterPurifier;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;

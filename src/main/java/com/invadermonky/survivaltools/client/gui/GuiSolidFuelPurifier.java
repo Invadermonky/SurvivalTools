@@ -1,8 +1,8 @@
 package com.invadermonky.survivaltools.client.gui;
 
 import com.invadermonky.survivaltools.client.gui.base.AbstractGuiWaterPurifier;
+import com.invadermonky.survivaltools.compat.survivaltools.tiles.TileSolidFuelPurifier;
 import com.invadermonky.survivaltools.inventory.container.ContainerSolidFuelPurifier;
-import com.invadermonky.survivaltools.tile.TileSolidFuelPurifier;
 
 public class GuiSolidFuelPurifier extends AbstractGuiWaterPurifier<TileSolidFuelPurifier, ContainerSolidFuelPurifier> {
     public GuiSolidFuelPurifier(ContainerSolidFuelPurifier inventoryContainer) {

@@ -1,14 +1,12 @@
 package com.invadermonky.survivaltools.compat.thaumcraft;
 
-import com.invadermonky.survivaltools.api.IProxy;
-import com.invadermonky.survivaltools.items.ItemThaumicRegulator;
-import com.invadermonky.survivaltools.registry.ModItemsST;
-import com.invadermonky.survivaltools.util.libs.LibNames;
+import com.invadermonky.survivaltools.api.IModModule;
+import com.invadermonky.survivaltools.compat.thaumcraft.items.ItemThaumicRegulator;
+import com.invadermonky.survivaltools.registry.RegistrarST;
 
-public class ThaumcraftST implements IProxy {
-    public static ItemThaumicRegulator thaumic_regulator;
-
-    static {
-        ModItemsST.addItemToRegister(thaumic_regulator = new ItemThaumicRegulator(), LibNames.THAUMIC_REGULATOR);
+public class ThaumcraftST implements IModModule {
+    @Override
+    public void preInit() {
+        RegistrarST.addAdditionToRegister(new ItemThaumicRegulator());
     }
 }

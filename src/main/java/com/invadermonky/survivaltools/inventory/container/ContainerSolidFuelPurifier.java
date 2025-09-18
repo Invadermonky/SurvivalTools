@@ -1,8 +1,8 @@
 package com.invadermonky.survivaltools.inventory.container;
 
+import com.invadermonky.survivaltools.compat.survivaltools.tiles.TileSolidFuelPurifier;
 import com.invadermonky.survivaltools.inventory.container.base.AbstractContainerWaterPurifier;
 import com.invadermonky.survivaltools.inventory.slot.SlotFilteredItemHandler;
-import com.invadermonky.survivaltools.tile.TileSolidFuelPurifier;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -40,14 +40,13 @@ public class ContainerSolidFuelPurifier extends AbstractContainerWaterPurifier<T
         for (IContainerListener listener : this.listeners) {
             if (this.burnTime != this.tilePurifier.getBurnTime()) {
                 listener.sendWindowProperty(this, getFieldId("burnTime"), this.tilePurifier.getBurnTime());
+                this.burnTime = this.tilePurifier.getBurnTime();
             }
             if (this.burnTimeMax != this.tilePurifier.getBurnTimeMax()) {
                 listener.sendWindowProperty(this, getFieldId("burnTimeMax"), this.tilePurifier.getBurnTimeMax());
+                this.burnTimeMax = this.tilePurifier.getBurnTimeMax();
             }
         }
-
-        this.burnTime = this.tilePurifier.getBurnTime();
-        this.burnTimeMax = this.tilePurifier.getBurnTimeMax();
     }
 
     @Override

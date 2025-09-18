@@ -1,9 +1,9 @@
 package com.invadermonky.survivaltools.client.gui;
 
+import com.invadermonky.survivaltools.compat.survivaltools.tiles.TilePoweredPurifier;
+import com.invadermonky.survivaltools.compat.survivaltools.tiles.TileSolidFuelPurifier;
 import com.invadermonky.survivaltools.inventory.container.ContainerPoweredPurifier;
 import com.invadermonky.survivaltools.inventory.container.ContainerSolidFuelPurifier;
-import com.invadermonky.survivaltools.tile.TilePoweredPurifier;
-import com.invadermonky.survivaltools.tile.TileSolidFuelPurifier;
 import com.invadermonky.survivaltools.util.libs.ModGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;

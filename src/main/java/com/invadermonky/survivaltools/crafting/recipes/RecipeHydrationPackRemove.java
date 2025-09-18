@@ -1,7 +1,7 @@
 package com.invadermonky.survivaltools.crafting.recipes;
 
 import com.invadermonky.survivaltools.SurvivalTools;
-import com.invadermonky.survivaltools.items.ItemHydrationPack;
+import com.invadermonky.survivaltools.compat.survivaltools.items.ItemHydrationPack;
 import com.invadermonky.survivaltools.util.libs.LibNames;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.inventory.EntityEquipmentSlot;

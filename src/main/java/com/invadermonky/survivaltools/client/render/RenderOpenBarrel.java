@@ -1,6 +1,6 @@
 package com.invadermonky.survivaltools.client.render;
 
-import com.invadermonky.survivaltools.tile.TileOpenBarrel;
+import com.invadermonky.survivaltools.compat.survivaltools.tiles.TileOpenBarrel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;

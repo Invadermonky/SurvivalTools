@@ -26,13 +26,14 @@ public class PurifierCategory implements IRecipeCategory<PurifierRecipeWrapper> 
     private final IDrawable background;
     private final IDrawable icon;
 
+    @SuppressWarnings("ConstantConditions")
     public PurifierCategory(IGuiHelper guiHelper) {
         this.localizedName = Translator.translateToLocal(L18N_KEY);
         this.background = guiHelper.createDrawable(AbstractGuiWaterPurifier.TEXTURE, 44, 12, 88, 58);
-        if (ModBlocksST.solid_fuel_purifier.isEnabled()) {
-            this.icon = guiHelper.createDrawableIngredient(Item.getItemFromBlock(ModBlocksST.solid_fuel_purifier).getDefaultInstance());
-        } else if (ModBlocksST.powered_purifier.isEnabled()) {
-            this.icon = guiHelper.createDrawableIngredient(Item.getItemFromBlock(ModBlocksST.powered_purifier).getDefaultInstance());
+        if (ModBlocksST.isBlockEnabled(ModBlocksST.SOLID_FUEL_PURIFIER)) {
+            this.icon = guiHelper.createDrawableIngredient(Item.getItemFromBlock(ModBlocksST.SOLID_FUEL_PURIFIER).getDefaultInstance());
+        } else if (ModBlocksST.isBlockEnabled(ModBlocksST.POWERED_PURIFIER)) {
+            this.icon = guiHelper.createDrawableIngredient(Item.getItemFromBlock(ModBlocksST.POWERED_PURIFIER).getDefaultInstance());
         } else {
             this.icon = guiHelper.createDrawableIngredient(SurvivalToolsAPI.getPurifiedWaterBottleStack());
         }

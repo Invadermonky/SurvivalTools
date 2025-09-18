@@ -1,14 +1,13 @@
 package com.invadermonky.survivaltools.compat.naturesaura;
 
-import com.invadermonky.survivaltools.api.IProxy;
-import com.invadermonky.survivaltools.items.ItemEnvironmentalAmulet;
-import com.invadermonky.survivaltools.registry.ModItemsST;
-import com.invadermonky.survivaltools.util.libs.LibNames;
+import com.invadermonky.survivaltools.api.IModModule;
+import com.invadermonky.survivaltools.compat.naturesaura.items.ItemEnvironmentalAmulet;
+import com.invadermonky.survivaltools.registry.RegistrarST;
 
-public class NaturesAuraST implements IProxy {
-    public static ItemEnvironmentalAmulet environmental_amulet;
+public class NaturesAuraST implements IModModule {
 
-    static {
-        ModItemsST.addItemToRegister(environmental_amulet = new ItemEnvironmentalAmulet(), LibNames.ENVIRONMENTAL_AMULET);
+    @Override
+    public void preInit() {
+        RegistrarST.addAdditionToRegister(new ItemEnvironmentalAmulet());
     }
 }

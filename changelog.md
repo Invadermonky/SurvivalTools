@@ -1,4 +1,13 @@
 # Survival Tools Changelog
+## 1.12.2-1.2.1
+### Changed
+- Refactored and rebuilt internal mod structure for improved organization and better addition handling
+
+### Fixed
+- Fixed a Thaumcraft bug preventing the Thaumic Regulator research from unlocking
+
+---
+
 ## 1.12.2-1.2.0
 ### Added
 - Added Solid Fuel Purifier, a new block that transforms liquids using burnable fuels and a filter item (includes CrT/GS support)

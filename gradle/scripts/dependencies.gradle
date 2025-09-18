@@ -45,12 +45,11 @@ dependencies {
     // Mod Integrations
     def modMap = [:]
     def loadMap = [:]
-
     modMap.put(["blood-magic-224791:2822288", "guide-api-228832:2645992"], project.bloodmagic)
     modMap.put(["botania-225643:3330934"], project.botania)
     modMap.put(["embers-rekindled-300777:3695248"], project.embers)
     modMap.put(["immersive-engineering-231951:2974106"], project.immersiveengineering)
-    modMap.put(["magiculture-integrations-1064613:6766756", "configanytime-870276:5212709"], project.magicultureintegrations)
+    modMap.put(["magiculture-integrations-1064613:6905883", "configanytime-870276:5212709"], project.magicultureintegrations)
     modMap.put(["natures-aura-306626:2882138"], project.naturesaura)
     modMap.put(["simpledifficulty-360779:3613814"], project.simpledifficulty)
     modMap.put(["thaumcraft-223628:2629023"], project.thaumcraft)

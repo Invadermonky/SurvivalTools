@@ -1,7 +1,7 @@
 package com.invadermonky.survivaltools.compat.waterskin;
 
-import com.invadermonky.survivaltools.api.IProxy;
-import com.invadermonky.survivaltools.items.ItemCanteen;
+import com.invadermonky.survivaltools.api.IModModule;
+import com.invadermonky.survivaltools.compat.survivaltools.items.ItemCanteen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
-public class WaterskinTaNST implements IProxy {
+public class WaterskinTaNST implements IModModule {
     @Override
     public void preInitClient() {
         MinecraftForge.EVENT_BUS.register(this);

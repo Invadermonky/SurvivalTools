@@ -11,7 +11,7 @@ public class CreativeTabST {
     public static final CreativeTabs TAB_ST = new CreativeTabs(SurvivalTools.MOD_ID) {
         @Override
         public @NotNull ItemStack createIcon() {
-            ItemStack canteen = new ItemStack(ModItemsST.canteen);
+            ItemStack canteen = new ItemStack(ModItemsST.CANTEEN);
             ((IPurifiedFluidContainerItem) canteen.getItem()).setFluidFull(canteen);
             return canteen;
         }

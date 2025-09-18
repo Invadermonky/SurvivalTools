@@ -1,8 +1,8 @@
 package com.invadermonky.survivaltools.client.gui;
 
 import com.invadermonky.survivaltools.client.gui.base.AbstractGuiWaterPurifier;
+import com.invadermonky.survivaltools.compat.survivaltools.tiles.TilePoweredPurifier;
 import com.invadermonky.survivaltools.inventory.container.ContainerPoweredPurifier;
-import com.invadermonky.survivaltools.tile.TilePoweredPurifier;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import java.util.ArrayList;

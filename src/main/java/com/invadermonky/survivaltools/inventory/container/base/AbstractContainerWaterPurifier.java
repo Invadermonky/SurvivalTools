@@ -1,9 +1,9 @@
 package com.invadermonky.survivaltools.inventory.container.base;
 
+import com.invadermonky.survivaltools.api.tiles.AbstractTileWaterPurifier;
 import com.invadermonky.survivaltools.crafting.purifier.PurifierRecipeRegistry;
 import com.invadermonky.survivaltools.inventory.slot.SlotFilteredFluidHandler;
 import com.invadermonky.survivaltools.inventory.slot.SlotFilteredItemHandler;
-import com.invadermonky.survivaltools.tile.base.AbstractTileWaterPurifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -168,10 +168,6 @@ public abstract class AbstractContainerWaterPurifier<T extends AbstractTileWater
         int invFull = invPlayer + 9;
         int invPurifier = invFull + this.tilePurifier.getItemHandler().getSlots();
         return slotIndex < invFull ? this.mergeItemStack(stack, invFull, invPurifier, false) : this.mergeItemStack(stack, 0, invFull, true);
-    }
-
-    public T getTilePurifier() {
-        return tilePurifier;
     }
 
     public InventoryPlayer getInventoryPlayer() {

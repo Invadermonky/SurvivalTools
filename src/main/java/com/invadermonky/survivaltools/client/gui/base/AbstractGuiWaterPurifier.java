@@ -1,9 +1,9 @@
 package com.invadermonky.survivaltools.client.gui.base;
 
 import com.invadermonky.survivaltools.SurvivalTools;
+import com.invadermonky.survivaltools.api.tiles.AbstractTileWaterPurifier;
 import com.invadermonky.survivaltools.client.gui.button.GuiButtonGuiButtonConsumer;
 import com.invadermonky.survivaltools.inventory.container.base.AbstractContainerWaterPurifier;
-import com.invadermonky.survivaltools.tile.base.AbstractTileWaterPurifier;
 import com.invadermonky.survivaltools.util.helpers.StringHelper;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
