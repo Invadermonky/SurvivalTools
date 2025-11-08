@@ -19,6 +19,8 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,6 +32,7 @@ public class ItemEnvironmentalAmulet extends AbstractEquipableBauble {
         super(LibNames.ENVIRONMENTAL_AMULET);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void addInformation(@NotNull ItemStack stack, @Nullable World worldIn, List<String> tooltip, @NotNull ITooltipFlag flagIn) {
         tooltip.add(StringHelper.getTranslatedString(LibNames.ENVIRONMENTAL_AMULET, "tooltip", "desc"));

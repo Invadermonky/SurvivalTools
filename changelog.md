@@ -1,4 +1,10 @@
 # Survival Tools Changelog
+## 1.12.2-1.2.2
+### Fixed
+- Fixed crash when loading server environments
+
+---
+
 ## 1.12.2-1.2.1
 ### Changed
 - Refactored and rebuilt internal mod structure for improved organization and better addition handling
