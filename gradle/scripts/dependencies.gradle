@@ -6,8 +6,8 @@ repositories {
     exclusiveContent {
         forRepository {
             maven {
-                name 'CurseMaven'
-                url 'https://cursemaven.com'
+                name 'CleanroomMC CurseMaven'
+                url 'https://curse.cleanroommc.com'
             }
         }
         filter {
@@ -45,28 +45,27 @@ dependencies {
     // Mod Integrations
     def modMap = [:]
     def loadMap = [:]
-    modMap.put(["blood-magic-224791:2822288", "guide-api-228832:2645992"], project.bloodmagic)
-    modMap.put(["botania-225643:3330934"], project.botania)
-    modMap.put(["embers-rekindled-300777:3695248"], project.embers)
-    modMap.put(["immersive-engineering-231951:2974106"], project.immersiveengineering)
-    modMap.put(["magiculture-integrations-1064613:6905883", "configanytime-870276:5212709"], project.magicultureintegrations)
-    modMap.put(["natures-aura-306626:2882138"], project.naturesaura)
-    modMap.put(["simpledifficulty-360779:3613814"], project.simpledifficulty)
-    modMap.put(["thaumcraft-223628:2629023"], project.thaumcraft)
-    modMap.put(["tough-as-nails-246391:2639903"], project.toughasnails)
-    modMap.put(["waterskin-simple-difficulty-619774:3776463", "simpledifficulty-360779:3613814"], project.waterskinSD)
-    modMap.put(["waterskin-441560:3191584", "tough-as-nails-246391:2639903"], project.waterskinTAN)
+    modMap.put(["curse.maven:blood-magic-224791:2822288", "curse.maven:guide-api-228832:2645992"], project.bloodmagic)
+    modMap.put(["curse.maven:botania-225643:3330934"], project.botania)
+    modMap.put(["curse.maven:embers-rekindled-300777:3695248"], project.embers)
+    modMap.put(["curse.maven:immersive-engineering-231951:2974106"], project.immersiveengineering)
+    modMap.put(["curse.maven:magiculture-integrations-1064613:6905883", "curse.maven:configanytime-870276:5212709"], project.magicultureintegrations)
+    modMap.put(["curse.maven:natures-aura-306626:2882138"], project.naturesaura)
+    modMap.put(["curse.maven:simpledifficulty-360779:3613814"], project.simpledifficulty)
+    modMap.put(["curse.maven:thaumcraft-223628:2629023"], project.thaumcraft)
+    modMap.put(["curse.maven:tough-as-nails-246391:2639903"], project.toughasnails)
+    modMap.put(["curse.maven:waterskin-simple-difficulty-619774:3776463", "curse.maven:simpledifficulty-360779:3613814"], project.waterskinSD)
+    modMap.put(["curse.maven:waterskin-441560:3191584", "curse.maven:tough-as-nails-246391:2639903"], project.waterskinTAN)
 
 
     modMap.each{mods, load -> {
         boolean loadFlag = load.toBoolean()
         mods.each{mod ->
-            def modMaven = "curse.maven:" + mod
-            if(!loadMap.containsKey(modMaven)) {
-                loadMap.put(modMaven,loadFlag)
+            if(!loadMap.containsKey(mod)) {
+                loadMap.put(mod,loadFlag)
             } else {
-                if(loadFlag && !loadMap[modMaven]) {
-                    loadMap[modMaven] = loadFlag
+                if(loadFlag && !loadMap[mod]) {
+                    loadMap[mod] = loadFlag
                 }
             }
         }
