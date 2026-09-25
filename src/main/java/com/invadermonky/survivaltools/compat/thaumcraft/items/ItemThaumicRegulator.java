@@ -20,7 +20,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -69,17 +70,16 @@ public class ItemThaumicRegulator extends AbstractEquipableBauble implements IRe
             boolean hasCharge = RechargeHelper.getCharge(itemstack) > 0;
             boolean used = false;
             int cost = ConfigHandlerST.integrations.thaumcraft.thaumic_regulator.cost;
+            int energy = itemstack.getTagCompound() != null ? itemstack.getTagCompound().getInteger(TAG_ENERGY) : 0;
 
-            int e = itemstack.hasTagCompound() ? itemstack.getTagCompound().getInteger(TAG_ENERGY) : 0;
-
-            if (hasCharge && e > 0) {
-                e -= cost;
+            if (hasCharge && energy > 0) {
+                energy -= cost;
                 used = true;
-            } else if (e <= 0 && RechargeHelper.consumeCharge(itemstack, player, 1)) {
-                e += 60 - cost;
+            } else if (energy <= 0 && RechargeHelper.consumeCharge(itemstack, player, 1)) {
+                energy += 60 - cost;
                 used = true;
             }
-            itemstack.setTagInfo(TAG_ENERGY, new NBTTagInt(e));
+            itemstack.setTagInfo(TAG_ENERGY, new NBTTagInt(energy));
 
 
             if (used) {
@@ -134,14 +134,14 @@ public class ItemThaumicRegulator extends AbstractEquipableBauble implements IRe
             if (!knowledge.isResearchKnown("m_finddesert") && BiomeDictionary.hasType(biome, BiomeDictionary.Type.HOT)) {
                 knowledge.addResearch("m_finddesert");
                 knowledge.sync((EntityPlayerMP) player);
-                player.sendStatusMessage(new TextComponentString(TextFormatting.DARK_PURPLE + net.minecraft.util.text.translation.I18n.translateToLocal("got.finddesert")), true);
+                player.sendStatusMessage(new TextComponentTranslation("got.finddesert").setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)), true);
             }
 
             if (knowledge.isResearchKnown("UNLOCKAUROMANCY@1") && !knowledge.isResearchKnown("m_uphigh")) {
                 if (player.posY > (double)player.getEntityWorld().getActualHeight() * 0.4) {
                     knowledge.addResearch("m_uphigh");
                     knowledge.sync((EntityPlayerMP)player);
-                    player.sendStatusMessage(new TextComponentString(TextFormatting.DARK_PURPLE + net.minecraft.util.text.translation.I18n.translateToLocal("got.uphigh")), true);
+                    player.sendStatusMessage(new TextComponentTranslation("got.uphigh").setStyle(new Style().setColor(TextFormatting.DARK_PURPLE)), true);
                 }
             }
         }
