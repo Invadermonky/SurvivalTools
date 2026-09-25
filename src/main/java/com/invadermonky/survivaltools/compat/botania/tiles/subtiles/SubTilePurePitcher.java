@@ -344,7 +344,15 @@ public class SubTilePurePitcher extends SubTileFunctional implements IFluidHandl
     @Override
     public void postInit() {
         ItemStack waterFilterStack = SurvivalToolsAPI.getWaterFilterStack();
-        PURE_PITCHER_RECIPE = new RecipePetals(ItemBlockSpecialFlower.ofType(LibNames.PURE_PITCHER), ModPetalRecipes.blue, ModPetalRecipes.lightBlue, ModPetalRecipes.cyan, waterFilterStack, waterFilterStack, new ItemStack(Items.BUCKET), "runeWaterB", "redstoneRoot");
+        PURE_PITCHER_RECIPE = new RecipePetals(
+                ItemBlockSpecialFlower.ofType(LibNames.PURE_PITCHER),
+                ModPetalRecipes.blue,
+                ModPetalRecipes.lightBlue,
+                ModPetalRecipes.cyan, waterFilterStack,
+                waterFilterStack,
+                new ItemStack(Items.GLASS_BOTTLE),
+                "runeWaterB",
+                "redstoneRoot");
         BotaniaAPI.registerPetalRecipe(PURE_PITCHER_RECIPE.getOutput(), PURE_PITCHER_RECIPE.getInputs().toArray());
         PURE_PITCHER_ENTRY = new BasicLexiconEntry("purePitcher", BotaniaAPI.categoryFunctionalFlowers);
         PURE_PITCHER_ENTRY.setLexiconPages(
