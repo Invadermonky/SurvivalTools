@@ -29,12 +29,13 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 
 public class ItemSigilTemperature extends ItemSigilToggleableBase implements IItemAddition, IProxy {
     public ItemSigilTemperature() {
         super(LibNames.SIGIL_TEMPERATURE, ConfigHandlerST.integrations.blood_magic.sigil_of_temperate_lands.cost);
         this.setRegistryName(SurvivalTools.MOD_ID, LibNames.SIGIL_TEMPERATURE);
-        this.setTranslationKey(this.getRegistryName().toString());
+        this.setTranslationKey(Objects.requireNonNull(this.getRegistryName()).toString());
         this.setCreativeTab(CreativeTabST.TAB_ST);
         this.addPropertyOverride(new ResourceLocation(SurvivalTools.MOD_ID, "enabled"), ((stack, world, entity) -> this.getActivated(stack) ? 1 : 0));
     }

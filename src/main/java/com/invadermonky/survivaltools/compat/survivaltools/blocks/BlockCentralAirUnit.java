@@ -12,6 +12,8 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import java.util.Objects;
+
 public class BlockCentralAirUnit extends AbstractBlockFluxMachine<TileCentralAirUnit> {
     public BlockCentralAirUnit() {
         super(LibNames.CENTRAL_AIR_UNIT, TileCentralAirUnit.class);
@@ -32,7 +34,7 @@ public class BlockCentralAirUnit extends AbstractBlockFluxMachine<TileCentralAir
                 'R', "blockRedstone",
                 'T', SurvivalToolsAPI.getThermometerStack()
         );
-        IRecipe recipe = new ShapedRecipes(this.getRegistryName().toString(), primer.width, primer.height, primer.input, new ItemStack(this));
+        IRecipe recipe = new ShapedRecipes(Objects.requireNonNull(this.getRegistryName()).toString(), primer.width, primer.height, primer.input, new ItemStack(this));
         recipe.setRegistryName(this.getRegistryName());
         registry.register(recipe);
     }

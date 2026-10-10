@@ -244,7 +244,7 @@ public class ConfigHandlerST {
             @Config.Comment("The internal liquid capacity of the Canteen.")
             public int fluidCapacityBasic = 1000;
             @Config.RangeInt(min = 1000, max = 32000)
-            @Config.Comment("The internal liquid capacity of the Canteen.")
+            @Config.Comment("The internal liquid capacity of the Reinforced Canteen.")
             public int fluidCapacityReinforced = 2000;
             @Config.RangeInt(min = 1, max = 32000)
             @Config.Comment("The amount of liquid that is drained from the Canteen each time it is used.")

@@ -29,7 +29,8 @@ public class TilePoweredPurifier extends AbstractTileWaterPurifier implements IE
             super.update();
         } else if (!this.world.isRemote) {
             this.setEnabled(this.isRunning());
-            if (this.transferFluidToContainer()) {
+            //Transfers slot contents even if the machine is currently turned off with redstone
+            if (this.transferInputSlotFluids() || this.transferOutputSlotFluids()) {
                 this.markDirty();
             }
         }

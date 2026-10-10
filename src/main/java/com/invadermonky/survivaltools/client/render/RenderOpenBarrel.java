@@ -40,7 +40,8 @@ public class RenderOpenBarrel extends TileEntitySpecialRenderer<TileOpenBarrel> 
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBuffer();
         TextureAtlasSprite fluidSprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(renderFluid.getStill().toString());
-        fluidSprite = fluidSprite == null ? Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite() : fluidSprite;
+        if(fluidSprite == null)
+            fluidSprite = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
         buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
         int rgbaColor = renderFluid.getColor();
         int rColor = rgbaColor >> 16 & 255;

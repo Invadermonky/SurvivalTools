@@ -34,11 +34,12 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 
 public class ItemHandheldPurifier extends Item implements IItemAddition {
     public ItemHandheldPurifier() {
         this.setRegistryName(SurvivalTools.MOD_ID, LibNames.HANDHELD_PURIFIER);
-        this.setTranslationKey(this.getRegistryName().toString());
+        this.setTranslationKey(Objects.requireNonNull(this.getRegistryName()).toString());
         this.setCreativeTab(CreativeTabST.TAB_ST);
         this.setMaxStackSize(1);
         this.setMaxDamage(20);
@@ -186,7 +187,7 @@ public class ItemHandheldPurifier extends Item implements IItemAddition {
                 'R', "dustRedstone",
                 'W', "wool"
         );
-        IRecipe recipe = new ShapedRecipes(this.getRegistryName().toString(), primer.width, primer.height, primer.input, new ItemStack(this));
+        IRecipe recipe = new ShapedRecipes(Objects.requireNonNull(this.getRegistryName()).toString(), primer.width, primer.height, primer.input, new ItemStack(this));
         recipe.setRegistryName(this.getRegistryName());
         registry.register(recipe);
     }

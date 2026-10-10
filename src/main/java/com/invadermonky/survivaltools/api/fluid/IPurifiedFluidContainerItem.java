@@ -14,6 +14,7 @@ import static com.invadermonky.survivaltools.util.libs.LibTags.TAG_FLUID;
 public interface IPurifiedFluidContainerItem extends IFluidContainerItem {
     int getMaxFluidCapacity(ItemStack stack);
 
+    @SuppressWarnings("ConstantConditions")
     default NBTTagCompound getFluidTagCompound(ItemStack stack) {
         if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());

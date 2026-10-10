@@ -32,11 +32,12 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 
 public class ItemPortableRegulator extends AbstractRFItem implements IBauble, IItemAddition {
     public ItemPortableRegulator() {
         this.setRegistryName(SurvivalTools.MOD_ID, LibNames.PORTABLE_REGULATOR);
-        this.setTranslationKey(this.getRegistryName().toString());
+        this.setTranslationKey(Objects.requireNonNull(this.getRegistryName()).toString());
         this.setCreativeTab(CreativeTabST.TAB_ST);
         this.setEnergyMaxReceive(20000);
         this.setEnergyMaxExtract(0);
@@ -142,7 +143,7 @@ public class ItemPortableRegulator extends AbstractRFItem implements IBauble, II
                 'R', "blockRedstone",
                 'T', SurvivalToolsAPI.getThermometerStack()
         );
-        IRecipe recipe = new ShapedRecipes(this.getRegistryName().toString(), primer.width, primer.height, primer.input, new ItemStack(this));
+        IRecipe recipe = new ShapedRecipes(Objects.requireNonNull(this.getRegistryName()).toString(), primer.width, primer.height, primer.input, new ItemStack(this));
         recipe.setRegistryName(this.getRegistryName());
         registry.register(recipe);
     }

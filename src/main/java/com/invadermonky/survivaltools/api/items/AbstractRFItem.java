@@ -7,6 +7,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import org.jetbrains.annotations.NotNull;
@@ -106,7 +107,7 @@ public abstract class AbstractRFItem extends Item implements IEnergyContainerIte
         int energyReceived = Math.min(this.energyCapacity - energy, Math.min(this.energyMaxReceive, maxReceive));
         if (!simulate) {
             energy += energyReceived;
-            container.getTagCompound().setInteger(TAG_ENERGY, energy);
+            container.setTagInfo(TAG_ENERGY, new NBTTagInt(energy));
         }
         return energyReceived;
     }

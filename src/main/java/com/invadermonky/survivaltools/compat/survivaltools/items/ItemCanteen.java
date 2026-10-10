@@ -31,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 
 public class ItemCanteen extends Item implements IPurifiedFluidContainerItem, IItemAddition {
     private int capacity;
@@ -40,7 +41,7 @@ public class ItemCanteen extends Item implements IPurifiedFluidContainerItem, II
 
     public ItemCanteen(String unlocName, int maxCapacity) {
         this.setRegistryName(SurvivalTools.MOD_ID, unlocName);
-        this.setTranslationKey(this.getRegistryName().toString());
+        this.setTranslationKey(Objects.requireNonNull(this.getRegistryName()).toString());
         this.setCreativeTab(CreativeTabST.TAB_ST);
         this.setMaxStackSize(1);
         this.setMaxFluidCapacity(maxCapacity);

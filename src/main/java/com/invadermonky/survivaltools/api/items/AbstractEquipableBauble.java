@@ -14,10 +14,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public abstract class AbstractEquipableBauble extends Item implements IBauble, IItemAddition {
     public AbstractEquipableBauble(String unlocName) {
         this.setRegistryName(SurvivalTools.MOD_ID, unlocName);
-        this.setTranslationKey(this.getRegistryName().toString());
+        this.setTranslationKey(Objects.requireNonNull(this.getRegistryName()).toString());
         this.setCreativeTab(CreativeTabST.TAB_ST);
         this.setMaxStackSize(1);
     }

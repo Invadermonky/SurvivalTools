@@ -29,6 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class BlockSolidFuelPurifier extends AbstractBlockWaterPurifier<TileSolidFuelPurifier> implements IAddition {
@@ -86,7 +87,7 @@ public class BlockSolidFuelPurifier extends AbstractBlockWaterPurifier<TileSolid
                 'C', Items.CAULDRON,
                 'F', Blocks.FURNACE
         );
-        IRecipe recipe = new ShapedRecipes(this.getRegistryName().toString(), primer.width, primer.height, primer.input, new ItemStack(this));
+        IRecipe recipe = new ShapedRecipes(Objects.requireNonNull(this.getRegistryName()).toString(), primer.width, primer.height, primer.input, new ItemStack(this));
         recipe.setRegistryName(this.getRegistryName());
         registry.register(recipe);
     }

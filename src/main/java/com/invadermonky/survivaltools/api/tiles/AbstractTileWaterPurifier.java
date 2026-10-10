@@ -3,8 +3,7 @@ package com.invadermonky.survivaltools.api.tiles;
 import com.invadermonky.survivaltools.api.blocks.AbstractBlockWaterPurifier;
 import com.invadermonky.survivaltools.crafting.purifier.PurifierRecipe;
 import com.invadermonky.survivaltools.crafting.purifier.PurifierRecipeRegistry;
-import com.invadermonky.survivaltools.inventory.handler.FilteredStackRangedWrapper;
-import com.invadermonky.survivaltools.inventory.handler.FluidContainerRangedWrapper;
+import com.invadermonky.survivaltools.inventory.handler.PurifierStackHandler;
 import com.invadermonky.survivaltools.network.PacketHandlerST;
 import com.invadermonky.survivaltools.network.packets.PacketDrainPurifierTank;
 import net.minecraft.block.Block;
@@ -14,6 +13,8 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,6 +24,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,45 +32,37 @@ import org.jetbrains.annotations.Nullable;
 public abstract class AbstractTileWaterPurifier extends AbstractTickableTileST implements IFluidHandler {
     public static final int TANK_CAPACITY = 4000;
 
+    protected PurifierStackHandler stackHandler;
     protected FluidTank inputTank;
     protected FluidTank outputTank;
-    protected ItemStackHandler itemHandler;
-    protected FilteredStackRangedWrapper filterItemHandler;
-    protected FluidContainerRangedWrapper outputFillHandler;
     protected PurifierRecipe recipe;
     protected int progress;
     protected int maxProgress;
 
-    public AbstractTileWaterPurifier(int additionalSlotCount) {
-        this.inputTank = new FluidTank(TANK_CAPACITY);
+    public AbstractTileWaterPurifier(int additionalSlots) {
+        this.stackHandler = new PurifierStackHandler(this, additionalSlots);
+        this.inputTank = new FluidTank(TANK_CAPACITY) {
+            @Override
+            public boolean canFillFluidType(FluidStack fluid) {
+                return PurifierRecipeRegistry.isValidInputFluid(fluid);
+            }
+
+            @Override
+            protected void onContentsChanged() {
+                this.tile.markDirty();
+            }
+        };
         this.inputTank.setCanDrain(false);
         this.inputTank.setTileEntity(this);
 
-        this.outputTank = new FluidTank(TANK_CAPACITY);
-        this.outputTank.setCanFill(false);
-        this.outputTank.setTileEntity(this);
-
-        this.itemHandler = new ItemStackHandler(2 + additionalSlotCount) {
+        this.outputTank = new FluidTank(TANK_CAPACITY) {
             @Override
-            public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-                if (!this.isItemValid(slot, stack))
-                    return stack;
-                return super.insertItem(slot, stack, simulate);
-            }
-
-            @Override
-            public int getSlotLimit(int slot) {
-                return slot == 1 ? 1 : super.getSlotLimit(slot);
-            }
-
-            @Override
-            protected void onContentsChanged(int slot) {
-                AbstractTileWaterPurifier.this.markDirty();
+            protected void onContentsChanged() {
+                this.tile.markDirty();
             }
         };
-
-        this.filterItemHandler = new FilteredStackRangedWrapper(this.itemHandler, 0, 1, PurifierRecipeRegistry::isValidFilterItem);
-        this.outputFillHandler = new FluidContainerRangedWrapper(this.itemHandler, 1, 2);
+        this.outputTank.setCanFill(false);
+        this.outputTank.setTileEntity(this);
     }
 
     public AbstractTileWaterPurifier() {
@@ -126,13 +120,9 @@ public abstract class AbstractTileWaterPurifier extends AbstractTickableTileST i
                 did = true;
             }
 
-            if (this.transferFluidToContainer()) {
-                did = true;
-            }
-
-            if (this.onTileUpdate()) {
-                did = true;
-            }
+            did |= this.transferInputSlotFluids();
+            did |= this.transferOutputSlotFluids();
+            did |= this.onTileUpdate();
 
             if (isRunning != this.isRunning()) {
                 this.setEnabled(this.isRunning());
@@ -144,16 +134,52 @@ public abstract class AbstractTileWaterPurifier extends AbstractTickableTileST i
         }
     }
 
-    protected boolean transferFluidToContainer() {
-        //Filling and transferring
-        ItemStack fillStack = this.getOutputFillStack();
-        if (!fillStack.isEmpty() && fillStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
-            FluidActionResult result = FluidUtil.tryFillContainer(fillStack, this.outputTank, this.outputTank.getCapacity(), null, false);
-            if (result.isSuccess()) {
-                fillStack = this.outputFillHandler.extractInternal(0, fillStack.getCount(), false);
-                result = FluidUtil.tryFillContainer(fillStack, this.outputTank, this.outputTank.getCapacity(), null, true);
-                this.outputFillHandler.insertItem(0, result.getResult(), false);
-                return true;
+    protected boolean transferInputSlotFluids() {
+        ItemStack toEmpty = this.stackHandler.HANDLER_INPUT_TANK_SLOT_IN.extractItem(0, 1, true);
+        if(!toEmpty.isEmpty() && toEmpty.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
+            FluidActionResult result = FluidUtil.tryEmptyContainer(toEmpty, this.inputTank, this.inputTank.getCapacity(), null, false);
+            ItemStack emptied = result.getResult();
+            if(result.isSuccess() && !result.getResult().isEmpty() && !ItemStack.areItemStacksEqual(toEmpty, result.getResult())) {
+                ItemStack remaining = ItemHandlerHelper.insertItem(this.stackHandler.HANDLER_INPUT_TANK_SLOT_OUT, emptied, true);
+                if(remaining.isEmpty()) {
+                    toEmpty = this.stackHandler.HANDLER_INPUT_TANK_SLOT_IN.extractItem(0, 1, false);
+                    result = FluidUtil.tryEmptyContainer(toEmpty, this.inputTank, this.inputTank.getCapacity(), null, true);
+                    emptied = result.getResult();
+                    ItemHandlerHelper.insertItem(this.stackHandler.HANDLER_INPUT_TANK_SLOT_OUT, emptied, false);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    protected boolean transferOutputSlotFluids() {
+        ItemStack toFill = this.stackHandler.HANDLER_OUTPUT_TANK_SLOT_IN.extractItem(0, 1, true);
+        if(!toFill.isEmpty() && toFill.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
+            FluidActionResult result = FluidUtil.tryFillContainer(toFill, this.outputTank, this.outputTank.getCapacity(), null, false);
+            ItemStack filled = result.getResult();
+            if(result.isSuccess() && !filled.isEmpty() && !ItemStack.areItemStacksEqual(toFill, filled)) {
+                if(this.stackHandler.isFluidContainerFull(filled)) {
+                    //If the container is filled, move to output slot
+                    ItemStack remaining = ItemHandlerHelper.insertItem(this.stackHandler.HANDLER_OUTPUT_TANK_SLOT_OUT, filled, true);
+                    if(remaining.isEmpty()) {
+                        toFill = this.stackHandler.HANDLER_OUTPUT_TANK_SLOT_IN.extractItem(0, 1, false);
+                        result = FluidUtil.tryFillContainer(toFill, this.outputTank, this.outputTank.getCapacity(), null, true);
+                        filled = result.getResult();
+                        ItemHandlerHelper.insertItem(this.stackHandler.HANDLER_OUTPUT_TANK_SLOT_OUT, filled, false);
+                        return true;
+                    }
+                } else if(this.stackHandler.HANDLER_OUTPUT_TANK_SLOT_IN.getStackInSlot(0).getCount() == 1) {
+                    //If the container is not filled and there is only one item, fill it and update the input slot
+                    toFill = this.stackHandler.HANDLER_OUTPUT_TANK_SLOT_IN.extractItem(0, 1, false);
+                    result = FluidUtil.tryFillContainer(toFill, this.outputTank, this.outputTank.getCapacity(), null, true);
+                    filled = result.getResult();
+                    ItemHandlerHelper.insertItem(this.stackHandler.HANDLER_OUTPUT_TANK_SLOT_IN, filled, false);
+                    return true;
+                }
+
+
+
             }
         }
         return false;
@@ -164,7 +190,7 @@ public abstract class AbstractTileWaterPurifier extends AbstractTickableTileST i
         super.readFromNBT(compound);
         this.inputTank.readFromNBT(compound.getCompoundTag("inputTank"));
         this.outputTank.readFromNBT(compound.getCompoundTag("outputTank"));
-        this.itemHandler.deserializeNBT(compound.getCompoundTag("inventory"));
+        this.stackHandler.deserializeNBT(compound.getCompoundTag("inventory"));
         this.progress = compound.getInteger("progress");
         this.maxProgress = compound.getInteger("maxProgress");
         this.readFromTileNBT(compound);
@@ -175,18 +201,31 @@ public abstract class AbstractTileWaterPurifier extends AbstractTickableTileST i
         super.writeToNBT(compound);
         compound.setTag("inputTank", this.inputTank.writeToNBT(new NBTTagCompound()));
         compound.setTag("outputTank", this.outputTank.writeToNBT(new NBTTagCompound()));
-        compound.setTag("inventory", this.itemHandler.serializeNBT());
+        compound.setTag("inventory", this.stackHandler.serializeNBT());
         compound.setInteger("progress", this.progress);
         compound.setInteger("maxProgress", this.maxProgress);
         return this.writeToTileNBT(compound);
     }
 
     @Override
+    public @Nullable ITextComponent getDisplayName() {
+        return new TextComponentTranslation(this.getBlockType().getTranslationKey() + ".name");
+    }
+
+    @Override
     public boolean hasCapability(@NotNull Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
-                || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
-                || this.hasTileCapability(capability, facing)
-                || super.hasCapability(capability, facing);
+        if(this.hasTileCapability(capability, facing)) {
+            return true;
+        } else if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if(facing == EnumFacing.UP || facing == EnumFacing.DOWN) {
+                return true;
+            } else {
+                EnumFacing direction = this.world.getBlockState(this.pos).getValue(AbstractBlockWaterPurifier.FACING);
+                return facing == direction.rotateY() || facing == direction.rotateYCCW();
+            }
+        } else {
+            return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+        }
     }
 
     @Override
@@ -195,16 +234,21 @@ public abstract class AbstractTileWaterPurifier extends AbstractTickableTileST i
         if (tileCap != null) {
             return tileCap;
         } else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            if (facing == EnumFacing.UP) {
-                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.filterItemHandler);
-            } else {
-                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.outputFillHandler);
+            if(facing == EnumFacing.UP) {
+                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.stackHandler.HANDLER_FILTER_SLOT);
+            } else if(facing == EnumFacing.DOWN) {
+                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.stackHandler.HANDLER_OUTPUT_SLOTS);
+            }
+            EnumFacing direction = this.world.getBlockState(this.pos).getValue(AbstractBlockWaterPurifier.FACING);
+            if(facing == direction.rotateY()) {
+                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.stackHandler.HANDLER_INPUT_TANK_SLOT_IN);
+            } else if(facing == direction.rotateYCCW()) {
+                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.stackHandler.HANDLER_OUTPUT_TANK_SLOT_IN);
             }
         } else if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
-        } else {
-            return super.getCapability(capability, facing);
         }
+        return super.getCapability(capability, facing);
     }
 
     @Override
@@ -250,10 +294,10 @@ public abstract class AbstractTileWaterPurifier extends AbstractTickableTileST i
     }
 
     public void dropInventory() {
-        for (int i = 0; i < this.itemHandler.getSlots(); i++) {
-            ItemStack stack = this.itemHandler.getStackInSlot(i);
+        for (int i = 0; i < this.stackHandler.getSlots(); i++) {
+            ItemStack stack = this.stackHandler.getStackInSlot(i);
             if (!stack.isEmpty())
-                Block.spawnAsEntity(this.world, this.pos, this.itemHandler.extractItem(i, stack.getCount(), false));
+                Block.spawnAsEntity(this.world, this.pos, this.stackHandler.extractItem(i, stack.getCount(), false));
         }
     }
 
@@ -266,15 +310,11 @@ public abstract class AbstractTileWaterPurifier extends AbstractTickableTileST i
     }
 
     public ItemStackHandler getItemHandler() {
-        return this.itemHandler;
+        return this.stackHandler;
     }
 
     public ItemStack getFilterStack() {
-        return this.filterItemHandler.getStackInSlot(0);
-    }
-
-    public ItemStack getOutputFillStack() {
-        return this.outputFillHandler.getStackInSlot(0);
+        return this.stackHandler.HANDLER_FILTER_SLOT.getStackInSlot(0);
     }
 
     public int getProgress() {
@@ -315,16 +355,14 @@ public abstract class AbstractTileWaterPurifier extends AbstractTickableTileST i
         if (this.recipe == null || this.recipe.getFilterIngredient() == Ingredient.EMPTY)
             return;
 
-        ItemStack stack = this.filterItemHandler.extractItem(0, this.filterItemHandler.getSlotLimit(0), false);
-        if (stack.getItem().hasContainerItem(stack)) {
+        ItemStack stack = this.stackHandler.HANDLER_FILTER_SLOT.extractItem(0, this.stackHandler.HANDLER_FILTER_SLOT.getSlotLimit(0), false);
+        if (stack.getItem().hasContainerItem(stack) && stack.getCount() == 1) {
             stack = stack.getItem().getContainerItem(stack);
-        } else if (stack.isItemStackDamageable()) {
-            stack.getItem().setDamage(stack, stack.getItemDamage() + 1);
         } else {
             stack.shrink(1);
         }
         if (!stack.isEmpty()) {
-            this.filterItemHandler.insertItem(0, stack, false);
+            this.stackHandler.HANDLER_FILTER_SLOT.setStackInSlot(0, stack);
         }
     }
 
@@ -338,7 +376,7 @@ public abstract class AbstractTileWaterPurifier extends AbstractTickableTileST i
 
     public void setEnabled(boolean enabled) {
         IBlockState state = this.world.getBlockState(this.pos);
-        if (state.getBlock() instanceof AbstractBlockWaterPurifier) {
+        if (state.getBlock() instanceof AbstractBlockWaterPurifier && state.getValue(AbstractBlockWaterPurifier.ENABLED) != enabled) {
             this.world.setBlockState(this.pos, state.withProperty(AbstractBlockWaterPurifier.ENABLED, enabled));
             this.validate();
             this.world.setTileEntity(this.pos, this);

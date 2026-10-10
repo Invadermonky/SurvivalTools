@@ -28,7 +28,7 @@ public class PurifiedFluidTankProperties implements IFluidTankProperties {
 
     @Override
     public boolean canFill() {
-        return false;
+        return true;
     }
 
     @Override

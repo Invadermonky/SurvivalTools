@@ -20,7 +20,7 @@ public class GuiPoweredPurifier extends AbstractGuiWaterPurifier<TilePoweredPuri
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
         List<String> tooltip = new ArrayList<>();
-        this.handleGuiEnergy(this.tilePurifier, i + 18, j + 20, 14, 42, mouseX, mouseY, tooltip);
+        this.handleGuiEnergy(this.tilePurifier, i + 11, j + 20, 14, 42, mouseX, mouseY, tooltip);
 
         if (!tooltip.isEmpty()) {
             this.drawHoveringTooltip(mouseX, mouseY, tooltip);
@@ -33,11 +33,11 @@ public class GuiPoweredPurifier extends AbstractGuiWaterPurifier<TilePoweredPuri
         int j = (this.height - this.ySize) / 2;
 
         //Drawing RF power bar
-        this.drawTexturedModalRect(i + 18, j + 20, 176, 31, 14, 42);
+        this.drawTexturedModalRect(i + 11, j + 20, 176, 31, 14, 42);
 
         if (this.tilePurifier.getEnergyStored() > 0) {
             int k = this.getPowerBarScaled(42);
-            this.drawTexturedModalRect(i + 18, j + 20 + (42 - k), 190, 31 + (42 - k), 14, k);
+            this.drawTexturedModalRect(i + 11, j + 20 + (42 - k), 190, 31 + (42 - k), 14, k);
         }
     }
 

@@ -46,6 +46,7 @@ public class WaterskinSDST implements IModModule {
                 }
 
                 GuiScreen gui = mc.currentScreen;
+                if(gui == null) return;
                 ScaledResolution res = new ScaledResolution(mc);
                 float hydrationRemaining = 2.0F * (float) ((int) hydration % 2);
                 int lengthThirst = thirst + 1 >> 1 << 3;

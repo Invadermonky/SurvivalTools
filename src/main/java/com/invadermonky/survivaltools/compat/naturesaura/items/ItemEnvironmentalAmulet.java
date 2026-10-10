@@ -26,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 
 public class ItemEnvironmentalAmulet extends AbstractEquipableBauble {
     public ItemEnvironmentalAmulet() {
@@ -80,7 +81,7 @@ public class ItemEnvironmentalAmulet extends AbstractEquipableBauble {
                 'R', "dustRedstone",
                 'T', SurvivalToolsAPI.getThermometerStack()
         );
-        IRecipe recipe = new ShapedRecipes(this.getRegistryName().toString(), primer.width, primer.height, primer.input, new ItemStack(this));
+        IRecipe recipe = new ShapedRecipes(Objects.requireNonNull(this.getRegistryName()).toString(), primer.width, primer.height, primer.input, new ItemStack(this));
         recipe.setRegistryName(this.getRegistryName());
         registry.register(recipe);
     }

@@ -21,11 +21,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import java.util.Objects;
+
 public class ItemSigilHydration extends ItemSigilToggleableBase implements IItemAddition, IProxy {
     public ItemSigilHydration() {
         super(LibNames.SIGIL_HYDRATION, ConfigHandlerST.integrations.blood_magic.sigil_of_hydration.cost);
         this.setRegistryName(SurvivalTools.MOD_ID, LibNames.SIGIL_HYDRATION);
-        this.setTranslationKey(this.getRegistryName().toString());
+        this.setTranslationKey(Objects.requireNonNull(this.getRegistryName()).toString());
         this.setCreativeTab(CreativeTabST.TAB_ST);
         this.addPropertyOverride(new ResourceLocation(SurvivalTools.MOD_ID, "enabled"), (stack, world, entity) -> this.getActivated(stack) ? 1 : 0);
     }

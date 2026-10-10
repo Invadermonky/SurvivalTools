@@ -1,4 +1,19 @@
 # Survival Tools Changelog
+## 1.12.2-1.3.0
+### Changed
+- Overhauled Purifier GUI, allowing fluids to be inserted using buckets or other fluid containers
+- Overhauled Purifier capabilities to adjust for expanded GUI functionality. Patchouli guidebook updated to reflect these changes.
+### Fixed
+- Fixed Pure Pitcher being uncraftable. Recipe now uses an empty bottle in the place of the empty bucket.
+- Fixed incorrect player message handling for the Thaumic Regulator
+- Fixed Water Purifier tile entity constantly updating even when not processing a recipe
+- Fixed Water Purifier incorrectly identifying damagable items as container items
+- Fixed Solid Fuel Purifier entry not appearing in the Patchouli guide
+- Fixed Water Purifier recipe handling sometimes ignoring filter items
+- Fixed Gryllzalia particles not having a color
+
+---
+
 ## 1.12.2-1.2.2
 ### Fixed
 - Fixed crash when loading server environments

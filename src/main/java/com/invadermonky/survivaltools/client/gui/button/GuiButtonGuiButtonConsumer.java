@@ -40,6 +40,11 @@ public class GuiButtonGuiButtonConsumer<T extends AbstractTileWaterPurifier> ext
     }
 
     @Override
+    public void drawButtonForegroundLayer(int mouseX, int mouseY) {
+        super.drawButtonForegroundLayer(mouseX, mouseY);
+    }
+
+    @Override
     public void mouseReleased(int mouseX, int mouseY) {
         this.consumer.accept(this.tilePurifier);
     }

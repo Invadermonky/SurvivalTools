@@ -59,15 +59,19 @@ public class PurifierRecipeRegistry {
         return purifierRecipes.stream().anyMatch(recipe -> recipe.getFilterIngredient().apply(filterStack));
     }
 
-    public static boolean isValidInputFluid(FluidStack inputFluid) {
-        if (inputFluid == null || inputFluid.amount <= 0)
-            return false;
-        return purifierRecipes.stream().anyMatch(recipe -> recipe.getInputFluid().getFluid() == inputFluid.getFluid());
+    public static boolean isValidInputFluid(FluidStack fluidStack) {
+        if (fluidStack == null) return false;
+        return purifierRecipes.stream().anyMatch(recipe -> recipe.getInputFluid().getFluid().equals(fluidStack.getFluid()));
+    }
+
+    public static boolean isValidOutputFluid(FluidStack fluidStack) {
+        if(fluidStack == null) return false;
+        return purifierRecipes.stream().anyMatch(recipe -> recipe.getOutputFluid().getFluid().equals(fluidStack.getFluid()));
     }
 
     @Nullable
     public static PurifierRecipe getRecipe(@Nullable FluidStack inputFluid, ItemStack filterStack) {
-        if (inputFluid == null) {
+        if (inputFluid == null || (filterStack.getItem().hasContainerItem(filterStack) && filterStack.getCount() > 1)) {
             return null;
         }
         return purifierRecipes.stream().filter(recipe -> recipe.matches(inputFluid, filterStack)).findFirst().orElse(null);

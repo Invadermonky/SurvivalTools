@@ -67,7 +67,7 @@ public class SubTileGryllzalia extends SubTileFunctional implements IAddition, I
 
     @Override
     public int getColor() {
-        return super.getColor();
+        return 0xffd800;
     }
 
     @Override

@@ -31,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
 public abstract class AbstractBlockWaterPurifier<T extends AbstractTileWaterPurifier> extends BlockContainer implements IBlockAddition {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
@@ -41,7 +42,7 @@ public abstract class AbstractBlockWaterPurifier<T extends AbstractTileWaterPuri
     public AbstractBlockWaterPurifier(String unlocName, Material material, Class<T> tileClass) {
         super(material);
         this.setRegistryName(SurvivalTools.MOD_ID, unlocName);
-        this.setTranslationKey(this.getRegistryName().toString());
+        this.setTranslationKey(Objects.requireNonNull(this.getRegistryName()).toString());
         this.setCreativeTab(CreativeTabST.TAB_ST);
         this.setHardness(3.5f);
         this.setResistance(3.5f);
@@ -96,7 +97,7 @@ public abstract class AbstractBlockWaterPurifier<T extends AbstractTileWaterPuri
     public void onBlockPlacedBy(World worldIn, @NotNull BlockPos pos, @NotNull IBlockState state, @NotNull EntityLivingBase placer, @NotNull ItemStack stack) {
         if (!worldIn.isRemote) {
             TileEntity tile = worldIn.getTileEntity(pos);
-            if (tile instanceof AbstractTileWaterPurifier && stack.hasTagCompound() && stack.getTagCompound().hasKey("BlockEntityTag")) {
+            if (tile instanceof AbstractTileWaterPurifier && stack.getTagCompound() != null && stack.getTagCompound().hasKey("BlockEntityTag")) {
                 tile.readFromNBT(stack.getTagCompound().getCompoundTag("BlockEntityTag"));
             }
             worldIn.markAndNotifyBlock(pos, worldIn.getChunk(pos), state, state, 3);
@@ -110,7 +111,7 @@ public abstract class AbstractBlockWaterPurifier<T extends AbstractTileWaterPuri
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, @NotNull List<String> tooltip, @NotNull ITooltipFlag flagIn) {
-        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("BlockEntityTag")) {
+        if (stack.getTagCompound() != null && stack.getTagCompound().hasKey("BlockEntityTag")) {
             FluidStack inputFluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("inputFluid"));
             FluidStack outputFluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("outputFluid"));
 

@@ -14,12 +14,15 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import vazkii.patchouli.api.PatchouliAPI;
 
+import java.util.Objects;
+
 public class PatchouliST implements IModModule {
 
     @Override
     public void postInit() {
         //Open Barrel
         addIAdditionConfigFlag(ModBlocksST.OPEN_BARREL);
+        addIAdditionConfigFlag(ModBlocksST.SOLID_FUEL_PURIFIER);
 
         //Flux Tools
         addIAdditionConfigFlag(ModItemsST.PORTABLE_PURIFIER);
@@ -52,13 +55,13 @@ public class PatchouliST implements IModModule {
 
     private <T extends Item & IAddition> void addIAdditionConfigFlag(Block block) {
         if (block instanceof IAddition && ((IAddition) block).isEnabled()) {
-            PatchouliAPI.instance.setConfigFlag(block.getRegistryName().toString(), ((IAddition) block).isEnabled());
+            PatchouliAPI.instance.setConfigFlag(Objects.requireNonNull(block.getRegistryName()).toString(), ((IAddition) block).isEnabled());
         }
     }
 
     private void addIAdditionConfigFlag(Item item) {
         if (item instanceof IAddition && ((IAddition) item).isEnabled()) {
-            PatchouliAPI.instance.setConfigFlag(item.getRegistryName().toString(), ((IAddition) item).isEnabled());
+            PatchouliAPI.instance.setConfigFlag(Objects.requireNonNull(item.getRegistryName()).toString(), ((IAddition) item).isEnabled());
         }
     }
 

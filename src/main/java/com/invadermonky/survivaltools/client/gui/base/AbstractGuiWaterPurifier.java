@@ -6,6 +6,7 @@ import com.invadermonky.survivaltools.client.gui.button.GuiButtonGuiButtonConsum
 import com.invadermonky.survivaltools.inventory.container.base.AbstractContainerWaterPurifier;
 import com.invadermonky.survivaltools.util.helpers.StringHelper;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,6 +16,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -30,6 +32,24 @@ public abstract class AbstractGuiWaterPurifier<T extends AbstractTileWaterPurifi
 
     //TODO: The gui does not update until you close and re-open it.
 
+    /*
+        Gui Positions:
+            Input Tank
+                Button X = 30
+                Button Y = 57
+                Tank X = 43
+                Tank Y = 16
+                Tank Height = 13
+                Tank Width = 50
+            Output Tank
+                Button X = 119
+                Button Y = 57
+                Tank X = 132
+                Tank Y = 16
+                Tank Height = 13
+                Tank Width = 50
+     */
+
     public AbstractGuiWaterPurifier(S inventoryContainer) {
         super(inventoryContainer);
         this.tilePurifier = inventoryContainer.getPurifierTile();
@@ -39,8 +59,8 @@ public abstract class AbstractGuiWaterPurifier<T extends AbstractTileWaterPurifi
     @Override
     public void initGui() {
         super.initGui();
-        this.addButton(new GuiButtonGuiButtonConsumer<>(0, this.guiLeft + 65, this.guiTop + 57, this.tilePurifier, AbstractTileWaterPurifier::emptyInputFluidTank));
-        this.addButton(new GuiButtonGuiButtonConsumer<>(1, this.guiLeft + 132, this.guiTop + 57, this.tilePurifier, AbstractTileWaterPurifier::emptyOutputFluidTank));
+        this.addButton(new GuiButtonGuiButtonConsumer<>(0, this.guiLeft + 30, this.guiTop + 57, this.tilePurifier, AbstractTileWaterPurifier::emptyInputFluidTank));
+        this.addButton(new GuiButtonGuiButtonConsumer<>(1, this.guiLeft + 119, this.guiTop + 57, this.tilePurifier, AbstractTileWaterPurifier::emptyOutputFluidTank));
     }
 
     @Override
@@ -52,8 +72,15 @@ public abstract class AbstractGuiWaterPurifier<T extends AbstractTileWaterPurifi
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
         List<String> tooltip = new ArrayList<>();
-        this.handleGuiTank(this.tilePurifier.getInputFluidTank(), i + 48, j + 16, 13, 50, mouseX, mouseY, tooltip);
-        this.handleGuiTank(this.tilePurifier.getOutputFluidTank(), i + 115, j + 16, 13, 50, mouseX, mouseY, tooltip);
+        this.handleGuiTank(this.tilePurifier.getInputFluidTank(), i + 43, j + 16, 13, 50, mouseX, mouseY, tooltip);
+        this.handleGuiTank(this.tilePurifier.getOutputFluidTank(), i + 132, j + 16, 13, 50, mouseX, mouseY, tooltip);
+
+        for(GuiButton button : this.buttonList) {
+            if(button.isMouseOver()) {
+                tooltip.add(StringHelper.getTranslatedString("tank_button", "tooltip", button.id == 0 ? "input" : "output"));
+                break;
+            }
+        }
 
         if (!tooltip.isEmpty()) {
             drawHoveringTooltip(mouseX, mouseY, tooltip);
@@ -63,6 +90,10 @@ public abstract class AbstractGuiWaterPurifier<T extends AbstractTileWaterPurifi
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        ITextComponent tileName = this.container.getPurifierTile().getDisplayName();
+        if(tileName != null) {
+            this.fontRenderer.drawString(tileName.getUnformattedText(), 8, 5, 4210752);
+        }
         this.fontRenderer.drawString(this.container.getInventoryPlayer().getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
     }
 
@@ -76,10 +107,10 @@ public abstract class AbstractGuiWaterPurifier<T extends AbstractTileWaterPurifi
         this.drawGuiContainerBackgroundElements(partialTicks, mouseX, mouseY);
 
         int progressScaled = this.getTileProgressScaled(24);
-        this.drawTexturedModalRect(i + 77, j + 43, 176, 14, progressScaled + 1, 16);
+        this.drawTexturedModalRect(i + 89, j + 21, 176, 14, progressScaled + 1, 16);
 
-        this.handleGuiTank(this.tilePurifier.getInputFluidTank(), i + 48, j + 16, 13, 50, mouseX, mouseY, null);
-        this.handleGuiTank(this.tilePurifier.getOutputFluidTank(), i + 115, j + 16, 13, 50, mouseX, mouseY, null);
+        this.handleGuiTank(this.tilePurifier.getInputFluidTank(), i + 43, j + 16, 13, 50, mouseX, mouseY, null);
+        this.handleGuiTank(this.tilePurifier.getOutputFluidTank(), i + 132, j + 16, 13, 50, mouseX, mouseY, null);
     }
 
     protected abstract void drawGuiContainerBackgroundElements(float partialTicks, int mouseX, int mouseY);
@@ -118,16 +149,13 @@ public abstract class AbstractGuiWaterPurifier<T extends AbstractTileWaterPurifi
     public void drawRepeatedFluidSprite(FluidStack fluid, float x, float y, float width, float height) {
         this.mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         TextureAtlasSprite sprite = mc.getTextureMapBlocks().getAtlasSprite(fluid.getFluid().getStill(fluid).toString());
-        if (sprite != null) {
-            int color = fluid.getFluid().getColor(fluid);
-            GlStateManager.color((float) (color >> 16 & 255) / 255.0F, (float) (color >> 8 & 255) / 255.0F, (float) (color & 255) / 255.0F, 1.0F);
-            int iconWidth = sprite.getIconWidth();
-            int iconHeight = sprite.getIconHeight();
-            if (iconWidth > 0 && iconHeight > 0) {
-                drawRepeatedSprite(x, y, width, height, iconWidth, iconHeight, sprite.getMinU(), sprite.getMaxU(), sprite.getMinV(), sprite.getMaxV());
-            }
+        int color = fluid.getFluid().getColor(fluid);
+        GlStateManager.color((float) (color >> 16 & 255) / 255.0F, (float) (color >> 8 & 255) / 255.0F, (float) (color & 255) / 255.0F, 1.0F);
+        int iconWidth = sprite.getIconWidth();
+        int iconHeight = sprite.getIconHeight();
+        if (iconWidth > 0 && iconHeight > 0) {
+            drawRepeatedSprite(x, y, width, height, iconWidth, iconHeight, sprite.getMinU(), sprite.getMaxU(), sprite.getMinV(), sprite.getMaxV());
         }
-
     }
 
     public void drawRepeatedSprite(float x, float y, float width, float height, int iconWidth, int iconHeight, float uMin, float uMax, float vMin, float vMax) {

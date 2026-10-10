@@ -40,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class BlockOpenBarrel extends BlockContainer implements IBlockAddition {
     /*
@@ -61,7 +62,7 @@ public class BlockOpenBarrel extends BlockContainer implements IBlockAddition {
     public BlockOpenBarrel() {
         super(Material.IRON, MapColor.STONE);
         this.setRegistryName(SurvivalTools.MOD_ID, LibNames.OPEN_BARREL);
-        this.setTranslationKey(this.getRegistryName().toString());
+        this.setTranslationKey(Objects.requireNonNull(this.getRegistryName()).toString());
         this.setCreativeTab(CreativeTabST.TAB_ST);
         this.setHardness(6.0F);
         this.setHarvestLevel("pickaxe", 1);
@@ -187,7 +188,7 @@ public class BlockOpenBarrel extends BlockContainer implements IBlockAddition {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerModel(ModelRegistryEvent event) {
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(this.getRegistryName(), "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(Objects.requireNonNull(this.getRegistryName()), "inventory"));
         ClientRegistry.bindTileEntitySpecialRenderer(TileOpenBarrel.class, new RenderOpenBarrel());
     }
 

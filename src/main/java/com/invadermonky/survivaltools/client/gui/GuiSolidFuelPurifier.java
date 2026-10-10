@@ -15,11 +15,11 @@ public class GuiSolidFuelPurifier extends AbstractGuiWaterPurifier<TileSolidFuel
         int j = (this.height - this.ySize) / 2;
 
         //Drawing fuel slot/burning icon
-        this.drawTexturedModalRect(i + 16, j + 23, 176, 73, 18, 33);
+        this.drawTexturedModalRect(i + 9, j + 23, 176, 73, 18, 33);
 
         if (this.tilePurifier.isBurning()) {
             int k = this.getBurnLeftScaled(13);
-            this.drawTexturedModalRect(i + 18, j + 35 - k, 176, 12 - k, 14, k + 1);
+            this.drawTexturedModalRect(i + 11, j + 35 - k, 176, 12 - k, 14, k + 1);
         }
     }
 

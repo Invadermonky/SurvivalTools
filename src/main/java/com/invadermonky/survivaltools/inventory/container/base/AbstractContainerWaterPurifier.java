@@ -2,14 +2,15 @@ package com.invadermonky.survivaltools.inventory.container.base;
 
 import com.invadermonky.survivaltools.api.tiles.AbstractTileWaterPurifier;
 import com.invadermonky.survivaltools.crafting.purifier.PurifierRecipeRegistry;
-import com.invadermonky.survivaltools.inventory.slot.SlotFilteredFluidHandler;
-import com.invadermonky.survivaltools.inventory.slot.SlotFilteredItemHandler;
+import com.invadermonky.survivaltools.inventory.handler.PurifierStackHandler;
+import com.invadermonky.survivaltools.inventory.slot.SlotItemHandlerOutput;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -31,10 +32,7 @@ public abstract class AbstractContainerWaterPurifier<T extends AbstractTileWater
         this.tilePurifier = tilePurifier;
 
         this.bindPlayerInventory();
-        this.addSlotToContainer(new SlotFilteredItemHandler(tilePurifier.getItemHandler(), 0, 80, 20, PurifierRecipeRegistry::isValidFilterItem));
-        this.addSlotToContainer(new SlotFilteredFluidHandler(tilePurifier.getItemHandler(), 1, 146, 20));
         this.bindTileInventory();
-
         this.registerFields();
         this.registerAdditionalFields();
     }
@@ -69,7 +67,13 @@ public abstract class AbstractContainerWaterPurifier<T extends AbstractTileWater
 
     protected abstract void registerAdditionalFields();
 
-    protected abstract void bindTileInventory();
+    protected void bindTileInventory() {
+        this.addSlotToContainer(new SlotItemHandler(this.tilePurifier.getItemHandler(), PurifierStackHandler.SLOT_FILTER_INGREDIENT, 93, 44));
+        this.addSlotToContainer(new SlotItemHandler(this.tilePurifier.getItemHandler(), PurifierStackHandler.SLOT_INPUT_TANK_IN, 62, 16));
+        this.addSlotToContainer(new SlotItemHandlerOutput(this.tilePurifier.getItemHandler(), PurifierStackHandler.SLOT_INPUT_TANK_OUT, 62, 50));
+        this.addSlotToContainer(new SlotItemHandler(this.tilePurifier.getItemHandler(), PurifierStackHandler.SLOT_OUTPUT_TANK_IN, 150, 16));
+        this.addSlotToContainer(new SlotItemHandlerOutput(this.tilePurifier.getItemHandler(), PurifierStackHandler.SLOT_OUTPUT_TANK_OUT, 150, 50));
+    }
 
     protected void bindPlayerInventory() {
         for (int i = 0; i < 3; i++) {
@@ -96,19 +100,19 @@ public abstract class AbstractContainerWaterPurifier<T extends AbstractTileWater
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
         for (IContainerListener listener : this.listeners) {
-            if (this.tilePurifier.getProgress() != this.progress) {
+            if (this.progress != this.tilePurifier.getProgress()) {
                 listener.sendWindowProperty(this, getFieldId("progress"), this.tilePurifier.getProgress());
             }
 
-            if (this.tilePurifier.getProgress() != this.maxProgress) {
+            if (this.maxProgress != this.tilePurifier.getProgress()) {
                 listener.sendWindowProperty(this, getFieldId("maxProgress"), this.tilePurifier.getMaxProgress());
             }
 
-            if (this.tilePurifier.getInputFluidTank().getFluidAmount() != this.inputFluidAmount) {
+            if (this.inputFluidAmount != this.tilePurifier.getInputFluidTank().getFluidAmount()) {
                 listener.sendWindowProperty(this, getFieldId("inputTankAmount"), this.tilePurifier.getInputFluidTank().getFluidAmount());
             }
 
-            if (this.tilePurifier.getOutputFluidTank().getFluidAmount() != this.outputFluidAmount) {
+            if (this.outputFluidAmount != this.tilePurifier.getOutputFluidTank().getFluidAmount()) {
                 listener.sendWindowProperty(this, getFieldId("outputTankAmount"), this.tilePurifier.getOutputFluidTank().getFluidAmount());
             }
         }
@@ -148,12 +152,16 @@ public abstract class AbstractContainerWaterPurifier<T extends AbstractTileWater
     @Override
     public void updateProgressBar(int id, int data) {
         if (id == getFieldId("progress")) {
+            this.progress = data;
             this.tilePurifier.setProgress(data);
         } else if (id == getFieldId("maxProgress")) {
+            this.maxProgress = data;
             this.tilePurifier.setMaxProgress(data);
         } else if (id == getFieldId("inputTankAmount")) {
+            this.inputFluidAmount = data;
             this.tilePurifier.setInputFluidAmount(data);
         } else if (id == getFieldId("outputTankAmount")) {
+            this.outputFluidAmount = data;
             this.tilePurifier.setOutputFluidAmount(data);
         }
     }
@@ -167,7 +175,24 @@ public abstract class AbstractContainerWaterPurifier<T extends AbstractTileWater
         int invPlayer = 27;
         int invFull = invPlayer + 9;
         int invPurifier = invFull + this.tilePurifier.getItemHandler().getSlots();
-        return slotIndex < invFull ? this.mergeItemStack(stack, invFull, invPurifier, false) : this.mergeItemStack(stack, 0, invFull, true);
+        if(slotIndex >= invFull) {
+            return this.mergeItemStack(stack, 0, invFull, true);
+        } else {
+            if(PurifierRecipeRegistry.isValidFilterItem(stack)) {
+                int insertSlot = invFull + PurifierStackHandler.SLOT_FILTER_INGREDIENT;
+                return this.mergeItemStack(stack, insertSlot, insertSlot + 1, false);
+            } else if(PurifierStackHandler.isValidInputTankItem(stack)) {
+                int insertSlot = invFull + PurifierStackHandler.SLOT_INPUT_TANK_IN;
+                return this.mergeItemStack(stack, insertSlot, insertSlot + 1, false);
+            } else if(PurifierStackHandler.isValidOutputTankItem(stack)) {
+                int insertSlot = invFull + PurifierStackHandler.SLOT_OUTPUT_TANK_IN;
+                return this.mergeItemStack(stack, insertSlot, insertSlot + 1, false);
+            } else if(slotIndex > invPlayer) {
+                return this.mergeItemStack(stack, 0, invPlayer, false);
+            } else {
+                return this.mergeItemStack(stack, invPlayer, invFull, false);
+            }
+        }
     }
 
     public InventoryPlayer getInventoryPlayer() {

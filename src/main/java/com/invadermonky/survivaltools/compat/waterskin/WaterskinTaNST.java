@@ -31,6 +31,7 @@ public class WaterskinTaNST implements IModModule {
             Minecraft mc = Minecraft.getMinecraft();
             mc.getTextureManager().bindTexture(new ResourceLocation("waterskin", "textures/gui/overlay/thirst_overlay.png"));
             GuiScreen gui = mc.currentScreen;
+             if(gui == null) return;
             ScaledResolution res = new ScaledResolution(mc);
             hydration = Math.min(2.0F * hydration * (float) thirst, 20.0F);
 

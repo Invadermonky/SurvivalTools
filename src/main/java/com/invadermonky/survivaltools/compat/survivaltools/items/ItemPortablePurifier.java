@@ -42,6 +42,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 
 import static com.invadermonky.survivaltools.util.libs.LibNames.PORTABLE_PURIFIER;
 
@@ -51,7 +52,7 @@ public class ItemPortablePurifier extends AbstractRFItem implements IFluidContai
 
     public ItemPortablePurifier() {
         this.setRegistryName(SurvivalTools.MOD_ID, PORTABLE_PURIFIER);
-        this.setTranslationKey(this.getRegistryName().toString());
+        this.setTranslationKey(Objects.requireNonNull(this.getRegistryName()).toString());
         this.setCreativeTab(CreativeTabST.TAB_ST);
         this.setEnergyCapacity(ConfigHandlerST.tools.portable_purifier.energyCapacity);
         this.setFluidCapacity(ConfigHandlerST.tools.portable_purifier.fluidCapacity);
@@ -162,6 +163,7 @@ public class ItemPortablePurifier extends AbstractRFItem implements IFluidContai
         return new FluidEnergyContainerItemWrapper(stack, this, this);
     }
 
+    @SuppressWarnings("ConstantConditions")
     public NBTTagCompound getTag(ItemStack stack) {
         if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
@@ -315,7 +317,7 @@ public class ItemPortablePurifier extends AbstractRFItem implements IFluidContai
                 'H', ModItemsST.HYDRATION_PACK_REINFORCED,
                 'R', "blockRedstone"
         );
-        IRecipe recipe = new ShapedRecipes(this.getRegistryName().toString(), primer.width, primer.height, primer.input, new ItemStack(this));
+        IRecipe recipe = new ShapedRecipes(Objects.requireNonNull(this.getRegistryName()).toString(), primer.width, primer.height, primer.input, new ItemStack(this));
         recipe.setRegistryName(this.getRegistryName());
         registry.register(recipe);
 

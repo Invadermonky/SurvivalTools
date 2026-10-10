@@ -2,7 +2,7 @@ package com.invadermonky.survivaltools.compat.jei.category;
 
 import com.invadermonky.survivaltools.SurvivalTools;
 import com.invadermonky.survivaltools.api.SurvivalToolsAPI;
-import com.invadermonky.survivaltools.client.gui.base.AbstractGuiWaterPurifier;
+import com.invadermonky.survivaltools.api.tiles.AbstractTileWaterPurifier;
 import com.invadermonky.survivaltools.compat.jei.wrapper.PurifierRecipeWrapper;
 import com.invadermonky.survivaltools.registry.ModBlocksST;
 import mezz.jei.api.IGuiHelper;
@@ -15,10 +15,12 @@ import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.util.Translator;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class PurifierCategory implements IRecipeCategory<PurifierRecipeWrapper> {
+    public static final ResourceLocation TEXTURE = new ResourceLocation(SurvivalTools.MOD_ID, "textures/gui/gui_water_purifier_jei.png");
     public static final String UID = SurvivalTools.MOD_ID + "purifier";
     public static final String L18N_KEY = "jei." + SurvivalTools.MOD_ID + ".recipe.purifier";
 
@@ -29,7 +31,7 @@ public class PurifierCategory implements IRecipeCategory<PurifierRecipeWrapper> 
     @SuppressWarnings("ConstantConditions")
     public PurifierCategory(IGuiHelper guiHelper) {
         this.localizedName = Translator.translateToLocal(L18N_KEY);
-        this.background = guiHelper.createDrawable(AbstractGuiWaterPurifier.TEXTURE, 44, 12, 88, 58);
+        this.background = guiHelper.createDrawable(TEXTURE, 0, 0, 88, 58);
         if (ModBlocksST.isBlockEnabled(ModBlocksST.SOLID_FUEL_PURIFIER)) {
             this.icon = guiHelper.createDrawableIngredient(Item.getItemFromBlock(ModBlocksST.SOLID_FUEL_PURIFIER).getDefaultInstance());
         } else if (ModBlocksST.isBlockEnabled(ModBlocksST.POWERED_PURIFIER)) {
@@ -67,10 +69,10 @@ public class PurifierCategory implements IRecipeCategory<PurifierRecipeWrapper> 
     @Override
     public void setRecipe(IRecipeLayout iRecipeLayout, @NotNull PurifierRecipeWrapper purifierRecipeWrapper, IIngredients iIngredients) {
         IGuiFluidStackGroup fluids = iRecipeLayout.getFluidStacks();
-        fluids.init(0, true, 4, 4, 13, 50, 4000, true, null);
-        fluids.init(1, false, 71, 4, 13, 50, 4000, true, null);
+        fluids.init(0, true, 4, 4, 13, 50, AbstractTileWaterPurifier.TANK_CAPACITY, true, null);
+        fluids.init(1, false, 71, 4, 13, 50, AbstractTileWaterPurifier.TANK_CAPACITY, true, null);
         IGuiItemStackGroup stacks = iRecipeLayout.getItemStacks();
-        stacks.init(0, true, 35, 7);
+        stacks.init(0, true, 35, 31);
 
         fluids.set(0, iIngredients.getInputs(VanillaTypes.FLUID).get(0));
 

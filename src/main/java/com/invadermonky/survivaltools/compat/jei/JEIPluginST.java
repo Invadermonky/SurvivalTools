@@ -35,8 +35,8 @@ public class JEIPluginST implements IModPlugin {
     public void register(@NotNull IModRegistry registry) {
         if (this.isPurifierCategoryEnabled) {
             this.handlePurifierRecipes(registry);
-            registry.addRecipeClickArea(GuiSolidFuelPurifier.class, 77, 43, 22, 17, PurifierCategory.UID);
-            registry.addRecipeClickArea(GuiPoweredPurifier.class, 77, 43, 22, 17, PurifierCategory.UID);
+            registry.addRecipeClickArea(GuiSolidFuelPurifier.class, 90, 21, 22, 15, PurifierCategory.UID);
+            registry.addRecipeClickArea(GuiPoweredPurifier.class, 90, 21, 22, 15, PurifierCategory.UID);
         }
     }
 

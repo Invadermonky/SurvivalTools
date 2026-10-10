@@ -7,12 +7,15 @@
   "pages": [
     {
       "type": "text",
-      "text": "The $(item)Solid Fuel Purifier$() is a simple machine that uses burnable fuel and a filter to purify liquids.$(br2)Filter items can be inserted into the top of the block, fuel items are inserted into the back, and fluid containers can be inserted and extracted into any other side.$(br2)Fluids can be pumped into or "
+      "text": "The $(item)Solid Fuel Purifier$() is a simple machine that uses burnable fuel to purify liquids.$(br2)For automation, filter items are be inserted into the top of the machine, fuel items are inserted into the back, input tank fluid containers are inserted on the left side, output fluid containers are inserted on the right side, and"
+    },
+    {
+      "type": "text",
+      "text": "outputs are extracted through the bottom.$(br2)Fluids can be pumped into or out of the machine from any face.$(br2)The $(item)Solid Fuel Purifier$() cannot fill $(item)Empty Bottles$()."
     },
     {
       "type": "crafting",
-      "recipe": "survivaltools:solid_fuel_purifier",
-      "text": "out of the machine from any face.$(br2)The $(item)Solid Fuel Purifier$() cannot fill $(item)Empty Bottles$()."
+      "recipe": "survivaltools:solid_fuel_purifier"
     }
   ]
 }

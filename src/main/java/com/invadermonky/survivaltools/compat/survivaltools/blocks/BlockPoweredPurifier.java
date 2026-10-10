@@ -29,6 +29,8 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public class BlockPoweredPurifier extends AbstractBlockWaterPurifier<TilePoweredPurifier> {
     public BlockPoweredPurifier() {
         super(LibNames.POWERED_PURIFIER, Material.IRON, TilePoweredPurifier.class);
@@ -66,7 +68,7 @@ public class BlockPoweredPurifier extends AbstractBlockWaterPurifier<TilePowered
                 'F', Blocks.FURNACE,
                 'R', "blockRedstone"
         );
-        IRecipe recipe = new ShapedRecipes(this.getRegistryName().toString(), primer.width, primer.height, primer.input, new ItemStack(this));
+        IRecipe recipe = new ShapedRecipes(Objects.requireNonNull(this.getRegistryName()).toString(), primer.width, primer.height, primer.input, new ItemStack(this));
         recipe.setRegistryName(this.getRegistryName());
         registry.register(recipe);
     }

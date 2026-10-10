@@ -6,6 +6,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.common.util.Constants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,7 +18,7 @@ public abstract class AbstractTickableTileST extends TileEntity implements ITick
     public void markDirty() {
         super.markDirty();
         IBlockState state = this.world.getBlockState(this.pos);
-        this.world.notifyBlockUpdate(this.pos, state, state, 2);
+        this.world.notifyBlockUpdate(this.pos, state, state, Constants.BlockFlags.SEND_TO_CLIENTS);
     }
 
     @Override
@@ -27,23 +28,11 @@ public abstract class AbstractTickableTileST extends TileEntity implements ITick
 
     @Override
     public @NotNull NBTTagCompound getUpdateTag() {
-        return this.writeToNBT(super.getUpdateTag());
-    }
-
-    @Override
-    public boolean receiveClientEvent(int id, int type) {
-        return super.receiveClientEvent(id, type);
+        return this.writeToNBT(new NBTTagCompound());
     }
 
     @Override
     public void onDataPacket(@NotNull NetworkManager net, SPacketUpdateTileEntity pkt) {
         this.readFromNBT(pkt.getNbtCompound());
     }
-
-    @Override
-    public void handleUpdateTag(@NotNull NBTTagCompound tag) {
-        super.handleUpdateTag(tag);
-    }
-
-
 }

@@ -34,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public abstract class AbstractBlockFluxMachine<T extends AbstractTileFluxMachine> extends BlockContainer implements IBlockAddition {
@@ -42,7 +43,7 @@ public abstract class AbstractBlockFluxMachine<T extends AbstractTileFluxMachine
     public AbstractBlockFluxMachine(String unlocName, Class<T> tileClass) {
         super(Material.IRON);
         this.setRegistryName(SurvivalTools.MOD_ID, unlocName);
-        this.setTranslationKey(this.getRegistryName().toString());
+        this.setTranslationKey(Objects.requireNonNull(this.getRegistryName()).toString());
         this.setCreativeTab(CreativeTabST.TAB_ST);
         this.setHardness(6.0F);
         this.setHarvestLevel("pickaxe", 1);
@@ -50,6 +51,7 @@ public abstract class AbstractBlockFluxMachine<T extends AbstractTileFluxMachine
         this.tileClass = tileClass;
     }
 
+    @SuppressWarnings("deprecation")
     @SideOnly(Side.CLIENT)
     @Override
     public @NotNull EnumBlockRenderType getRenderType(@NotNull IBlockState state) {
@@ -106,6 +108,7 @@ public abstract class AbstractBlockFluxMachine<T extends AbstractTileFluxMachine
         updatePowered(worldIn, pos, state);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void neighborChanged(@NotNull IBlockState state, @NotNull World worldIn, @NotNull BlockPos pos, @NotNull Block blockIn, @NotNull BlockPos fromPos) {
         updatePowered(worldIn, pos, state);

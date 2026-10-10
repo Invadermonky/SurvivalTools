@@ -2,7 +2,6 @@ package com.invadermonky.survivaltools.compat.survivaltools.tiles;
 
 import com.invadermonky.magicultureintegrations.api.tile.IHeatableTile;
 import com.invadermonky.survivaltools.api.tiles.AbstractTileWaterPurifier;
-import com.invadermonky.survivaltools.inventory.handler.FilteredStackRangedWrapper;
 import com.invadermonky.survivaltools.util.libs.ModIds;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,19 +10,22 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.wrapper.RangedWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @Optional.Interface(modid = ModIds.ConstIds.magicluture_integrations, iface = "com.invadermonky.magicultureintegrations.api.tile.IHeatableTile", striprefs = true)
 public class TileSolidFuelPurifier extends AbstractTileWaterPurifier implements IHeatableTile {
-    protected FilteredStackRangedWrapper fuelItemHandler;
+    public static final int SLOT_BURNABLE_FUEL = 5;
 
+    protected RangedWrapper fuelHandler;
     protected int burnTime = 0;
     protected int burnTimeMax = 0;
 
     public TileSolidFuelPurifier() {
         super(1);
-        this.fuelItemHandler = new FilteredStackRangedWrapper(this.itemHandler, 2, 3, TileEntityFurnace::isItemFuel);
+        this.fuelHandler = new RangedWrapper(this.stackHandler, SLOT_BURNABLE_FUEL, SLOT_BURNABLE_FUEL + 1);
+        this.stackHandler.setSlotPredicate(SLOT_BURNABLE_FUEL, TileEntityFurnace::isItemFuel);
     }
 
     @Override
@@ -70,7 +72,12 @@ public class TileSolidFuelPurifier extends AbstractTileWaterPurifier implements 
 
     @Override
     public <T> @Nullable T getTileCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        return hasTileCapability(capability, facing) ? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.fuelItemHandler) : null;
+        EnumFacing front = this.getFrontFacing();
+        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing == front.getOpposite()) {
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.fuelHandler);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -101,7 +108,7 @@ public class TileSolidFuelPurifier extends AbstractTileWaterPurifier implements 
     }
 
     public ItemStack getFuelStack() {
-        return this.fuelItemHandler.getStackInSlot(0);
+        return this.fuelHandler.getStackInSlot(0);
     }
 
     public int getBurnTime() {
@@ -121,7 +128,7 @@ public class TileSolidFuelPurifier extends AbstractTileWaterPurifier implements 
     }
 
     public int consumeFuelStack() {
-        ItemStack stack = this.fuelItemHandler.extractItem(0, this.fuelItemHandler.getSlotLimit(0), false);
+        ItemStack stack = this.fuelHandler.extractItem(0, this.fuelHandler.getSlotLimit(0), false);
         int itemBurnDuration = TileEntityFurnace.getItemBurnTime(stack);
         if (stack.getItem().hasContainerItem(stack)) {
             stack = stack.getItem().getContainerItem(stack);
@@ -129,7 +136,7 @@ public class TileSolidFuelPurifier extends AbstractTileWaterPurifier implements 
             stack.shrink(1);
         }
         if (!stack.isEmpty()) {
-            this.fuelItemHandler.insertInternal(0, stack, false);
+            this.fuelHandler.setStackInSlot(0, stack);
         }
         return itemBurnDuration;
     }
@@ -182,9 +189,7 @@ public class TileSolidFuelPurifier extends AbstractTileWaterPurifier implements 
 
     @Optional.Method(modid = ModIds.ConstIds.magicluture_integrations)
     @Override
-    public void boostCookTimeHeatable(int boostAmount) {
-
-    }
+    public void boostCookTimeHeatable(int boostAmount) {}
 
     @Optional.Method(modid = ModIds.ConstIds.magicluture_integrations)
     @Override

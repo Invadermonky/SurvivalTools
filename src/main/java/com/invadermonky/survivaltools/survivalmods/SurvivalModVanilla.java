@@ -22,11 +22,13 @@ public class SurvivalModVanilla implements ISurvivalMod {
         return new ItemStack(Items.COAL, 1, 1);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public ItemStack getCoolerStack() {
         return new ItemStack(Blocks.PACKED_ICE);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public ItemStack getHeaterStack() {
         return new ItemStack(Blocks.MAGMA);

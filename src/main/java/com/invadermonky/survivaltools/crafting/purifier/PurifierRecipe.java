@@ -57,7 +57,7 @@ public class PurifierRecipe {
     public boolean matches(@NotNull FluidStack inputFluid, @NotNull ItemStack filterStack) {
         return inputFluid.getFluid() == this.inputFluid.getFluid()
                 && inputFluid.amount >= (this.inputFluid.amount / this.recipeDuration)
-                && (this.filterIngredient == Ingredient.EMPTY || this.filterIngredient.test(filterStack));
+                && ((this.filterIngredient == Ingredient.EMPTY && filterStack.isEmpty()) || this.filterIngredient.test(filterStack));
     }
 
     @Override

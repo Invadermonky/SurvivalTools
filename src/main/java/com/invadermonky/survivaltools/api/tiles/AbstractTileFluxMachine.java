@@ -97,9 +97,7 @@ public abstract class AbstractTileFluxMachine extends TileEntity implements ITic
         super.markDirty();
         if (this.world != null) {
             IBlockState state = this.world.getBlockState(this.pos);
-            if (state != null) {
-                this.world.notifyBlockUpdate(this.pos, state, state, 3);
-            }
+            this.world.notifyBlockUpdate(this.pos, state, state, 3);
         }
     }
 

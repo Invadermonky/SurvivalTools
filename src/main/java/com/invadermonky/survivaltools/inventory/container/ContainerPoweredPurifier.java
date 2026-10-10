@@ -11,7 +11,4 @@ public class ContainerPoweredPurifier extends AbstractContainerWaterPurifier<Til
 
     @Override
     protected void registerAdditionalFields() {}
-
-    @Override
-    protected void bindTileInventory() {}
 }

@@ -68,7 +68,7 @@ public class RecipeFillPurifiedContainer extends IForgeRegistryEntry.Impl<IRecip
         this.returnItems = new HashMap<>(inv.getSizeInventory());
         ItemStack purifiedFluidContainer = ItemStack.EMPTY;
         boolean foundPurifiedFluidContainer = false;
-        /** slotId : [stack, isBottle] */
+        /* slotId : [stack, isBottle] */
         Map<Integer, Tuple<ItemStack, Boolean>> fillItems = new HashMap<>(inv.getSizeInventory());
 
         for (int i = 0; i < inv.getSizeInventory(); i++) {
@@ -94,12 +94,14 @@ public class RecipeFillPurifiedContainer extends IForgeRegistryEntry.Impl<IRecip
                     this.returnItems.put(entry.getKey(), new ItemStack(Items.GLASS_BOTTLE));
                 } else {
                     IFluidHandlerItem handler = FluidUtil.getFluidHandler(containerStack);
-                    FluidStack fluidStack = handler.drain(new FluidStack(SurvivalToolsAPI.getPurifiedWater(), packMissing - fillAmount), true);
-                    if (fluidStack != null) {
-                        this.returnItems.put(entry.getKey(), handler.getContainer());
-                        fillAmount += fluidStack.amount;
-                    } else {
-                        this.returnItems.put(entry.getKey(), containerStack.copy());
+                    if(handler != null) {
+                        FluidStack fluidStack = handler.drain(new FluidStack(SurvivalToolsAPI.getPurifiedWater(), packMissing - fillAmount), true);
+                        if (fluidStack != null) {
+                            this.returnItems.put(entry.getKey(), handler.getContainer());
+                            fillAmount += fluidStack.amount;
+                        } else {
+                            this.returnItems.put(entry.getKey(), containerStack.copy());
+                        }
                     }
                 }
             }

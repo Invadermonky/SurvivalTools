@@ -57,11 +57,11 @@ public class ItemHydrationPack extends AbstractEquipableBauble implements IPurif
     }
 
     public static boolean hasHydrationPackAttached(ItemStack stack) {
-        return stack.hasTagCompound() && stack.getTagCompound().hasKey(TAG_HYDRATION_PACK);
+        return stack.getTagCompound() != null && stack.getTagCompound().hasKey(TAG_HYDRATION_PACK);
     }
 
     public static ItemStack getHydrationPack(ItemStack stack) {
-        if (stack.hasTagCompound() && hasHydrationPackAttached(stack)) {
+        if (stack.getTagCompound() != null && hasHydrationPackAttached(stack)) {
             NBTTagCompound packTag = stack.getTagCompound().getCompoundTag(TAG_HYDRATION_PACK);
             return new ItemStack(packTag);
         }
@@ -74,11 +74,11 @@ public class ItemHydrationPack extends AbstractEquipableBauble implements IPurif
         }
         NBTTagCompound packTag = new NBTTagCompound();
         hydrationPack.writeToNBT(packTag);
-        chestStack.getTagCompound().setTag(TAG_HYDRATION_PACK, packTag);
+        chestStack.setTagInfo(TAG_HYDRATION_PACK, packTag);
     }
 
     public static ItemStack removeHydrationPack(ItemStack chestStack) {
-        if (chestStack.hasTagCompound() && hasHydrationPackAttached(chestStack)) {
+        if (chestStack.getTagCompound() != null && hasHydrationPackAttached(chestStack)) {
             NBTTagCompound packTag = chestStack.getTagCompound().getCompoundTag(TAG_HYDRATION_PACK);
             chestStack.getTagCompound().removeTag(TAG_HYDRATION_PACK);
             return new ItemStack(packTag);
