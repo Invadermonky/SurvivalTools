@@ -61,6 +61,14 @@ public class SurvivalToolsAPI {
         return SurvivalHelper.internal.stabilizePlayerTemperature(player, maxCooling, maxHeating);
     }
 
+    public static double getPlayerTemperature(EntityPlayer player) {
+        return SurvivalHelper.internal.getPlayerTemperature(player);
+    }
+
+    public static double getTemperatureBaseline(EntityPlayer player) {
+        return SurvivalHelper.internal.getBaselineTemperature(player);
+    }
+
     public static boolean clearTemperatureDebuffs(EntityPlayer player) {
         return SurvivalHelper.internal.clearTemperatureDebuffs(player);
     }

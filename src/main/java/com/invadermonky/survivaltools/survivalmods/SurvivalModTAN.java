@@ -13,6 +13,7 @@ import toughasnails.api.stat.capability.ITemperature;
 import toughasnails.api.stat.capability.IThirst;
 import toughasnails.api.temperature.Temperature;
 import toughasnails.api.temperature.TemperatureHelper;
+import toughasnails.api.temperature.TemperatureScale;
 import toughasnails.api.thirst.ThirstHelper;
 
 public class SurvivalModTAN implements ISurvivalMod {
@@ -58,12 +59,22 @@ public class SurvivalModTAN implements ISurvivalMod {
     }
 
     @Override
+    public double getPlayerTemperature(EntityPlayer player) {
+        return TemperatureHelper.getTemperatureData(player).getTemperature().getRawValue();
+    }
+
+    @Override
+    public double getBaselineTemperature(EntityPlayer player) {
+        return TemperatureScale.getScaleMidpoint();
+    }
+
+    @Override
     public boolean stabilizePlayerTemperature(EntityPlayer player, int maxCooling, int maxHeating) {
         boolean did = false;
         if (this.isTemperatureFeatureEnabled()) {
             ITemperature temperature = TemperatureHelper.getTemperatureData(player);
             int currTemp = temperature.getTemperature().getRawValue();
-            int tempTarget = TemperatureHelper.getTemperatureData(player).getPlayerTarget(player);
+            int tempTarget = (int) this.getBaselineTemperature(player);
             //The temperature the cooling will reach
             int coolTo = maxCooling <= -1 ? 13 : Math.max(13, tempTarget - maxCooling);
             //The temperature the heating will reach

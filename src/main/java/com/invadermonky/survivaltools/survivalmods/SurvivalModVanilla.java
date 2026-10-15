@@ -56,6 +56,16 @@ public class SurvivalModVanilla implements ISurvivalMod {
     }
 
     @Override
+    public double getPlayerTemperature(EntityPlayer player) {
+        return 0;
+    }
+
+    @Override
+    public double getBaselineTemperature(EntityPlayer player) {
+        return 0;
+    }
+
+    @Override
     public boolean stabilizePlayerTemperature(EntityPlayer player, int maxCooling, int maxHeating) {
         return false;
     }

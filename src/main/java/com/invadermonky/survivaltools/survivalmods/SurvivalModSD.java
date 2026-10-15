@@ -3,7 +3,7 @@ package com.invadermonky.survivaltools.survivalmods;
 import com.charles445.simpledifficulty.api.*;
 import com.charles445.simpledifficulty.api.config.QuickConfig;
 import com.charles445.simpledifficulty.api.temperature.ITemperatureCapability;
-import com.charles445.simpledifficulty.api.temperature.TemperatureUtil;
+import com.charles445.simpledifficulty.api.temperature.TemperatureEnum;
 import com.charles445.simpledifficulty.api.thirst.IThirstCapability;
 import com.invadermonky.survivaltools.api.ISurvivalMod;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,11 +52,21 @@ public class SurvivalModSD implements ISurvivalMod {
     }
 
     @Override
+    public double getPlayerTemperature(EntityPlayer player) {
+        return SDCapabilities.getTemperatureData(player).getTemperatureLevel();
+    }
+
+    @Override
+    public double getBaselineTemperature(EntityPlayer player) {
+        return TemperatureEnum.NORMAL.getMiddle();
+    }
+
+    @Override
     public boolean stabilizePlayerTemperature(EntityPlayer player, int maxCooling, int maxHeating) {
         boolean did = false;
         if (this.isTemperatureFeatureEnabled()) {
             ITemperatureCapability tempData = SDCapabilities.getTemperatureData(player);
-            int tempTarget = TemperatureUtil.getPlayerTargetTemperature(player);
+            int tempTarget = (int) this.getBaselineTemperature(player);
             //The temperature the cooling will reach
             int coolTo = maxCooling <= -1 ? 13 : Math.max(13, tempTarget - maxCooling);
             //The temperature the heating will reach

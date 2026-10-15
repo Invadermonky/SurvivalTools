@@ -11,6 +11,7 @@
 - Fixed Solid Fuel Purifier entry not appearing in the Patchouli guide
 - Fixed Water Purifier recipe handling sometimes ignoring filter items
 - Fixed Gryllzalia particles not having a color
+- Fixed incorrectt temperature baseline calculation for temperature equalization
 
 ---
 

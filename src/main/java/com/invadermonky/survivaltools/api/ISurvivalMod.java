@@ -77,6 +77,16 @@ public interface ISurvivalMod {
     boolean isTemperatureFeatureEnabled();
 
     /**
+     * Returns the current player temperature.
+     */
+    double getPlayerTemperature(EntityPlayer player);
+
+    /**
+     * Returns the player's target, or "normal", temperature value.
+     */
+    double getBaselineTemperature(EntityPlayer player);
+
+    /**
      * Attempts to stabilize the player's temperature, returning it to normal values.
      */
     boolean stabilizePlayerTemperature(EntityPlayer player, int maxCooling, int maxHeating);
