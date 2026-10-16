@@ -111,6 +111,26 @@ public class SurvivalHelper implements ISurvivalMod {
     }
 
     @Override
+    public double getPlayerTemperature(EntityPlayer player) {
+        for(ISurvivalMod survivalMod : survivalMods) {
+            if(survivalMod.isTemperatureFeatureEnabled()) {
+                return survivalMod.getPlayerTemperature(player);
+            }
+        }
+        return vanillaSurvivalMod.getPlayerTemperature(player);
+    }
+
+    @Override
+    public double getBaselineTemperature(EntityPlayer player) {
+        for(ISurvivalMod survivalMod : survivalMods) {
+            if(survivalMod.isTemperatureFeatureEnabled()) {
+                return survivalMod.getBaselineTemperature(player);
+            }
+        }
+        return vanillaSurvivalMod.getBaselineTemperature(player);
+    }
+
+    @Override
     public boolean stabilizePlayerTemperature(EntityPlayer player, int maxCooling, int maxHeating) {
         boolean did = false;
         for (ISurvivalMod survivalMod : survivalMods) {
