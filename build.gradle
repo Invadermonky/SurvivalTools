@@ -14,7 +14,6 @@ plugins {
     id 'net.darkhax.curseforgegradle' version '1.+' apply false
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'org.jetbrains.changelog' version '2.5.0'
-    id 'com.gradleup.shadow' version '9.6.+'
 }
 
 apply from: 'gradle/scripts/helpers.gradle'

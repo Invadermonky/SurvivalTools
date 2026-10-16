@@ -49,7 +49,7 @@ dependencies {
     modMap.put(["curse.maven:botania-225643:3330934"], project.botania)
     modMap.put(["curse.maven:embers-rekindled-300777:3695248"], project.embers)
     modMap.put(["curse.maven:immersive-engineering-231951:2974106"], project.immersiveengineering)
-    modMap.put(["curse.maven:magiculture-integrations-1064613:6905883", "curse.maven:configanytime-870276:5212709"], project.magicultureintegrations)
+    modMap.put(["curse.maven:magiculture-integrations-1064613:6905883", "curse.maven:configanytime-870276:5212709", "curse.maven:mixin-booter-419286:9143655"], project.magicultureintegrations)
     modMap.put(["curse.maven:natures-aura-306626:2882138"], project.naturesaura)
     modMap.put(["curse.maven:simpledifficulty-360779:3613814"], project.simpledifficulty)
     modMap.put(["curse.maven:thaumcraft-223628:2629023"], project.thaumcraft)
